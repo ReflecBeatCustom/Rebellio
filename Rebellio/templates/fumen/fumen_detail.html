@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/fumen.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        {% include 'fumen/fumen_navigator.html' %}
+        <div class="p-2 bd-highlight col-sm-12">
+            <h3 class="ui header dividing- blue- lighter">谱面信息</h3>
+            <div class="r-fields-group">
+                <h4 class="ui header">
+                    基本信息
+                </h4>
+                <div class="content">
+                    <div class="r-fields">
+                        <div class="r-field">
+                            <div class="label">
+                                歌曲名
+                            </div>
+                            <div class="value">
+                                {{ data.title }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="r-fields-group">
+                <h4 class="ui header">
+                    难度信息
+                </h4>
+                <div class="content">
+                    <div class="r-fields">
+                        <div class="r-field">
+                            <div class="label">
+                                歌曲名
+                            </div>
+                            <div class="value">
+                                {{ data.title }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="r-fields-group">
+                <h4 class="ui header">
+                    其他信息
+                </h4>
+                <div class="content">
+                    <div class="r-fields">
+                        <div class="r-field">
+                            <div class="label">
+                                歌曲名
+                            </div>
+                            <div class="value">
+                                {{ data.title }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="r-fields-group">
+                <h4 class="ui header">
+                    操作
+                </h4>
+                <div class="content">
+                    <div class="r-fields">
+                        <div class="r-field">
+                            <div class="label">
+                                歌曲名
+                            </div>
+                            <div class="value">
+                                {{ data.title }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="ui header dividing- blue- lighter">评论信息</h3>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,132 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+from django.db import models
+
+
+class Accounts(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    passwd = models.CharField(db_column='Passwd', max_length=41, blank=True, null=True)  # Field name made lowercase.
+    nickname = models.CharField(db_column='Nickname', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    accesslevel = models.IntegerField(db_column='AccessLevel', blank=True, null=True)  # Field name made lowercase.
+    id = models.IntegerField(primary_key=True)
+
+    class Meta:
+        managed = True
+        db_table = 'Accounts'
+
+
+class Packs(models.Model):
+    category = models.PositiveIntegerField(db_column='Category', primary_key=True)  # Field name made lowercase.
+    packid = models.IntegerField(db_column='PackID')  # Field name made lowercase.
+    title = models.TextField(db_column='Title', blank=True, null=True)  # Field name made lowercase.
+    comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
+    haspromotion = models.IntegerField(db_column='HasPromotion', blank=True, null=True)  # Field name made lowercase.
+    previewsongid = models.PositiveIntegerField(db_column='PreviewSongID', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'Packs'
+        unique_together = (('category', 'packid'),)
+
+
+class Playerpackcomments(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
+    packid = models.IntegerField(db_column='PackID')  # Field name made lowercase.
+    comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'PlayerPackComments'
+
+
+class Playersongcomments(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
+    songid = models.IntegerField(db_column='SongID')  # Field name made lowercase.
+    comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'PlayerSongComments'
+
+
+class Playersongfavorites(models.Model):
+    accountname = models.CharField(db_column='AccountName', primary_key=True, max_length=50)  # Field name made lowercase.
+    songid = models.IntegerField(db_column='SongID')  # Field name made lowercase.
+    isfavorite = models.IntegerField(db_column='IsFavorite')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'PlayerSongFavorites'
+        unique_together = (('accountname', 'songid'),)
+
+
+class Playrecords(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    songid = models.IntegerField(db_column='SongID', blank=True, null=True)  # Field name made lowercase.
+    difficulty = models.IntegerField(db_column='Difficulty', blank=True, null=True)  # Field name made lowercase.
+    logtime = models.DateTimeField(db_column='LogTime', blank=True, null=True)  # Field name made lowercase.
+    score = models.IntegerField(db_column='Score', blank=True, null=True)  # Field name made lowercase.
+    jr = models.IntegerField(db_column='JR', blank=True, null=True)  # Field name made lowercase.
+    note = models.IntegerField(db_column='Note', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'Playrecords'
+
+
+class Songs(models.Model):
+    songid = models.IntegerField(db_column='SongID', primary_key=True)  # Field name made lowercase.
+    category = models.IntegerField(db_column='Category', blank=True, null=True)  # Field name made lowercase.
+    packid = models.IntegerField(db_column='PackID', blank=True, null=True)  # Field name made lowercase.
+    accesslevel = models.IntegerField(db_column='AccessLevel', blank=True, null=True)  # Field name made lowercase.
+    creator = models.TextField(db_column='Creator', blank=True, null=True)  # Field name made lowercase.
+    title = models.TextField(db_column='Title', blank=True, null=True)  # Field name made lowercase.
+    artist = models.TextField(db_column='Artist', blank=True, null=True)  # Field name made lowercase.
+    chartauthor = models.TextField(db_column='ChartAuthor', blank=True, null=True)  # Field name made lowercase.
+    diffb = models.IntegerField(db_column='diffB', blank=True, null=True)  # Field name made lowercase.
+    diffm = models.IntegerField(db_column='diffM', blank=True, null=True)  # Field name made lowercase.
+    diffh = models.IntegerField(db_column='diffH', blank=True, null=True)  # Field name made lowercase.
+    diffsp = models.IntegerField(db_column='diffSP', blank=True, null=True)  # Field name made lowercase.
+    subdiffb = models.IntegerField(db_column='subdiffB', blank=True, null=True)  # Field name made lowercase.
+    subdiffm = models.IntegerField(db_column='subdiffM', blank=True, null=True)  # Field name made lowercase.
+    subdiffh = models.IntegerField(db_column='subdiffH', blank=True, null=True)  # Field name made lowercase.
+    subdiffsp = models.IntegerField(db_column='subdiffSP', blank=True, null=True)  # Field name made lowercase.
+    hasspecial = models.IntegerField(db_column='HasSpecial', blank=True, null=True)  # Field name made lowercase.
+    specialid = models.IntegerField(db_column='SpecialID', blank=True, null=True)  # Field name made lowercase.
+    sequencepid = models.IntegerField(db_column='SequencePID', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+    description = models.TextField(db_column='Description', blank=True, null=True)  # Field name made lowercase.
+    authordescription = models.TextField(db_column='AuthorDescription', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'Songs'
+
+
+class Fumen(models.Model):
+    fumen_id = models.PositiveIntegerField(unique=True)
+    artist_name = models.CharField(max_length=50)
+    music_name = models.CharField(max_length=50)
+    version = models.PositiveIntegerField()
+    bpm_max = models.PositiveIntegerField()
+    bpm_min = models.PositiveIntegerField()
+    basic_level = models.PositiveIntegerField()
+    medium_level = models.PositiveIntegerField()
+    hard_level = models.PositiveIntegerField()
+
+    class Meta:
+        managed = True
+        db_table = 'fumen'
