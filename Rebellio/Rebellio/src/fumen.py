@@ -73,13 +73,13 @@ def get_fumens(keyword, fumen_creator, category, start_page, page_size, level, u
 
     return fumens[start_index:end_index], total, total_page, pages, start_page
 
-def get_fumen(fumen_id):
+def get_fumen(fumen_id, user_access_level):
     """
     根据谱id名得到谱面信息
     """
     if fumen_id == 0:
         return None
-    fumens = models.Songs.objects.filter(songid=fumen_id)
+    fumens = models.Songs.objects.filter(Q(songid=fumen_id) & Q(accesslevel__lte=user_access_level))
     if len(fumens) == 0:
         return None
     set_fumens_format(fumens)

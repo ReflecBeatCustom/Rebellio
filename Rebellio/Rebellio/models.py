@@ -51,8 +51,8 @@ class Playersongcomments(models.Model):
     accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
     songid = models.IntegerField(db_column='SongID')  # Field name made lowercase.
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
-    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
 
     class Meta:
         managed = True
@@ -80,6 +80,7 @@ class Playrecords(models.Model):
     score = models.IntegerField(db_column='Score', blank=True, null=True)  # Field name made lowercase.
     jr = models.IntegerField(db_column='JR', blank=True, null=True)  # Field name made lowercase.
     note = models.IntegerField(db_column='Note', blank=True, null=True)  # Field name made lowercase.
+    id = models.IntegerField(primary_key=True)
 
     class Meta:
         managed = True

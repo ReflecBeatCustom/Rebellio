@@ -28,6 +28,7 @@ urlpatterns = [
     path('fumen/', views.get_fumens),
     path('fumen/own_fumen/', views.get_own_fumens),
     path('fumen/fumen_detail/', views.get_fumen),
+    path('fumen/comment_on_fumen/', views.comment_on_fumen),
     url(r'^captcha', include('captcha.urls')),
     #path('fumen/get', views.get_fumen),
 ]

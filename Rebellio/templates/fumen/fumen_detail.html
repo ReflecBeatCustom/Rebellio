@@ -8,76 +8,72 @@
     <div class="d-flex flex-row bd-highlight mb-3">
         {% include 'fumen/fumen_navigator.html' %}
         <div class="p-2 bd-highlight col-sm-12">
-            <h3 class="ui header dividing- blue- lighter">谱面信息</h3>
-            <div class="r-fields-group">
-                <h4 class="ui header">
-                    基本信息
-                </h4>
-                <div class="content">
-                    <div class="r-fields">
-                        <div class="r-field">
-                            <div class="label">
-                                歌曲名
+            <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                <strong class="card-header">谱面信息</strong>
+                <div class="card-body">
+                    <div class="fumen-details-content">
+                        <h4>{{ data.title }}</h4>
+                        <div ckass="rating-review">
+                            <div ckass="pro-dec-rating">
+                                <i class="ion-android-star-outline theme-star"></i>
                             </div>
-                            <div class="value">
-                                {{ data.title }}
+                            <div ckass="pro-dec-review"></div>
+                        </div>
+                        <p class="card-text">{{ data.songid }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                <div class="card-header"><strong>我的游玩历史</strong></div>
+                <div class="card-body">
+                    {% if best_record %}
+                        <h5 class="card-title">最高成绩</h5>
+                        <div class="card {{ best_record.text }} {{ best_record.bg }} {{ best_record.border }} mb-3" style="max-width: 100rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">成绩</h5>
+                                <p class="card-text">{{ best_record.score }}</p>
                             </div>
+                        </div>
+                        <div class="border-top my-3"></div>
+                    {% endif %}
+                    <h5 class="card-title">历史成绩</h5>
+                    {% for record in player_records %}
+                        <div class="card {{ record.text }} {{ record.bg }} {{ record.border }} mb-3" style="max-width: 100rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">成绩</h5>
+                                <p class="card-text">{{ record.score }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card text-black border-info mb-3" style="max-width: 100rem;">
+                <div class="card-header"><strong>评论信息</strong></div>
+                {% for comment in comments %}
+                    <div class="card-body">
+                        <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                            <div class="card-header"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                            <div class="card-body">
+                                <p class="card-text">{{ comment.comment }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="card-body">
+                    <div class="card text-black border-info mb-3" style="max-width: 100rem;">
+                        <div class="card-header"><strong>新增评论</strong></div>
+                        <div class="card-body">
+                            <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen?fumen_id={{ data.fumen_id }}" method="get">
+                                <input class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论">
+                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
+                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="r-fields-group">
-                <h4 class="ui header">
-                    难度信息
-                </h4>
-                <div class="content">
-                    <div class="r-fields">
-                        <div class="r-field">
-                            <div class="label">
-                                歌曲名
-                            </div>
-                            <div class="value">
-                                {{ data.title }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="r-fields-group">
-                <h4 class="ui header">
-                    其他信息
-                </h4>
-                <div class="content">
-                    <div class="r-fields">
-                        <div class="r-field">
-                            <div class="label">
-                                歌曲名
-                            </div>
-                            <div class="value">
-                                {{ data.title }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="r-fields-group">
-                <h4 class="ui header">
-                    操作
-                </h4>
-                <div class="content">
-                    <div class="r-fields">
-                        <div class="r-field">
-                            <div class="label">
-                                歌曲名
-                            </div>
-                            <div class="value">
-                                {{ data.title }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <h3 class="ui header dividing- blue- lighter">评论信息</h3>
         </div>
     </div>
 {% endblock %}

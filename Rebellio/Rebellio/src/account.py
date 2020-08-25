@@ -1,0 +1,63 @@
+import math
+from .. import models
+from django.db.models import Q
+
+# 成绩展示框的样式
+model_style_high = {'bg':'bg-warning', 'text':'text-black', 'border':'border-warning'}
+model_style_medium = {'bg':'bg-success', 'text':'text-white', 'border':'border-success'}
+model_style_low = {'bg':'bg-secondary', 'text':'text-white', 'border':'border-secondary'}
+
+# 默认展示的成绩，评论数量
+default_show_count = 5
+
+def get_fumen_record(user_name, fumen_id, is_show_all_records):
+    records = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name)).order_by('-logtime')
+    if len(records) == 0:
+        return None, records
+
+    best_record = records[0]
+    for i in range(len(records)):
+        # 设置日期格式
+        records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %h时%M分')
+        # 设置前端样式
+        if records[i].score > 3000:
+            records[i].bg = model_style_high['bg']
+            records[i].text = model_style_high['text']
+            records[i].border = model_style_high['border']
+        elif records[i].score > 2000:
+            records[i].bg = model_style_medium['bg']
+            records[i].text = model_style_medium['text']
+            records[i].border = model_style_medium['border']
+        else:
+            records[i].bg = model_style_low['bg']
+            records[i].text = model_style_low['text']
+            records[i].border = model_style_low['border']
+        if records[i].score >= best_record.score:
+            best_record = records[i]
+
+    start_index = 0
+    end_index = default_show_count if is_show_all_records == 0 and len(records) >= default_show_count else len(records)
+    return best_record, records[start_index:end_index]
+
+def get_fumen_comments(fumen_id, is_show_all_comments):
+    comments = models.Playersongcomments.objects.filter(Q(songid=fumen_id)).order_by('-createtime')
+    if len(comments) == 0:
+        return comments
+
+    for i in range(len(comments)):
+        comments[i].createtime = comments[i].createtime.strftime('%Y年%m月%d日 %H:%M:%S')
+
+    start_index = 0
+    end_index = default_show_count if is_show_all_comments == 0 and len(comments) >= default_show_count else len(comments)
+    return comments[start_index:end_index]
+
+def comment_on_fumen(fumen_id, user_name, user_access_level, comment):
+    fumens = models.Songs.objects.filter(Q(songid=fumen_id) & Q(accesslevel__lte=user_access_level))
+    if len(fumens) == 0:
+        return False
+    if comment == '':
+        return False
+
+    comment = models.Playersongcomments(accountname=user_name, songid=fumen_id, comment=comment)
+    comment.save()
+    return True

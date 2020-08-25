@@ -96,6 +96,27 @@ def get_fumen(request):
         return redirect('/login')
 
     fumen_id = int(request.GET.get('fumen_id', 0))
-    fumen_detail = fumen.get_fumen(fumen_id)
-    return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1})
-        
+    is_show_all_records = int(request.GET.get('is_show_all_records', 0))
+    is_show_all_comments = int(request.GET.get('is_show_all_comments', 0))
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+
+    fumen_detail = fumen.get_fumen(fumen_id, user_access_level)
+    if fumen_detail is None:
+        return redirect('/fumen')
+    best_record, player_records = account.get_fumen_record(user_name, fumen_id, is_show_all_records)
+    comments = account.get_fumen_comments(fumen_id, is_show_all_comments)
+    return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_record':best_record, 'player_records':player_records, 'comments':comments})
+
+@require_http_methods(['GET'])
+def comment_on_fumen(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    fumen_id = int(request.GET.get('fumen_id', 0))
+    comment = request.GET.get('comment', 0)
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+
+    result = account.comment_on_fumen(fumen_id, user_name, user_access_level, comment)
+    return redirect('/fumen/fumen_detail/?fumen_id={0}'.format(fumen_id))
