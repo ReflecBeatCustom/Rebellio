@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'Rebellio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rb_custom',
-        'USER': 'rbcustom',
-        'PASSWORD': 'rbcustom123456',
-        'HOST': '175.24.50.211',
+        'NAME': 'rbcustomserver',
+        'USER': 'admin',
+        'PASSWORD': 'william123',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
