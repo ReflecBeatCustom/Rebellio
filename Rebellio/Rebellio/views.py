@@ -30,16 +30,13 @@ def login(request):
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
             try:
-                user = models.Accounts.objects.get(Q(accountname=username))
-                if password == user.passwd:
-                    request.session['is_login'] = True
-                    request.session['user_name'] = user.accountname
-                    request.session['user_access_level'] = user.accesslevel
+                results = models.Accounts.objects.raw("SELECT id FROM Accounts WHERE AccountName = '{0}' AND Passwd = PASSWORD('{1}')".format(username, password))
+                if len(results) > 0:
                     return redirect('/home')
                 else:
-                    message = "密码不正确！"
+                    message = "密码不正确或用户不存在!"
             except Exception as e:
-                message = "用户不存在！"
+                message = "登陆失败,{0}".format(str(e))
         return render(request, 'login/login.html', locals())
 
     login_form = forms.UserForm()
