@@ -30,11 +30,11 @@ def login(request):
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
             try:
-                results = models.Accounts.objects.raw("SELECT AccountName, AccessLevel, id FROM Accounts WHERE AccountName = '{0}' AND Passwd = PASSWORD('{1}')".format(username, password))
+                results = models.Accounts.objects.raw("SELECT * FROM Accounts WHERE AccountName = '{0}' AND Passwd = PASSWORD('{1}')".format(username, password))
                 if len(results) > 0:
                     request.session['is_login'] = True
-                    request.session['user_name'] = results[0][0]
-                    request.session['user_access_level'] = int(results[0][1])
+                    request.session['user_name'] = results[0].accountname
+                    request.session['user_access_level'] = int(results[0].accesslevel)
                     return redirect('/home')
                 else:
                     message = "密码不正确或用户不存在!"
