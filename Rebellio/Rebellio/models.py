@@ -19,6 +19,29 @@ class Accounts(models.Model):
         managed = True
         db_table = 'Accounts'
 
+class Constants(models.Model):
+    namevar = models.CharField(max_length=50, blank=True, null=True)
+    value = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'Constants'
+
+class Courserecords(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    courseid = models.IntegerField(db_column='CourseID', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'Courserecords'
+
+class Gameusers(models.Model):
+    userid = models.CharField(db_column='UserID', primary_key=True, max_length=6)  # Field name made lowercase.
+    accountname = models.CharField(db_column='AccountName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'Gameusers'
 
 class Packs(models.Model):
     category = models.PositiveIntegerField(db_column='Category', primary_key=True)  # Field name made lowercase.
@@ -36,6 +59,7 @@ class Packs(models.Model):
 
 
 class Playerpackcomments(models.Model):
+    id = models.IntegerField(primary_key=True)
     accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
     packid = models.IntegerField(db_column='PackID')  # Field name made lowercase.
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
@@ -48,6 +72,7 @@ class Playerpackcomments(models.Model):
 
 
 class Playersongcomments(models.Model):
+    id = models.IntegerField(primary_key=True)
     accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
     songid = models.IntegerField(db_column='SongID')  # Field name made lowercase.
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
@@ -80,7 +105,6 @@ class Playrecords(models.Model):
     score = models.IntegerField(db_column='Score', blank=True, null=True)  # Field name made lowercase.
     jr = models.IntegerField(db_column='JR', blank=True, null=True)  # Field name made lowercase.
     note = models.IntegerField(db_column='Note', blank=True, null=True)  # Field name made lowercase.
-    id = models.IntegerField(primary_key=True)
 
     class Meta:
         managed = True
@@ -117,17 +141,13 @@ class Songs(models.Model):
         db_table = 'Songs'
 
 
-class Fumen(models.Model):
-    fumen_id = models.PositiveIntegerField(unique=True)
-    artist_name = models.CharField(max_length=50)
-    music_name = models.CharField(max_length=50)
-    version = models.PositiveIntegerField()
-    bpm_max = models.PositiveIntegerField()
-    bpm_min = models.PositiveIntegerField()
-    basic_level = models.PositiveIntegerField()
-    medium_level = models.PositiveIntegerField()
-    hard_level = models.PositiveIntegerField()
+class Unlockrecords(models.Model):
+    accountname = models.CharField(db_column='AccountName', primary_key=True, max_length=50)  # Field name made lowercase.
+    songid = models.IntegerField(db_column='SongID')  # Field name made lowercase.
+    pid = models.IntegerField(db_column='PID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = True
-        db_table = 'fumen'
+        db_table = 'Unlockrecords'
+        unique_together = (('accountname', 'songid'),)
+
