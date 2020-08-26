@@ -30,7 +30,7 @@ def login(request):
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
             try:
-                results = models.Accounts.objects.raw("SELECT AccountName, AccessLevel FROM Accounts WHERE AccountName = '{0}' AND Passwd = PASSWORD('{1}')".format(username, password))
+                results = models.Accounts.objects.raw("SELECT AccountName, AccessLevel, id FROM Accounts WHERE AccountName = '{0}' AND Passwd = PASSWORD('{1}')".format(username, password))
                 if len(results) > 0:
                     request.session['is_login'] = True
                     request.session['user_name'] = results[0][0]
