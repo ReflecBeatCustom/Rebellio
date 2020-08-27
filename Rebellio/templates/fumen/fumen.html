@@ -55,28 +55,28 @@
                         {% endif %}
                     </select>
                     {% if request.session.user_access_level >= 1 %}
-                    <select class="form-control mr-sm-1" name="category">
-                        {% if category == '0' %}
-                            <option value=0 selected>已发布</option>
-                        {% else %}
-                            <option value=0>已发布</option>
-                        {% endif %}
-                        {% if category == '1' %}
-                            <option value=1 selected>审核中</option>
-                        {% else %}
-                            <option value=1>审核中</option>
-                        {% endif %}
-                        {% if category == '2' %}
-                            <option value=2 selected>官谱</option>
-                        {% else %}
-                            <option value=2>官谱</option>
-                        {% endif %}
-                        {% if category == '3' %}
-                            <option value=3 selected>内测</option>
-                        {% else %}
-                            <option value=3>内测</option>
-                        {% endif %}
-                    </select>
+                        <select class="form-control mr-sm-1" name="category">
+                            {% if category == '0' %}
+                                <option value=0 selected>已发布</option>
+                            {% else %}
+                                <option value=0>已发布</option>
+                            {% endif %}
+                            {% if category == '1' %}
+                                <option value=1 selected>审核中</option>
+                            {% else %}
+                                <option value=1>审核中</option>
+                            {% endif %}
+                            {% if category == '2' %}
+                                <option value=2 selected>官谱</option>
+                            {% else %}
+                                <option value=2>官谱</option>
+                            {% endif %}
+                            {% if category == '3' %}
+                                <option value=3 selected>内测</option>
+                            {% else %}
+                                <option value=3>内测</option>
+                            {% endif %}
+                        </select>
                     {% endif %}
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
                 </form>
@@ -120,14 +120,13 @@
                                         <strong>HARD&nbsp</strong>
                                         <a href="/fumen?level={{ fumen.diffh }}">{{ fumen.diffh }}</a>
                                     </div>
-                                    <div class="item">
-                                        <strong>SPECIAL&nbsp</strong>
-                                        {% if fumen.diffsp == '-' %}
-                                            <span>{{ fumen.diffsp }}</span>
-                                        {% else %}
-                                            <a href="/fumen?level={{ fumen.diffh }}">{{ fumen.diffsp }}</a>
-                                        {% endif %}
-                                    </div>
+                                    {% if fumen.diffsp != '-' %}
+                                        <div class="item">
+                                            <strong>SPECIAL&nbsp</strong>
+                                                <span>{{ fumen.diffsp }}</span>
+                                                <a href="/fumen?level={{ fumen.diffsp }}">{{ fumen.diffsp }}</a>
+                                        </div>
+                                    {% endif %}
                                 </td>
                                 <td class="top aligned">
                                     <div class="item">

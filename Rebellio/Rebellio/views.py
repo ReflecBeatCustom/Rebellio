@@ -97,6 +97,7 @@ def get_fumen(request):
 
     fumen_id = int(request.GET.get('fumen_id', 0))
     is_show_all_records = int(request.GET.get('is_show_all_records', 0))
+    is_show_all_fumen_records = int(request.GET.get('is_show_all_fumen_records', 0))
     is_show_all_comments = int(request.GET.get('is_show_all_comments', 0))
     user_access_level = request.session.get('user_access_level', 0)
     user_name = request.session.get('user_name', '')
@@ -104,9 +105,10 @@ def get_fumen(request):
     fumen_detail = fumen.get_fumen(fumen_id, user_access_level)
     if fumen_detail is None:
         return redirect('/fumen')
-    best_record, player_records = account.get_fumen_record(user_name, fumen_id, is_show_all_records)
+    best_player_record, player_records = account.get_fumen_record(user_name, fumen_id, is_show_all_records)
+    best_fumen_record, fumen_records = fumen.get_fumen_record(fumen_id, is_show_all_fumen_records)
     comments = account.get_fumen_comments(fumen_id, is_show_all_comments)
-    return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_record':best_record, 'player_records':player_records, 'comments':comments})
+    return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_player_record':best_player_record, 'player_records':player_records, 'best_fumen_record':best_fumen_record, 'fumen_records':fumen_records, 'comments':comments})
 
 @require_http_methods(['GET'])
 def comment_on_fumen(request):

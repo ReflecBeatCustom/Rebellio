@@ -8,7 +8,7 @@ model_style_medium = {'bg':'bg-success', 'text':'text-white', 'border':'border-s
 model_style_low = {'bg':'bg-secondary', 'text':'text-white', 'border':'border-secondary'}
 
 # 默认展示的成绩，评论数量
-default_show_count = 5
+default_show_count = 4
 
 def get_fumen_record(user_name, fumen_id, is_show_all_records):
     records = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name)).order_by('-logtime')
@@ -34,6 +34,15 @@ def get_fumen_record(user_name, fumen_id, is_show_all_records):
             records[i].border = model_style_low['border']
         if records[i].score >= best_record.score:
             best_record = records[i]
+        # 设置难度
+        if records[i].difficulty == 0:
+            records[i].difficulty = "BASIC"
+        if records[i].difficulty == 1:
+            records[i].difficulty = "NORMAL"
+        if records[i].difficulty == 2:
+            records[i].difficulty = "HARD"
+        if records[i].difficulty == 3:
+            records[i].difficulty = "SPECIAL"
 
     start_index = 0
     end_index = default_show_count if is_show_all_records == 0 and len(records) >= default_show_count else len(records)

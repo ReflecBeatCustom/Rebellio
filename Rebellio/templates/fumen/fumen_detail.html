@@ -12,53 +12,105 @@
                 <strong class="card-header">谱面信息</strong>
                 <div class="card-body">
                     <div class="fumen-details-content">
-                        <h4>{{ data.title }}</h4>
-                        <div ckass="rating-review">
-                            <div ckass="pro-dec-rating">
-                                <i class="ion-android-star-outline theme-star"></i>
-                            </div>
-                            <div ckass="pro-dec-review"></div>
-                        </div>
-                        <p class="card-text">{{ data.songid }}</p>
+                        <h4>{{ data.title }}({{ data.songid }})</h4>
+                        <div class="border-top my-3"></div>
+                        <p class="card-text"><strong>作曲家:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
+                        <p class="card-text"><strong>做谱人:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
+                        <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen?level={{ data.diffh }}">{{ data.diffh }}</a>{% if data.diffsp != '-' %} / <a href="/fumen?level={{ data.diffsp }}">{{ data.diffsp }}</a>{% endif %}</p>
+                        <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>{{ data.packid }}</a></p>
+                        {% if request.session.user_access_level >= 1 %}
+                            {% if data.category == 0 %}
+                                <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>已发布</p>
+                            {% endif %}
+                            {% if data.category == 1 %}
+                                <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>审核中</p>
+                            {% endif %}
+                            {% if data.category == 2 %}
+                                <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>官谱</p>
+                            {% endif %}
+                            {% if data.category == 3 %}
+                                <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>内测</p>
+                            {% endif %}
+                        {% endif %}
+                        <p class="card-text"><strong>谱面寄语:&nbsp&nbsp&nbsp&nbsp</strong></p>
+                        <blockquote class="blockquote">
+                            {% if data.description != '' %}
+                                <p>{{ data.authordescription }}</p>
+                            {% else %}
+                                <p style="color:grey;font-size:16px;text-indent:2em">这个做谱人很懒，什么都没留下</p>
+                            {% endif %}
+                            <footer class="blockquote-footer" style="text-indent:2em">Sincerely from {{ data.chartauthor }}</footer>
+                        </blockquote>
                     </div>
                 </div>
             </div>
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                <div class="card-header"><strong>我的游玩历史</strong></div>
+                <div class="card-header"><strong>高分榜</strong></div>
                 <div class="card-body">
-                    {% if best_record %}
-                        <h5 class="card-title">最高成绩</h5>
-                        <div class="card {{ best_record.text }} {{ best_record.bg }} {{ best_record.border }} mb-3" style="max-width: 100rem;">
+                    {% if best_fumen_record %}
+                        <div class="card bg-warning border-warning mb-3" style="max-width: 100rem;">
                             <div class="card-body">
-                                <h5 class="card-title">成绩</h5>
-                                <p class="card-text">{{ best_record.score }}</p>
+                                <p class="card-text"><strong>成绩:&nbsp</strong><span style="color:black;font-size:40px">{{ best_fumen_record.score }}</span></p>
+                                <p class="card-text"><strong>用户:&nbsp</strong><span style="color:black;font-size:40px"><a href="#">{{ best_fumen_record.accountname }}</a></span></p>
+                                <p class="card-text"><strong>谱面难度:&nbsp</strong><span style="color:black;font-size:20px">{{ best_fumen_record.difficulty }}</span></p>
                             </div>
                         </div>
-                        <div class="border-top my-3"></div>
                     {% endif %}
-                    <h5 class="card-title">历史成绩</h5>
-                    {% for record in player_records %}
-                        <div class="card {{ record.text }} {{ record.bg }} {{ record.border }} mb-3" style="max-width: 100rem;">
+                    {% for record in fumen_records %}
+                        <div class="card mb-3" style="max-width: 100rem;background-color:bisque;border-color: bisque;">
                             <div class="card-body">
-                                <h5 class="card-title">成绩</h5>
-                                <p class="card-text">{{ record.score }}</p>
+                                <p class="card-text"><strong>成绩:&nbsp</strong><span style="color:grey;font-size:20px">{{ record.score }}</span></p>
+                                <p class="card-text"><strong>用户:&nbsp</strong><span style="color:grey;font-size:20px"><a href="#">{{ record.accountname }}</a></span></p>
+                                <p class="card-text"><strong>谱面难度:&nbsp</strong><span style="color:grey;font-size:20px">{{ record.difficulty }}</span></p>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="card text-black border-info mb-3" style="max-width: 100rem;">
-                <div class="card-header"><strong>评论信息</strong></div>
-                {% for comment in comments %}
-                    <div class="card-body">
-                        <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                            <div class="card-header"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+            <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                <div class="card-header"><strong>我的游玩历史</strong></div>
+                <div class="card-body">
+                    {% if best_player_record %}
+                        <h5 class="card-title">最高成绩</h5>
+                        <div class="card {{ best_record.text }} {{ best_record.bg }} {{ best_record.border }} mb-3" style="max-width: 100rem;">
                             <div class="card-body">
-                                <p class="card-text">{{ comment.comment }}</p>
+                                <h5 class="card-title">成绩</h5>
+                                <p class="card-text">{{ best_player_record.score }}</p>
                             </div>
                         </div>
+                        <div class="border-top my-3"></div>
+                    {% endif %}
+                    {% if player_records %}
+                        <h5 class="card-title">历史成绩</h5>
+                        {% for record in player_records %}
+                            <div class="card {{ record.text }} {{ record.bg }} {{ record.border }} mb-3" style="max-width: 100rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">成绩</h5>
+                                    <p class="card-text">{{ record.score }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h5 class="card-title">无记录成绩</h5>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card text-black border-info mb-3" style="max-width: 100rem;">
+                <div class="card-header"><strong>评论信息</strong></div>
+                    <div class="card-body">
+                        {% if comments %}
+                            {% for comment in comments %}
+                                <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                                    <div class="card-header"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                                    <div class="card-body">
+                                        <p class="card-text">{{ comment.comment }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h5 class="card-title">无评论</h5>
+                        {% endif %}
                     </div>
-                {% endfor %}
                 <div class="card-body">
                     <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                         <div class="card-header"><strong>新增评论</strong></div>
