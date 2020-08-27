@@ -92,26 +92,12 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
     """
     根据谱id名得到谱面信息
     """
-    records = models.Playrecords.objects.filter(Q(songid=fumen_id)).order_by('-score')
+    records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} GROUP BY AccountName ORDER BY Score DESC".format(fumen_id))
     if len(records) == 0:
         return None, records
     
     best_record = records[0]
-    for i in range(len(records)):
-        # 设置日期格式
-        records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %h时%M分')
-        if records[i].score >= best_record.score:
-            best_record = records[i]
-        # 设置难度
-        if records[i].difficulty == 0:
-            records[i].difficulty = "BASIC"
-        if records[i].difficulty == 1:
-            records[i].difficulty = "NORMAL"
-        if records[i].difficulty == 2:
-            records[i].difficulty = "HARD"
-        if records[i].difficulty == 3:
-            records[i].difficulty = "SPECIAL"
 
     start_index = 0
     end_index = default_show_count if is_show_all_fumen_records == 0 and len(records) >= default_show_count else len(records)
-    return best_record, records[start_index:end_index]
+    return best_record, records[start_index + 1:end_index + 1]
