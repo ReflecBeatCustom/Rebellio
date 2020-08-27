@@ -18,7 +18,7 @@ def get_fumen_record(user_name, fumen_id, is_show_all_records):
     best_record = records[0]
     for i in range(len(records)):
         # 设置日期格式
-        records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %h时%M分')
+        records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
         # 设置前端样式
         if records[i].score > 3000:
             records[i].bg = model_style_high['bg']

@@ -97,6 +97,18 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
         return None, records
     
     best_record = records[0]
+    for i in range(len(records)):
+        # 设置日期格式
+        records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
+        # 设置难度
+        if records[i].difficulty == 0:
+            records[i].difficulty = "BASIC"
+        if records[i].difficulty == 1:
+            records[i].difficulty = "NORMAL"
+        if records[i].difficulty == 2:
+            records[i].difficulty = "HARD"
+        if records[i].difficulty == 3:
+            records[i].difficulty = "SPECIAL"
 
     start_index = 0
     end_index = default_show_count if is_show_all_fumen_records == 0 and len(records) >= default_show_count else len(records)

@@ -18,6 +18,7 @@
                         <p class="card-text"><strong>做谱人:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
                         <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen?level={{ data.diffh }}">{{ data.diffh }}</a>{% if data.diffsp != '-' %} / <a href="/fumen?level={{ data.diffsp }}">{{ data.diffsp }}</a>{% endif %}</p>
                         <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>{{ data.packid }}</a></p>
+                        <p class="card-text"><strong>创建时间:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.createtime }}</p>
                         {% if request.session.user_access_level >= 1 %}
                             {% if data.category == 0 %}
                                 <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>已发布</p>
@@ -53,6 +54,7 @@
                                 <p class="card-text"><strong>成绩:&nbsp</strong><span style="color:black;font-size:40px">{{ best_fumen_record.score }}</span></p>
                                 <p class="card-text"><strong>用户:&nbsp</strong><span style="color:black;font-size:40px"><a href="#">{{ best_fumen_record.accountname }}</a></span></p>
                                 <p class="card-text"><strong>谱面难度:&nbsp</strong><span style="color:black;font-size:20px">{{ best_fumen_record.difficulty }}</span></p>
+                                <p class="card-text"><strong>时间:&nbsp</strong><span style="color:black;font-size:20px">{{ best_fumen_record.logtime }}</span></p>
                             </div>
                         </div>
                     {% endif %}
@@ -62,6 +64,7 @@
                                 <p class="card-text"><strong>成绩:&nbsp</strong><span style="color:grey;font-size:20px">{{ record.score }}</span></p>
                                 <p class="card-text"><strong>用户:&nbsp</strong><span style="color:grey;font-size:20px"><a href="#">{{ record.accountname }}</a></span></p>
                                 <p class="card-text"><strong>谱面难度:&nbsp</strong><span style="color:grey;font-size:20px">{{ record.difficulty }}</span></p>
+                                <p class="card-text"><strong>时间:&nbsp</strong><span style="color:grey;font-size:20px">{{ record.logtime }}</span></p>
                             </div>
                         </div>
                     {% endfor %}
