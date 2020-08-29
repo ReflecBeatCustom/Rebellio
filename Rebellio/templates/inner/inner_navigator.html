@@ -1,0 +1,12 @@
+<div class="p-2 bd-highlight col-sm-1">
+    <ul class="nav flex-column nav-pills">
+        {% if request.session.user_access_level >= 1 %}
+            <li class="nav-item">
+                <a class="nav-link {{ home }}" href="/inner/home">首页</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ subdiff_vote }}" href="/inner/subdiff_votes">等级投票</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

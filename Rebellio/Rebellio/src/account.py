@@ -61,7 +61,8 @@ def get_fumen_comments(fumen_id, is_show_all_comments):
     return comments[start_index:end_index]
 
 def comment_on_fumen(fumen_id, user_name, user_access_level, comment):
-    fumens = models.Songs.objects.filter(Q(songid=fumen_id) & Q(accesslevel__lte=user_access_level))
+    sql = "SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {3}".format(user_access_level, user_name, fumen_id)
+    fumens = models.Songs.objects.raw(sql)
     if len(fumens) == 0:
         return False
     if comment == '':

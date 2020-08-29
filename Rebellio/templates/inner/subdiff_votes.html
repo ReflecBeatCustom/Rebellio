@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        {% include 'inner/inner_navigator.html' %}
+        <div class="p-2 bd-highlight col-sm-12">
+            {% for item in subdiff_votes %}
+                <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                    {% if item.difficulty == 0 %}
+                        <strong class="card-header" style="background-color: #19A403;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - BASIC<strong>
+                    {% endif %}
+                    {% if item.difficulty == 1 %}
+                        <strong class="card-header" style="background-color: #FF8A01;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - MEDIUM</strong>
+                    {% endif %}
+                    {% if item.difficulty == 2 %}
+                        <strong class="card-header" style="background-color: #F30A0A;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - HARD</strong>
+                    {% endif %}
+                    {% if item.difficulty == 3 %}
+                        <strong class="card-header" style="background-color: #00D2E9;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - SPECIAL</strong>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="fumen-details-content">
+                            <h4 class="card-title my-3" style="font-size: 20px; color: #5f2525; display: inline;">谱面等级</h4>
+                            <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;"><a href="/fumen/fumens?level={{ item.level }}">{{ item.level }}</a></p>
+                            <br>
+                            <h4 class="card-title my-3" style="font-size: 20px ;color: #5f2525; display: inline;">平均投票等级</h4>
+                            <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;">{{ item.avg_level }}</p>
+                            <br>
+                            <div class="border-top my-3"></div>
+                            {% if not item.subdiff_votes %}
+                                <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;">无投票记录</p>
+                            {% endif %}
+                            {% for subdiff_vote in item.subdiff_votes %}
+                                <h4 class="card-title my-3" style="font-size: 20px; color: #5f2525; display: inline;">{{ subdiff_vote.accountname }}:&nbsp&nbsp</h4>
+                                {% if subdiff_vote.subdiff == 0 %}
+                                    <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;"><a href="#">{{ subdiff_vote.subdiff }}</a></p>
+                                {% else %}
+                                    <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;"><a href="#">?</a></p>
+                                {% endif %}
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div> 
+                    <div class="card-body">
+                        <div class="card text-black border-info mb-3" style="max-width: 100rem;">
+                            <div class="card-header"><strong>投票</strong></div>
+                            <div class="card-body">
+                                <form class="form-inline my-12 my-lg-0" action="/inner/vote_on_subdiff" method="get">
+                                    <input class="form-control mr-sm-10 col-sm-2" type="number" name="subdiff" placeholder="输入等级(0为?)">
+                                    <div>&nbsp&nbsp</div>
+                                    <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ item.fumen_id }}  readonly>
+                                    <div>&nbsp&nbsp</div>
+                                    <input class="form-control mr-sm-10 col-sm-1" type="number" name="difficulty" value={{ item.difficulty }}  readonly>
+                                    <div>&nbsp&nbsp</div>
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -16,8 +16,19 @@
                         <div class="border-top my-3"></div>
                         <p class="card-text"><strong>作曲家:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
                         <p class="card-text"><strong>做谱人:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
-                        <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen?level={{ data.diffh }}">{{ data.diffh }}</a>{% if data.diffsp != '-' %} / <a href="/fumen?level={{ data.diffsp }}">{{ data.diffsp }}</a>{% endif %}</p>
-                        <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>{{ data.packid }}</a></p>
+                        {% if data.diffsp != 0 %}
+                            <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffsp }}">{{ data.diffsp }}</a></p>
+                        {% else %}
+                            <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen?level={{ data.diffh }}">{{ data.diffh }}</a></p>
+                        {% endif %}
+                        {% if fumen.packid != 0 %}
+                            <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>{{ data.packid }}</a></p>
+                        {% else %}
+                        <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>无曲包</a></p>
+                        {% endif %}
+                        {% if request.session.user_access_level >= 1 %}
+                            <p class="card-text"><strong>上传者:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.creator }}</p>
+                        {% endif %}
                         <p class="card-text"><strong>创建时间:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.createtime }}</p>
                         {% if request.session.user_access_level >= 1 %}
                             {% if data.category == 0 %}
@@ -40,7 +51,6 @@
                             {% else %}
                                 <p style="color:grey;font-size:16px;text-indent:2em">这个做谱人很懒，什么都没留下</p>
                             {% endif %}
-                            <footer class="blockquote-footer" style="text-indent:2em">Sincerely from {{ data.chartauthor }}</footer>
                         </blockquote>
                     </div>
                 </div>
@@ -118,7 +128,7 @@
                     <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                         <div class="card-header"><strong>新增评论</strong></div>
                         <div class="card-body">
-                            <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen?fumen_id={{ data.fumen_id }}" method="get">
+                            <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen" method="get">
                                 <input class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论">
                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
                                 <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>

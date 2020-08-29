@@ -8,6 +8,7 @@ from . import forms
 from .src import fumen
 from .src import account
 from .src import utils
+from .src import inner
 import math
 
 
@@ -65,11 +66,31 @@ def get_fumens(request):
     page_size = int(request.GET.get('page_size', 10))
     level = int(request.GET.get('level', 0))
     user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
 
-    fumens, total, total_page, pages, start_page = fumen.get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, '')
+    fumens, total, total_page, pages, start_page = fumen.get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name, False)
     result = {'data': fumens, 'total': total}
-    fumen.set_return_result(result, 'fumen', keyword, fumen_creator, category, start_page, page_size, total_page, pages, level)
-    return render(request, 'fumen/fumen.html', result)
+    fumen.set_return_result(result, 'fumens', keyword, fumen_creator, category, start_page, page_size, total_page, pages, level)
+    return render(request, 'fumen/fumens.html', result)
+
+@require_http_methods(['GET'])
+def get_unlocked_fumens(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+        
+    keyword = request.GET.get('keyword', '')
+    fumen_creator = request.GET.get('fumen_creator', '')
+    category = request.GET.get('category', 0)
+    start_page = int(request.GET.get('start_page', 1))
+    page_size = int(request.GET.get('page_size', 10))
+    level = int(request.GET.get('level', 0))
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+
+    fumens, total, total_page, pages, start_page = fumen.get_unlocked_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name)
+    result = {'data': fumens, 'total': total}
+    fumen.set_return_result(result, 'unlock_fumens', keyword, fumen_creator, category, start_page, page_size, total_page, pages, level)
+    return render(request, 'fumen/unlocked_fumen.html', result)
 
 @require_http_methods(['GET'])
 def get_own_fumens(request):
@@ -85,9 +106,9 @@ def get_own_fumens(request):
     user_access_level = request.session.get('user_access_level', 0)
     user_name = request.session.get('user_name', '')
 
-    fumens, total, total_page, pages, start_page = fumen.get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name)
+    fumens, total, total_page, pages, start_page = fumen.get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name, True)
     result = {'data': fumens, 'total': total}
-    fumen.set_return_result(result, 'own_fumen', keyword, fumen_creator, category, start_page, page_size, total_page, pages, level)
+    fumen.set_return_result(result, 'own_fumens', keyword, fumen_creator, category, start_page, page_size, total_page, pages, level)
     return render(request, 'fumen/own_fumen.html', result)
 
 @require_http_methods(['GET'])
@@ -122,3 +143,39 @@ def comment_on_fumen(request):
 
     result = account.comment_on_fumen(fumen_id, user_name, user_access_level, comment)
     return redirect('/fumen/fumen_detail/?fumen_id={0}'.format(fumen_id))
+
+# 内部功能
+@require_http_methods(['GET'])
+def inner_home(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+    
+    result = {'data': '这是内部主页'}
+    return render(request, 'inner/inner_home.html', result)
+
+@require_http_methods(['GET'])
+def vote_on_subdiff(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    fumen_id = int(request.GET.get('fumen_id', 0))
+    subdiff = int(request.GET.get('subdiff', 0))
+    difficulty = int(request.GET.get('difficulty', 0))
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+
+    result = inner.vote_on_subdiff(fumen_id, difficulty, user_name, user_access_level, subdiff)
+    return redirect('/inner/subdiff_votes')
+
+@require_http_methods(['GET'])
+def get_subdiff_votes(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+
+    subdiff_votes = inner.get_subdiff_vote(user_name, user_access_level)
+    result = {'subdiff_votes': subdiff_votes}
+    inner.set_return_result(result, 'subdiff_vote')
+    return render(request, 'inner/subdiff_votes.html', result)

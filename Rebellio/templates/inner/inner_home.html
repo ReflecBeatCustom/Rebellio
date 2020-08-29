@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        {% include 'inner/inner_navigator.html' %}
+        <div class="p-2 bd-highlight col-sm-12">
+            {{ data }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,21 +1,18 @@
 <div class="p-2 bd-highlight col-sm-1">
     <ul class="nav flex-column nav-pills">
         <li class="nav-item">
-            <a class="nav-link {{ fumen }}" href="/fumen">谱面一览</a>
+            <a class="nav-link {{ fumens }}" href="/fumen/fumens">谱面一览</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ unlock_fumen }} disabled" href="/#">已解锁谱面</a>
+            <a class="nav-link {{ unlock_fumens }}" href="/fumen/unlocked_fumen">已解锁谱面</a>
         </li>
         {% if request.session.user_access_level >= 1 %}
             <li class="nav-item">
-                <a class="nav-link {{ own_fumen }}" href="/fumen/own_fumen">我的谱面</a>
+                <a class="nav-link {{ own_fumens }}" href="/fumen/own_fumen">我的谱面</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ upload_fumen }} disabled" href="/#">上传谱面</a>
             </li>
         {% endif %}
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled Test</a>
-        </li>
     </ul>
 </div>

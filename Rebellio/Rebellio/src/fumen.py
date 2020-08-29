@@ -3,13 +3,14 @@ from .. import models
 from django.db.models import Q
 
 # 默认展示的成绩，评论数量
-default_show_count = 4
+default_show_count = 5
 
 def set_return_result(result, sub_page, keyword, fumen_creator, category, start_page, page_size, total_page, pages, level):
     """
     设置返回值使其携带传入的参数(使页面更美观，用户使用更方便)
     """
     result[sub_page] = 'active'
+    result['sub_page'] = sub_page
     result['keyword'] = keyword
     result['fumen_creator'] = fumen_creator
     result['category'] = category
@@ -35,32 +36,60 @@ def set_fumens_format(fumens):
             fumens[i].accesslevel = '未发布官谱'
         if fumens[i].accesslevel == 3:
             fumens[i].accesslevel = '私人'
-        # 设置曲包ID
-        if fumens[i].packid == 0:
-            fumens[i].packid = '未发布'
-        # 设置难度
-        if fumens[i].diffsp == 0:
-            fumens[i].diffsp = '-'
 
-def get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name):
+def get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name, is_get_self_create):
     """
     根据关键词(关键词匹配作曲家和曲名)，谱面作者，等级，分页信息和用户权限等级返回谱面列表
+    会返回已解锁铺面
     """
-    cmd = 'models.Songs.objects.filter((Q(title__icontains=keyword) | Q(artist__icontains=keyword)) & Q(category=category)'
-    if user_name != '':
-        # 如果用户名不为空，则返回用户的上传谱面
-        cmd += ' & Q(creator=user_name)'
+    sql = "SELECT DISTINCT * FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND (s.Artist LIKE '%%{2}%%' OR s.Title LIKE '%%{2}%%')".format(user_access_level, user_name, keyword)
+    if int(category) != 0:
+        sql += ' AND s.Category = {0}'.format(category)
     else:
-        # 如果用户名为空，则返回用户权限可以查看的谱面
-        cmd += ' & Q(accesslevel__lte=user_access_level)'
+        sql += ' AND s.Category IN (0,4,5)'
+    if is_get_self_create:
+        # 返回用户的上传谱面
+        sql += " AND s.Creator = '{0}'".format(user_name)
     if fumen_creator != '':
-        cmd += ' & Q(chartauthor__icontains=fumen_creator)'
+        sql += " AND s.ChartAuthor = '{0}'".format(fumen_creator)
     if level != 0 and level < 13:
-        cmd += ' & (Q(diffb=level) | Q(diffm=level) | Q(diffh=level) | Q(diffsp=level))'
-    if level >= 13:
-        cmd += ' & (Q(diffb__gt=12) | Q(diffm__gt=12) | Q(diffh__gt=12) | Q(diffsp__gt=12))'
-    cmd += ').order_by("-createtime")'
-    fumens = eval(cmd)
+        sql += ' AND (s.diffB = {0} OR s.diffM = {0} OR s.diffH = {0} OR s.diffSP = {0})'.format(level)
+    elif level >= 13:
+        sql += ' AND (s.diffB >= {0} OR s.diffM >= {0} OR s.diffH >= {0} OR s.diffSP >= {0})'.format(level)
+    elif level != 0 and level <= 8:
+        sql += ' AND (s.diffB <= {0} OR s.diffM <= {0} OR s.diffH <= {0} OR s.diffSP <= {0})'.format(level)
+    sql += ') AS result ORDER BY result.CreateTime DESC'
+    fumens = models.Songs.objects.raw(sql)
+    set_fumens_format(fumens)
+
+    total = len(fumens)
+    total_page = math.floor(len(fumens) / page_size) + 1
+    pages = [i + 1 for i in range(total_page)]
+    
+    if (start_page - 1) * page_size < len(fumens):
+        start_index = (start_page - 1) * page_size
+    else:
+        start_index = 0
+        start_page = 1
+    end_index = min(start_index + page_size, len(fumens))
+
+    return fumens[start_index:end_index], total, total_page, pages, start_page
+
+def get_unlocked_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name):
+    """
+    返回解锁铺面
+    """
+    sql = "SELECT DISTINCT * FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND (s.Artist LIKE '%%{2}%%' OR s.Title LIKE '%%{2}%%') AND s.Category IN (4,5) AND s.AccessLevel > 0".format(user_access_level, user_name, keyword)
+    if fumen_creator != '':
+        sql += " AND s.ChartAuthor = '{0}'".format(fumen_creator)
+    if level != 0 and level < 13:
+        sql += ' AND (s.diffB = {0} OR s.diffM = {0} OR s.diffH = {0} OR s.diffSP = {0})'.format(level)
+    elif level >= 13:
+        sql += ' AND (s.diffB >= {0} OR s.diffM >= {0} OR s.diffH >= {0} OR s.diffSP >= {0})'.format(level)
+    elif level != 0 and level <= 8:
+        sql += ' AND (s.diffB <= {0} OR s.diffM <= {0} OR s.diffH <= {0} OR s.diffSP <= {0})'.format(level)
+    sql += ') AS result ORDER BY result.CreateTime DESC'
+    fumens = models.Songs.objects.raw(sql)
     set_fumens_format(fumens)
 
     total = len(fumens)
@@ -92,9 +121,21 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
     """
     根据谱id名得到谱面信息
     """
-    records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} GROUP BY AccountName ORDER BY Score DESC".format(fumen_id))
-    if len(records) == 0:
-        return None, records
+    unfiltered_records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} ORDER BY Score DESC".format(fumen_id))
+    if len(unfiltered_records) == 0:
+        return None, unfiltered_records
+    
+    # 筛选出不同用户的前五个成绩
+    records = []
+    users_set = {}
+    for record in unfiltered_records:
+        if len(records) >= default_show_count:
+            break
+        if users_set.__contains__(record.accountname):
+            continue
+        users_set[record.accountname] = True
+        records.append(record)
+
     
     best_record = records[0]
     for i in range(len(records)):
@@ -112,4 +153,4 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
 
     start_index = 0
     end_index = default_show_count if is_show_all_fumen_records == 0 and len(records) >= default_show_count else len(records)
-    return best_record, records[start_index + 1:end_index + 1]
+    return best_record, records[start_index + 1:end_index]

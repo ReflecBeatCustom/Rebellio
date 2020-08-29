@@ -8,6 +8,19 @@
 from django.db import models
 
 
+class Accountsubdiffvoterecord(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
+    songid = models.IntegerField(db_column='SongID')  # Field name made lowercase.
+    difficulty = models.IntegerField(db_column='Difficulty')  # Field name made lowercase.
+    subdiff = models.IntegerField(db_column='Subdiff')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'AccountSubdiffVoteRecord'
+
+
 class Accounts(models.Model):
     accountname = models.CharField(db_column='AccountName', max_length=50, blank=True, null=True)  # Field name made lowercase.
     passwd = models.CharField(db_column='Passwd', max_length=41, blank=True, null=True)  # Field name made lowercase.
@@ -135,6 +148,7 @@ class Songs(models.Model):
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
     description = models.TextField(db_column='Description', blank=True, null=True)  # Field name made lowercase.
     authordescription = models.TextField(db_column='AuthorDescription', blank=True, null=True)  # Field name made lowercase.
+    isvotingsubdiff = models.IntegerField(db_column='IsVotingSubdiff')  # Field name made lowercase.
 
     class Meta:
         managed = True
