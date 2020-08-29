@@ -38,7 +38,7 @@ def vote_on_subdiff(fumen_id, difficulty, user_name, user_access_level, subdiff)
         subdiff_vote.save()
     else:
         subdiff_votes[0].subdiff = subdiff
-        subdiff_vote[0].save()
+        subdiff_votes[0].save()
     return True
 
 def get_subdiff_vote(user_name, user_access_level):

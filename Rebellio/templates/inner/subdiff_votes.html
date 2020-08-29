@@ -9,16 +9,16 @@
             {% for item in subdiff_votes %}
                 <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                     {% if item.difficulty == 0 %}
-                        <strong class="card-header" style="background-color: #19A403;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - BASIC<strong>
+                        <strong class="card-header" style="background-color: #19A403;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC<strong>
                     {% endif %}
                     {% if item.difficulty == 1 %}
-                        <strong class="card-header" style="background-color: #FF8A01;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - MEDIUM</strong>
+                        <strong class="card-header" style="background-color: #FF8A01;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
                     {% endif %}
                     {% if item.difficulty == 2 %}
-                        <strong class="card-header" style="background-color: #F30A0A;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - HARD</strong>
+                        <strong class="card-header" style="background-color: #F30A0A;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
                     {% endif %}
                     {% if item.difficulty == 3 %}
-                        <strong class="card-header" style="background-color: #00D2E9;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.title }}</a> - SPECIAL</strong>
+                        <strong class="card-header" style="background-color: #00D2E9;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
                     {% endif %}
                     <div class="card-body">
                         <div class="fumen-details-content">
