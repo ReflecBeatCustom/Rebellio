@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        {% include 'inner/inner_navigator.html' %}
+        <div class="p-2 bd-highlight col-sm-12">
+            <h5>发布谱面(不要点，开发中)</h5>
+            <p class="card-text my-3"><small class="text-muted">会将当前审核中的包进行发布加入到投票谱面中（上一次投票谱面将会储存），并将发布池中最靠前的包加载为审核中</small></p>
+            <form class="form-inline my-12 my-lg-0" action="/inner/update_packs" method="get">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">更新</button>
+            </form>
+            <div class="border-top my-3 col-md-11"></div>
+            <h5>更新等级投票谱面(不要点，开发中)</h5>
+            <p class="card-text my-3"><small class="text-muted">将当前的等级投票结果储存入数据库</small></p>
+            <form class="form-inline my-12 my-lg-0" action="/inner/update_subdiffs" method="get">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">更新</button>
+            </form>
+            <div class="border-top my-3 col-md-11"></div>
+            <h5>增加当前的投票谱(不要点，开发中)</h5>
+            <p class="card-text my-3"><small class="text-muted">添加谱面到当前的投票内</small></p>
+            <h5>当前等级投票谱面:</h5>
+            {% for item in need_vote_subdiff_fumen_diffs %}
+                <p class="col-md-3 my-1"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.fumen_id }} - {{ item.title }} - {{ item.level }}</a></p>
+            {% endfor %}
+            <form class="form-inline my-12 my-lg-0" action="/inner/add_subdiff_vote_fumen" method="get">
+                <input class="form-control mr-sm-10 col-sm-2" type="number" name="fumen_id" placeholder="输入谱面编号">
+                <span>&nbsp&nbsp</span>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">添加</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

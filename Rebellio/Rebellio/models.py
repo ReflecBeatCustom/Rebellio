@@ -76,8 +76,8 @@ class Playerpackcomments(models.Model):
     accountname = models.CharField(db_column='AccountName', max_length=50)  # Field name made lowercase.
     packid = models.IntegerField(db_column='PackID')  # Field name made lowercase.
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
-    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
 
     class Meta:
         managed = True

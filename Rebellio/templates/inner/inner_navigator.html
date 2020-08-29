@@ -7,6 +7,17 @@
             <li class="nav-item">
                 <a class="nav-link {{ subdiff_vote }}" href="/inner/subdiff_votes">等级投票</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ advice_fumens }}" href="/inner/advice_fumens">审核谱面</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ pack_plans }}" href="/inner/pack_plans">查看排包</a>
+            </li>
+            {% if request.session.user_access_level >= 3 %}
+                <li class="nav-item">
+                    <a class="nav-link {{ super_manage }}" href="/inner/super_manager">超级管理员</a>
+                </li>
+            {% endif %}
         {% endif %}
     </ul>
 </div>

@@ -22,17 +22,29 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', views.test),
+    # 主要页面
+    path('home/', views.home),
     path('login/', views.login),
     path('logout/', views.logout),
-    path('home/', views.home),
+    # 谱面
     path('fumen/fumens/', views.get_fumens),
     path('fumen/unlocked_fumen/', views.get_unlocked_fumens),
     path('fumen/own_fumen/', views.get_own_fumens),
     path('fumen/fumen_detail/', views.get_fumen),
     path('fumen/comment_on_fumen/', views.comment_on_fumen),
+    # 曲包
+    path('pack/packs/', views.get_packs),
+    path('pack/pack_detail/', views.get_pack),
+    path('pack/comment_on_pack/', views.comment_on_pack),
+    # 内部
     path('inner/home/', views.inner_home),
     path('inner/subdiff_votes/', views.get_subdiff_votes),
     path('inner/vote_on_subdiff/', views.vote_on_subdiff),
+    path('inner/advice_fumens/', views.get_advice_fumens),
+    path('inner/update_packs/', views.update_packs),
+    path('inner/update_subdiffs/', views.update_subdiffs),
+    path('inner/add_subdiff_vote_fumen/', views.add_subdiff_vote_fumen),
+    path('inner/super_manager/', views.super_manager),
     url(r'^captcha', include('captcha.urls')),
     #path('fumen/get', views.get_fumen),
 ]

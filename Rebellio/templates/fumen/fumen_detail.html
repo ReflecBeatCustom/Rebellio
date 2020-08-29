@@ -22,9 +22,9 @@
                             <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen?level={{ data.diffh }}">{{ data.diffh }}</a></p>
                         {% endif %}
                         {% if fumen.packid != 0 %}
-                            <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>{{ data.packid }}</a></p>
+                            <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='/pack/pack_detail?pack_id={{ fumen.packid }}'>{{ data.packid }}</a></p>
                         {% else %}
-                        <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='#'>无曲包</a></p>
+                        <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong>无曲包</p>
                         {% endif %}
                         {% if request.session.user_access_level >= 1 %}
                             <p class="card-text"><strong>上传者:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.creator }}</p>

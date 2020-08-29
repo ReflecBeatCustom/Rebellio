@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        {% include 'pack/pack_navigator.html' %}
+        <div class="p-2 bd-highlight col-sm-12">
+            <div class="d-flex flex-row bd-highlight mb-3" id="packs-navigator">
+                <form class="form-inline my-2 my-lg-0" action="/pack/packs" method="get">
+                    {% include 'pagination.html' %}
+                    <div class="mr-sm-4" id="fumen-navigator-space"></div>
+                    {% if keyword == '' %}
+                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="输入关键词" aria-label="Search">
+                    {% else %}
+                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="输入关键词" aria-label="Search" value={{ keyword }}>
+                    {% endif %}
+                    {% if request.session.user_access_level >= 1 %}
+                        <select class="form-control mr-sm-1" name="category">
+                            {% if category == '0' %}
+                                <option value=0 selected>已发布</option>
+                            {% else %}
+                                <option value=0>已发布</option>
+                            {% endif %}
+                            {% if category == '1' %}
+                                <option value=1 selected>审核中</option>
+                            {% else %}
+                                <option value=1>审核中</option>
+                            {% endif %}
+                            {% if category == '2' %}
+                                <option value=2 selected>官谱</option>
+                            {% else %}
+                                <option value=2>官谱</option>
+                            {% endif %}
+                            {% if category == '3' %}
+                                <option value=3 selected>内测</option>
+                            {% else %}
+                                <option value=3>内测</option>
+                            {% endif %}
+                        </select>
+                    {% endif %}
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </div>
+            <div class="p-2 bd-highlight col-sm-12" id="table-wrapper">
+                {% for pack in data %}
+                    {% include 'pack/pack_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

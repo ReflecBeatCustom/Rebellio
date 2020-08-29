@@ -9,6 +9,7 @@ from .src import fumen
 from .src import account
 from .src import utils
 from .src import inner
+from .src import pack
 import math
 
 
@@ -144,6 +145,50 @@ def comment_on_fumen(request):
     result = account.comment_on_fumen(fumen_id, user_name, user_access_level, comment)
     return redirect('/fumen/fumen_detail/?fumen_id={0}'.format(fumen_id))
 
+# 曲包操作
+@require_http_methods(['GET'])
+def get_packs(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+        
+    keyword = request.GET.get('keyword', '')
+    category = request.GET.get('category', 0)
+    start_page = int(request.GET.get('start_page', 1))
+    page_size = int(request.GET.get('page_size', 10))
+    user_access_level = request.session.get('user_access_level', 0)
+
+    packs, total, total_page, pages, start_page = pack.get_packs(user_access_level, start_page, page_size, keyword, category)
+    result = {'data': packs}
+    pack.set_return_result(result, 'packs', total, keyword, category, start_page, page_size, total_page, pages)
+    return render(request, 'pack/packs.html', result)
+
+@require_http_methods(['GET'])
+def comment_on_pack(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    pack_id = int(request.GET.get('pack_id', 0))
+    comment = request.GET.get('comment', 0)
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+
+    result = account.comment_on_pack(pack_id, user_name, user_access_level, comment)
+    return redirect('/pack/pack_detail?pack_id={0}'.format(pack_id))
+
+@require_http_methods(['GET'])
+def get_pack(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+        
+    pack_id = int(request.GET.get('pack_id', 10))
+    user_access_level = request.session.get('user_access_level', 0)
+    is_show_all_comments = int(request.GET.get('is_show_all_comments', 0))
+
+    pack_detail = pack.get_pack(user_access_level, pack_id)
+    comments = account.get_pack_comments(pack_id, is_show_all_comments)
+    result = {'data': pack_detail ,'comments': comments}
+    return render(request, 'pack/pack_detail.html', result)
+
 # 内部功能
 @require_http_methods(['GET'])
 def inner_home(request):
@@ -179,3 +224,54 @@ def get_subdiff_votes(request):
     result = {'subdiff_votes': subdiff_votes}
     inner.set_return_result(result, 'subdiff_vote')
     return render(request, 'inner/subdiff_votes.html', result)
+
+@require_http_methods(['GET'])
+def get_advice_fumens(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_access_level = request.session.get('user_access_level', 0)
+
+    fumens = inner.get_advice_fumens(user_access_level)
+    result = {'data': fumens}
+    inner.set_return_result(result, 'advice_fumens')
+    return render(request, 'inner/advice_fumens.html', result)
+
+@require_http_methods(['GET'])
+def super_manager(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_access_level = request.session.get('user_access_level', 0)
+    if user_access_level < 3:
+        return redirect('/home')
+    
+    need_vote_subdiff_fumen_diffs = inner.get_need_vote_subdiff_fumen_diffs()
+    return render(request, 'inner/super_manager.html', {'need_vote_subdiff_fumen_diffs': need_vote_subdiff_fumen_diffs})
+
+@require_http_methods(['GET'])
+def add_subdiff_vote_fumen(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_access_level = request.session.get('user_access_level', 0)
+    fumen_id = int(request.GET.get('fumen_id', 0))
+
+    result = inner.add_subdiff_vote_fumen(user_access_level, fumen_id)
+    return redirect('/inner/super_manager')
+
+@require_http_methods(['GET'])
+def update_packs(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    result = inner.update_packs(user_access_level)
+    return redirect('/inner/super_manager')
+
+@require_http_methods(['GET'])
+def update_subdiffs(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    result = inner.update_subdiffs(user_access_level)
+    return redirect('/inner/super_manager')
