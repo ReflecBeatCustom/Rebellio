@@ -73,7 +73,7 @@ def get_pack_comments(pack_id, is_show_all_comments):
     return comments[start_index:end_index]
 
 def comment_on_fumen(fumen_id, user_name, user_access_level, comment):
-    sql = "SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {3}".format(user_access_level, user_name, fumen_id)
+    sql = "SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {2}".format(user_access_level, user_name, fumen_id)
     fumens = models.Songs.objects.raw(sql)
     if len(fumens) == 0:
         return False

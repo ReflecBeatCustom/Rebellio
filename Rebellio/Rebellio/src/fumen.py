@@ -37,6 +37,37 @@ def set_fumens_format(fumens):
         if fumens[i].accesslevel == 3:
             fumens[i].accesslevel = '私人'
 
+def get_fumen_results(fumens, user_name):
+    """
+    在结果中加入最高成绩和其他信息
+    """
+    result = []
+    for i in range(len(fumens)):
+        fumen_id = fumens[i].songid
+        player_records = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name)).order_by('-score')
+        if len(player_records) == 0:
+            result.append({'fumen': fumens[i], 'player_best_record': {}})
+            continue
+        player_best_record = player_records[0]
+        sr = round(float((player_best_record.score - player_best_record.jr * 10) * 100 / (player_best_record.note * 3 - 50)), 1)
+        rating = 'C'
+        if sr >= 98:
+            rating = 'S'
+        elif sr >= 95:
+            rating = 'AAA+'
+        elif sr >= 90:
+            rating = 'AAA'
+        elif sr >= 80:
+            rating = 'AA'
+        elif sr >= 70:
+            rating = 'A'
+        elif sr >= 60:
+            rating = 'B'
+        else:
+            rating = 'C'
+        result.append({'fumen': fumens[i], 'player_best_record': {'ar': sr, 'score': player_best_record.score, 'jr': player_best_record.jr, 'rating': rating}})
+    return result
+
 def get_fumens(keyword, fumen_creator, category, start_page, page_size, level, user_access_level, user_name, is_get_self_create):
     """
     根据关键词(关键词匹配作曲家和曲名)，谱面作者，等级，分页信息和用户权限等级返回谱面列表

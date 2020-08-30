@@ -48,7 +48,7 @@
                             <div class="card-header"><strong>投票</strong></div>
                             <div class="card-body">
                                 <form class="form-inline my-12 my-lg-0" action="/inner/vote_on_subdiff" method="get">
-                                    <input class="form-control mr-sm-10 col-sm-2" type="number" name="subdiff" placeholder="输入等级(0为?)">
+                                    <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" placeholder="输入等级(0为?)">
                                     <div>&nbsp&nbsp</div>
                                     <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ item.fumen_id }}  readonly>
                                     <div>&nbsp&nbsp</div>

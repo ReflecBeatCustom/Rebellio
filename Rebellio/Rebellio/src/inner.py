@@ -3,6 +3,8 @@ from .. import models
 from . import fumen
 from django.db.models import Q
 
+need_vote_level = 10
+
 def set_return_result(result, sub_page):
     """
     设置返回值使其携带传入的参数(使页面更美观，用户使用更方便)
@@ -10,11 +12,14 @@ def set_return_result(result, sub_page):
     result[sub_page] = 'active'
     result['sub_page'] = sub_page
 
-def get_need_vote_subdiff_fumen_diffs():
+def get_need_vote_subdiff_fumen_diffs(user_access_level):
     """
     返回当前需要投票subdiff的谱面id和难度id列表
     """
-    fumens = models.Songs.objects.filter((Q(diffb__lte=10) | Q(diffm__lte=10) | Q(diffh__lte=10) | Q(diffsp__lte=10)) & Q(isvotingsubdiff=1))
+    if user_access_level < 1:
+        return []
+
+    fumens = models.Songs.objects.filter((Q(diffb__gte=need_vote_level) | Q(diffm__gte=need_vote_level) | Q(diffh__gte=need_vote_level) | Q(diffsp__gte=need_vote_level)) & Q(isvotingsubdiff=1))
     result = []
     for fumen in fumens:
         fumen_id = fumen.songid
@@ -44,7 +49,7 @@ def vote_on_subdiff(fumen_id, difficulty, user_name, user_access_level, subdiff)
 def get_subdiff_vote(user_name, user_access_level):
     if user_access_level < 1:
         return None
-    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs()
+    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs(user_access_level)
     result = []
     for fumen_diff in need_vote_subdiff_fumen_diffs:
         title = fumen_diff['title']
@@ -55,14 +60,16 @@ def get_subdiff_vote(user_name, user_access_level):
 
         total_level = 0
         vote_count = 0
+        zero_vote_count = 0
         avg_level = 0
         for subdiff_vote in subdiff_votes:
             if subdiff_vote.subdiff == 0:
+                zero_vote_count += 1
                 continue
             vote_count += 1
             total_level += subdiff_vote.subdiff
-        if vote_count == 0:
-            avg_level = '0'
+        if vote_count == 0 or zero_vote_count > vote_count / 2:
+            avg_level = '?'
         else:
             avg_level = str(float(total_level / vote_count))
 
@@ -87,7 +94,17 @@ def add_subdiff_vote_fumen(user_access_level, fumen_id):
     if user_access_level < 3 or fumen_id == 0:
         return None
 
-    models.Songs.objects.raw('UPDATE Songs SET IsVotingSubdiff = 1 WHERE SongID = {0}'.format(fumen_id))
+    models.Songs.objects.filter((Q(diffb__gte=need_vote_level) | Q(diffm__gte=need_vote_level) | Q(diffh__gte=need_vote_level) | Q(diffsp__gte=need_vote_level)) & Q(songid=fumen_id)).update(isvotingsubdiff=1)
+    return True
+
+def delete_subdiff_vote_fumen(user_access_level, fumen_id):
+    """
+    等级投票中删除投票谱面
+    """
+    if user_access_level < 3 or fumen_id == 0:
+        return None
+
+    models.Songs.objects.filter(Q(songid=fumen_id)).update(isvotingsubdiff=0)
     return True
 
 def update_packs(user_access_level):
@@ -134,4 +151,29 @@ def update_subdiffs(user_access_level):
         elif difficulty == 3:
             sql = 'UPDATE Songs SET subdiffSP = {0}, IsVotingSubdiff = 0 WHERE SongID = {1}'.format(avg_level, fumen_id)
         models.Songs.objects.raw(sql)
+    return True
+
+def get_admins(user_access_level):
+    level1_admins = []
+    level2_admins = []
+    level3_admins = []
+
+    if user_access_level < 3:
+        return level1_admins, level2_admins, level3_admins
+    
+    admins = models.Accounts.objects.filter(Q(accesslevel__gte=1))
+    for admin in admins:
+        if admin.accesslevel == 1:
+            level1_admins.append(admin.accountname)
+        if admin.accesslevel == 2:
+            level2_admins.append(admin.accountname)
+        if admin.accesslevel == 3:
+            level3_admins.append(admin.accountname)
+    return level1_admins, level2_admins, level3_admins
+
+def change_user_access_level(user_name, user_access_level, changed_user_name, access_level):
+    if user_access_level < 3 or user_name == changed_user_name:
+        return False
+    
+    models.Accounts.objects.filter(Q(accountname=changed_user_name)).update(accesslevel=access_level)
     return True

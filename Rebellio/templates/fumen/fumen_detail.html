@@ -14,17 +14,17 @@
                     <div class="fumen-details-content">
                         <h4>{{ data.title }}({{ data.songid }})</h4>
                         <div class="border-top my-3"></div>
-                        <p class="card-text"><strong>作曲家:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
-                        <p class="card-text"><strong>做谱人:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
+                        <p class="card-text"><strong>作曲家:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
+                        <p class="card-text"><strong>做谱人:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
                         {% if data.diffsp != 0 %}
-                            <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffsp }}">{{ data.diffsp }}</a></p>
+                            <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffsp }}">{{ data.diffsp }}</a></p>
                         {% else %}
-                            <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen?level={{ data.diffh }}">{{ data.diffh }}</a></p>
+                            <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen/fumens?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen/fumens?level={{ data.diffh }}">{{ data.diffh }}</a></p>
                         {% endif %}
-                        {% if fumen.packid != 0 %}
-                            <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='/pack/pack_detail?pack_id={{ fumen.packid }}'>{{ data.packid }}</a></p>
+                        {% if data.packid != 0 %}
+                            <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='/pack/pack_detail?pack_id={{ data.packid }}'>{{ data.packid }}</a></p>
                         {% else %}
-                        <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong>无曲包</p>
+                            <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong>无曲包</p>
                         {% endif %}
                         {% if request.session.user_access_level >= 1 %}
                             <p class="card-text"><strong>上传者:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.creator }}</p>
@@ -46,8 +46,8 @@
                         {% endif %}
                         <p class="card-text"><strong>谱面寄语:&nbsp&nbsp&nbsp&nbsp</strong></p>
                         <blockquote class="blockquote">
-                            {% if data.description != '' %}
-                                <p>{{ data.authordescription }}</p>
+                            {% if data.authordescription != '' %}
+                                <p style="color:grey;font-size:16px;text-indent:2em">{{ data.authordescription }}</p>
                             {% else %}
                                 <p style="color:grey;font-size:16px;text-indent:2em">这个做谱人很懒，什么都没留下</p>
                             {% endif %}

@@ -246,8 +246,9 @@ def super_manager(request):
     if user_access_level < 3:
         return redirect('/home')
     
-    need_vote_subdiff_fumen_diffs = inner.get_need_vote_subdiff_fumen_diffs()
-    return render(request, 'inner/super_manager.html', {'need_vote_subdiff_fumen_diffs': need_vote_subdiff_fumen_diffs})
+    need_vote_subdiff_fumen_diffs = inner.get_need_vote_subdiff_fumen_diffs(user_access_level)
+    level1_admins, level2_admins, level3_admins = inner.get_admins(user_access_level)
+    return render(request, 'inner/super_manager.html', {'need_vote_subdiff_fumen_diffs': need_vote_subdiff_fumen_diffs, 'level1_admins': level1_admins, 'level2_admins': level2_admins, 'level3_admins': level3_admins})
 
 @require_http_methods(['GET'])
 def add_subdiff_vote_fumen(request):
@@ -258,6 +259,17 @@ def add_subdiff_vote_fumen(request):
     fumen_id = int(request.GET.get('fumen_id', 0))
 
     result = inner.add_subdiff_vote_fumen(user_access_level, fumen_id)
+    return redirect('/inner/super_manager')
+
+@require_http_methods(['GET'])
+def delete_subdiff_vote_fumen(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_access_level = request.session.get('user_access_level', 0)
+    fumen_id = int(request.GET.get('fumen_id', 0))
+
+    result = inner.delete_subdiff_vote_fumen(user_access_level, fumen_id)
     return redirect('/inner/super_manager')
 
 @require_http_methods(['GET'])
@@ -274,4 +286,17 @@ def update_subdiffs(request):
         return redirect('/login')
 
     result = inner.update_subdiffs(user_access_level)
+    return redirect('/inner/super_manager')
+
+@require_http_methods(['GET'])
+def change_user_access_level(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', 0)
+    changed_user_name = request.GET.get('user_name', '')
+    access_level = int(request.GET.get('access_level', 0))
+
+    result = inner.change_user_access_level(user_name, user_access_level, changed_user_name, access_level)
     return redirect('/inner/super_manager')

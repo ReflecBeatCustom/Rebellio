@@ -6,28 +6,61 @@
     <div class="d-flex flex-row bd-highlight mb-3">
         {% include 'inner/inner_navigator.html' %}
         <div class="p-2 bd-highlight col-sm-12">
-            <h5>发布谱面(不要点，开发中)</h5>
+            <h5><strong>发布谱面(不要点，开发中)</strong></h5>
             <p class="card-text my-3"><small class="text-muted">会将当前审核中的包进行发布加入到投票谱面中（上一次投票谱面将会储存），并将发布池中最靠前的包加载为审核中</small></p>
             <form class="form-inline my-12 my-lg-0" action="/inner/update_packs" method="get">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">更新</button>
             </form>
             <div class="border-top my-3 col-md-11"></div>
-            <h5>更新等级投票谱面(不要点，开发中)</h5>
+            <h5><strong>更新等级投票谱面(不要点，开发中)</strong></h5>
             <p class="card-text my-3"><small class="text-muted">将当前的等级投票结果储存入数据库</small></p>
             <form class="form-inline my-12 my-lg-0" action="/inner/update_subdiffs" method="get">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">更新</button>
             </form>
             <div class="border-top my-3 col-md-11"></div>
-            <h5>增加当前的投票谱(不要点，开发中)</h5>
+            <h5><strong>增加当前的投票谱(不要点，开发中)</strong></h5>
             <p class="card-text my-3"><small class="text-muted">添加谱面到当前的投票内</small></p>
             <h5>当前等级投票谱面:</h5>
             {% for item in need_vote_subdiff_fumen_diffs %}
-                <p class="col-md-3 my-1"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.fumen_id }} - {{ item.title }} - {{ item.level }}</a></p>
+                <div class="d-flex flex-row bd-highlight mb-3">
+                    <div class="p-2 bd-highlight col-md-4" id="subdiff-vote-fumen-display" style="display:inline-block">
+                        <p class="col-md-12 my-1"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}">{{ item.fumen_id }} - {{ item.title }} - {{ item.level }}</a></p>
+                    </div>
+                    <div class="p-2 bd-highlight col-md-8" id="subdiff-vote-fumen-delete" style="display:inline-block">
+                        <form class="form-inline my-12 my-lg-0 col-md-12" action="/inner/delete_subdiff_vote_fumen" method="get">
+                            <input class="form-control mr-sm-10 col-sm-2" type="number" name="fumen_id" value={{ item.fumen_id }} readonly>
+                            <span>&nbsp&nbsp</span>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">删除</button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
             <form class="form-inline my-12 my-lg-0" action="/inner/add_subdiff_vote_fumen" method="get">
                 <input class="form-control mr-sm-10 col-sm-2" type="number" name="fumen_id" placeholder="输入谱面编号">
                 <span>&nbsp&nbsp</span>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">添加</button>
+            </form>
+            <div class="border-top my-3 col-md-11"></div>
+            <h5><strong>编辑管理员</strong></h5>
+            <p class="card-text my-3"><small class="text-muted">编辑用户的管理员权限</small></p>
+            <h5>当前一级管理员:</h5>
+            {% for name in level1_admins %}
+                <p class="col-md-3 my-1"><a href="#">{{ name }}</a></p>
+            {% endfor %}
+            <h5>当前二级管理员:</h5>
+            {% for name in level2_admins %}
+                <p class="col-md-3 my-1"><a href="#">{{ name }}</a></p>
+            {% endfor %}
+            <h5>当前超级管理员:</h5>
+            {% for name in level3_admins %}
+                <p class="col-md-3 my-1"><a href="#">{{ name }}</a></p>
+            {% endfor %}
+            <form class="form-inline my-12 my-lg-0" action="/inner/change_user_access_level" method="get">
+                <input class="form-control mr-sm-10 col-sm-2" type="text" name="user_name" placeholder="输入用户账号">
+                <span>&nbsp&nbsp</span>
+                <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value>2)value=2;if(value<0)value=0" name="access_level" placeholder="输入用户权限(0,1,2)">
+                <span>&nbsp&nbsp</span>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">修改权限</button>
             </form>
         </div>
     </div>
