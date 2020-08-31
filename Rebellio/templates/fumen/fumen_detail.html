@@ -96,7 +96,7 @@
                     {% if player_records %}
                         <h5 class="card-title">历史成绩</h5>
                         {% for record in player_records %}
-                            <div class="card {{ record.text }} {{ record.bg }} {{ record.border }} mb-3" style="max-width: 100rem;">
+                            <div class="card {{ record.text }} {{ record.bg }} {{ record.border }} mb-3" style="max-width: 100rem; margin-top: auto;">
                                 <div class="card-body">
                                     <h5 class="card-title">成绩</h5>
                                     <p class="card-text">{{ record.score }}</p>
@@ -113,10 +113,24 @@
                     <div class="card-body">
                         {% if comments %}
                             {% for comment in comments %}
-                                <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                                <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
                                     <div class="card-header"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                     <div class="card-body">
-                                        <p class="card-text">{{ comment.comment }}</p>
+                                        {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
+                                            <form class="form-inline my-12 my-lg-0" action="/fumen/delete_comment" method="get">
+                                                <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment">{{ comment.comment }}</textarea>
+                                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
+                                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" value={{ comment.id }}  readonly>
+                                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                                <input class="form-control mr-sm-10 col-sm-1" type="text" name="user_name" value={{ comment.accountname }}  readonly>
+                                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                                <button class="btn btn-outline-success my-2 my-sm-0 col-sm-auto" type="submit">删除</button>
+                                            </form>
+                                        {% else %}
+                                            <p class="card-text">{{ comment.comment }}</p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
@@ -124,21 +138,25 @@
                             <h5 class="card-title">无评论</h5>
                         {% endif %}
                     </div>
-                <div class="card-body">
-                    <div class="card text-black border-info mb-3" style="max-width: 100rem;">
-                        <div class="card-header"><strong>新增评论</strong></div>
-                        <div class="card-body">
-                            <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen" method="get">
-                                <input class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论">
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
-                            </form>
+                    <div class="card-body">
+                        <div class="card text-black border-info mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;">
+                            <div class="card-header"><strong>新增评论</strong></div>
+                            <div class="card-body">
+                                <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen" method="get">
+                                    <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论"></textarea>
+                                    <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                    <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
+                                    <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
+<script type="text/javascript">
+
+</script>

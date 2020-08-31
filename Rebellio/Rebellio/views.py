@@ -120,7 +120,7 @@ def get_fumen(request):
     fumen_id = int(request.GET.get('fumen_id', 0))
     is_show_all_records = int(request.GET.get('is_show_all_records', 0))
     is_show_all_fumen_records = int(request.GET.get('is_show_all_fumen_records', 0))
-    is_show_all_comments = int(request.GET.get('is_show_all_comments', 0))
+    is_show_all_comments = int(request.GET.get('is_show_all_comments', 1))
     user_access_level = request.session.get('user_access_level', 0)
     user_name = request.session.get('user_name', '')
 
@@ -131,6 +131,21 @@ def get_fumen(request):
     best_fumen_record, fumen_records = fumen.get_fumen_record(fumen_id, is_show_all_fumen_records)
     comments = account.get_fumen_comments(fumen_id, is_show_all_comments)
     return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_player_record':best_player_record, 'player_records':player_records, 'best_fumen_record':best_fumen_record, 'fumen_records':fumen_records, 'comments':comments})
+
+@require_http_methods(['GET'])
+def delete_comment(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    fumen_id = int(request.GET.get('fumen_id', 0))
+    comment_id = int(request.GET.get('comment_id', 0))
+    comment_user_name = request.GET.get('user_name', '')
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+    if comment_user_name == user_name or user_access_level >= 3:
+        models.Playersongcomments.objects.filter(id=comment_id).delete()
+
+    return redirect('/fumen/fumen_detail/?fumen_id={0}'.format(fumen_id))
 
 @require_http_methods(['GET'])
 def comment_on_fumen(request):

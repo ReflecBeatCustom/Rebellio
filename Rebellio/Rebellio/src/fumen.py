@@ -3,7 +3,7 @@ from .. import models
 from django.db.models import Q
 
 # 默认展示的成绩，评论数量
-default_show_count = 5
+default_show_count = 10
 
 def set_return_result(result, sub_page, keyword, fumen_creator, category, start_page, page_size, total_page, pages, level):
     """
