@@ -47,11 +47,11 @@ def get_fumen_record(user_name, fumen_id, is_show_all_records):
         records[i].sr = round(records[i].sr * 100, 1)
         records[i].ar = round(records[i].ar * 100, 1)
         # 设置评分(S,AAA+,AAA,AAA-)
-        if records[i].sr > 98 or records[i].ar > 98:
+        if records[i].sr >= 98 or records[i].ar > 98:
             records[i].rank = 'S'
-        elif records[i].sr > 95 or records[i].ar > 95:
+        elif records[i].sr >= 95 or records[i].ar > 95:
             records[i].rank = 'AAA+'
-        elif records[i].sr > 90 or records[i].ar > 90:
+        elif records[i].sr >= 90 or records[i].ar > 90:
             records[i].rank = 'AAA'
         else:
             records[i].rank = 'AAA-'
