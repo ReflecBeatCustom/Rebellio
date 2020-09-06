@@ -170,8 +170,8 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=
         elif records[i].difficulty == 2:
             records[i].difficulty = "HARD"
         # 设置AR,SR
-        records[i].sr = round(records[i].sr * 100, 1)
-        records[i].ar = round(records[i].ar * 100, 1)
+        records[i].sr = float(str(records[i].sr * 100).split('.')[0] + '.' + str(records[i].sr * 100).split('.')[1][:2])
+        records[i].ar = float(str(records[i].ar * 100).split('.')[0] + '.' + str(records[i].ar * 100).split('.')[1][:2])
         # 设置评分(S,AAA+,AAA,AAA-)
         if records[i].sr >= 98 or records[i].ar > 98:
             records[i].rank = 'S'
