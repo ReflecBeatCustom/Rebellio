@@ -8,7 +8,7 @@ model_style_medium = {'bg':'bg-success', 'text':'text-white', 'border':'border-s
 model_style_low = {'bg':'bg-secondary', 'text':'text-white', 'border':'border-secondary'}
 
 # 默认展示的成绩，评论数量
-default_show_count = 4
+default_show_count = 10
 
 def get_fumen_record(user_name, fumen_id, is_show_all_records):
     records = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name)).order_by('-logtime')
@@ -46,6 +46,15 @@ def get_fumen_record(user_name, fumen_id, is_show_all_records):
         # 设置AR,SR
         records[i].sr = round(records[i].sr * 100, 1)
         records[i].ar = round(records[i].ar * 100, 1)
+        # 设置评分(S,AAA+,AAA,AAA-)
+        if records[i].sr > 98 or records[i].ar > 98:
+            records[i].rank = 'S'
+        elif records[i].sr > 95 or records[i].ar > 95:
+            records[i].rank = 'AAA+'
+        elif records[i].sr > 90 or records[i].ar > 90:
+            records[i].rank = 'AAA'
+        else:
+            records[i].rank = 'AAA-'
 
     start_index = 0
     end_index = default_show_count if is_show_all_records == 0 and len(records) >= default_show_count else len(records)

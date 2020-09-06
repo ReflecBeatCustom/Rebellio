@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/fumen_detail.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -9,7 +8,7 @@
         {% include 'fumen/fumen_navigator.html' %}
         <div class="p-2 bd-highlight col-sm-12">
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                <div class="card-header" style="background-color:#d0c8c8;"><strong>谱面信息</strong></div>
+                <div class="card-header" style="background-color:#d0c8c8;"><strong>谱面信息 / Fumen details</strong></div>
                 <div class="card-body">
                     <div class="fumen-details-content">
                         <h4>{{ data.title }}</h4>
@@ -17,35 +16,35 @@
                         <div class="border-top my-3"></div>
                         <div class="row">
                             <div class="container col-md-6" style="float:left">
-                                <p class="card-text"><strong>作曲家:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
-                                <p class="card-text"><strong>做谱人:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
+                                <p class="card-text"><strong>作曲家 / Artist:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
+                                <p class="card-text"><strong>做谱人 / Chart author:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
                                 {% if data.diffsp != 0 %}
-                                    <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffsp }}">{{ data.diffsp }}</a></p>
+                                    <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffsp }}">{{ data.diffsp }}</a></p>
                                 {% else %}
-                                    <p class="card-text"><strong>难度:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen/fumens?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen/fumens?level={{ data.diffh }}">{{ data.diffh }}</a></p>
+                                    <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen/fumens?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen/fumens?level={{ data.diffh }}">{{ data.diffh }}</a></p>
                                 {% endif %}
                                 {% if data.packid != 0 %}
-                                    <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong><a href='/pack/pack_detail?pack_id={{ data.packid }}'>{{ data.packid }}</a></p>
+                                    <p class="card-text"><strong>曲包 / Pack:&nbsp&nbsp&nbsp&nbsp</strong><a href='/pack/pack_detail?pack_id={{ data.packid }}'>{{ data.packid }}</a></p>
                                 {% else %}
-                                    <p class="card-text"><strong>曲包:&nbsp&nbsp&nbsp&nbsp</strong>无曲包</p>
+                                    <p class="card-text"><strong>曲包 / Pack:&nbsp&nbsp&nbsp&nbsp</strong>无曲包</p>
                                 {% endif %}
                                 {% if request.session.user_access_level >= 1 %}
-                                    <p class="card-text"><strong>上传者:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.creator }}</p>
+                                    <p class="card-text"><strong>上传者 / Uploader:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.creator }}</p>
                                 {% endif %}
-                                <p class="card-text"><strong>创建时间:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.createtime }}</p>
-                                <p class="card-text"><strong>上传时间:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.publishtime }}</p>
+                                <p class="card-text"><strong>创建时间 / Create time:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.createtime }}</p>
+                                <p class="card-text"><strong>发布时间 / Publish time:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.publishtime }}</p>
                                 {% if request.session.user_access_level >= 1 %}
                                     {% if data.category == 0 %}
-                                        <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>已发布</p>
+                                        <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>已发布</p>
                                     {% endif %}
                                     {% if data.category == 1 %}
-                                        <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>审核中</p>
+                                        <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>审核中</p>
                                     {% endif %}
                                     {% if data.category == 2 %}
-                                        <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>官谱</p>
+                                        <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>官谱</p>
                                     {% endif %}
                                     {% if data.category == 3 %}
-                                        <p class="card-text"><strong>谱面类型:&nbsp&nbsp&nbsp&nbsp</strong>内测</p>
+                                        <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>内测</p>
                                     {% endif %}
                                 {% endif %}
                             </div>
@@ -70,20 +69,20 @@
                 </div>
             </div>
             <div class="card text-black border-secondary mb-3" style="max-width:100rem;">
-                <div class="card-header" style="background-color:#d0c8c8;"><strong>高分榜</strong></div>
+                <div class="card-header" style="background-color:#d0c8c8;"><strong>高分榜 / High score</strong></div>
                 <div class="card-body">
                     {% if best_fumen_record %}
                         {% if request.session.user_name == best_fumen_record.accountname %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ best_fumen_record.ranking }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
                                     </div>
-                                    <div class="container col-md-2">
+                                    <div class="container col-md-2 align-self-center">
                                         <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ best_fumen_record.accountname }}</a></span></p>
                                     </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ best_fumen_record.rank }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text"><span style="color:black;font-size:24px"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                     </div>
                                     <div class="container col-md-2">
                                         {% if best_fumen_record.ar != 0.0 %}
@@ -94,7 +93,11 @@
                                         <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.score }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.jr }}</span></p>
+                                        {% if best_fumen_record.jr != -1 %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.jr }}</span></p>
+                                        {% else %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                        {% endif %}
                                         <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.difficulty }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
@@ -105,14 +108,14 @@
                         {% else %}
                             <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;max-height:100px;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ best_fumen_record.ranking }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
                                     </div>
-                                    <div class="container col-md-2">
+                                    <div class="container col-md-2 align-self-center">
                                         <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ best_fumen_record.accountname }}</a></span></p>
                                     </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ best_fumen_record.rank }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text"><span style="color:black;font-size:24px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                     </div>
                                     <div class="container col-md-2">
                                         {% if best_fumen_record.ar != 0.0 %}
@@ -123,7 +126,11 @@
                                         <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.score }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.jr }}</span></p>
+                                        {% if best_fumen_record.jr != -1 %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.jr }}</span></p>
+                                        {% else %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                        {% endif %}
                                         <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.difficulty }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
@@ -137,14 +144,14 @@
                         {% if request.session.user_name == record.accountname %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ record.ranking }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                     </div>
-                                    <div class="container col-md-2">
+                                    <div class="container col-md-2 align-self-center">
                                         <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ record.accountname }}</a></span></p>
                                     </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ record.rank }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text"><span style="color:black;font-size:24px"><strong>{{ record.rank }}</strong></span></p>
                                     </div>
                                     <div class="container col-md-2">
                                         {% if record.ar != 0.0 %}
@@ -155,7 +162,11 @@
                                         <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                        {% if record.jr != -1 %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                        {% else %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                        {% endif %}
                                         <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
@@ -166,14 +177,14 @@
                         {% else %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ record.ranking }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                     </div>
-                                    <div class="container col-md-2">
+                                    <div class="container col-md-2 align-self-center">
                                         <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ record.accountname }}</a></span></p>
                                     </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><span style="color:black;font-size:16px">{{ record.rank }}</span></p>
+                                    <div class="container col-md-2 align-self-center">
+                                        <p class="card-text"><span style="color:black;font-size:24px"><strong>{{ record.rank }}</strong></span></p>
                                     </div>
                                     <div class="container col-md-2">
                                         {% if record.ar != 0.0 %}
@@ -184,7 +195,11 @@
                                         <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                        {% if record.jr != -1 %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                        {% else %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                        {% endif %}
                                         <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
                                     </div>
                                     <div class="container col-md-2">
@@ -197,14 +212,14 @@
                     {% if user_best_record %}
                         <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                             <div class="row" style="padding:10px">
-                                <div class="container col-md-2">
-                                    <p class="card-text"><span style="color:black;font-size:16px">{{ user_best_record.ranking }}</span></p>
+                                <div class="container col-md-2 align-self-center">
+                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ user_best_record.ranking }}</span></p>
                                 </div>
-                                <div class="container col-md-2">
+                                <div class="container col-md-2 align-self-center">
                                     <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ user_best_record.accountname }}</a></span></p>
                                 </div>
-                                <div class="container col-md-2">
-                                    <p class="card-text"><span style="color:black;font-size:16px">{{ user_best_record.rank }}</span></p>
+                                <div class="container col-md-2 align-self-center">
+                                    <p class="card-text"><span style="color:black;font-size:24px"><strong>{{ user_best_record.rank }}</strong></span></p>
                                 </div>
                                 <div class="container col-md-2">
                                     {% if user_best_record.ar != 0.0 %}
@@ -215,7 +230,11 @@
                                     <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.score }}</span></p>
                                 </div>
                                 <div class="container col-md-2">
-                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.jr }}</span></p>
+                                    {% if user_best_record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.jr }}</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    {% endif %}
                                     <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.difficulty }}</span></p>
                                 </div>
                                 <div class="container col-md-2">
@@ -227,52 +246,92 @@
                 </div>
             </div>
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                <div class="card-header" style="background-color:#d0c8c8;"><strong>我的游玩历史</strong></div>
+                <div class="card-header" style="background-color:#d0c8c8;"><strong>我的游玩历史 / My play history</strong></div>
                 <div class="card-body">
                     {% if best_player_record %}
-                        <h5 class="card-title">最高成绩</h5>
-                        <div class="card {{ best_record.text }} {{ best_record.bg }} {{ best_record.border }} mb-3" style="max-width: 100rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">成绩</h5>
-                                <p class="card-text">{{ best_player_record.score }}</p>
+                        <h5 class="card-title" style="font-size:16px;">最高成绩 / Best play</h5>
+                        <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;">
+                            <div class="row" style="padding:10px">
+                                <div class="container col-md-2">
+                                    <p class="card-text"><span style="color:black;font-size:16px;">{{ best_player_record.rank }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if best_player_record.ar != 0.0 %}
+                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.ar }}%</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.sr }}%</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.score }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if best_player_record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.jr }}</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.difficulty }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ best_player_record.logtime }}</small></p>
+                                </div>
                             </div>
                         </div>
                         <div class="border-top my-3"></div>
                     {% endif %}
                     {% if player_records %}
-                        <h5 class="card-title">历史成绩</h5>
+                        <h5 class="card-title" style="font-size:16px;">历史成绩 / Play history</h5>
                         {% for record in player_records %}
-                            <div class="card {{ record.text }} {{ record.bg }} {{ record.border }} mb-3" style="max-width: 100rem; margin-top: auto;">
-                                <div class="card-body">
-                                    <h5 class="card-title">成绩</h5>
-                                    <p class="card-text">{{ record.score }}</p>
+                            <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
+                                <div class="row" style="padding:10px">
+                                    <div class="container col-md-2">
+                                        <p class="card-text"><span style="color:black;font-size:16px">{{ record.rank }}</span></p>
+                                    </div>
+                                    <div class="container col-md-2">
+                                        {% if record.ar != 0.0 %}
+                                            <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.ar }}%</span></p>
+                                        {% else %}
+                                            <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.sr }}%</span></p>
+                                        {% endif %}
+                                        <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
+                                    </div>
+                                    <div class="container col-md-2">
+                                        {% if record.jr != -1 %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                        {% else %}
+                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                        {% endif %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
+                                    </div>
+                                    <div class="container col-md-2">
+                                        <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
                     {% else %}
-                        <h5 class="card-title">无记录成绩</h5>
+                    <p class="card-text"><small style="font-size:16px;">无记录成绩 / No record</small></p>
                     {% endif %}
                 </div>
             </div>
             <div class="card text-black border-info mb-3" style="max-width: 100rem;">
-                <div class="card-header" style="background-color:#d0c8c8;"><strong>评论信息</strong></div>
+                <div class="card-header" style="background-color:#d0c8c8;"><strong>评论信息 / Comments</strong></div>
                     <div class="card-body">
                         {% if comments %}
                             {% for comment in comments %}
                                 <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
-                                    <div class="card-header"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                                    <div class="card-header" style="font-size:14px;"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                     <div class="card-body">
                                         {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
                                             <form class="form-inline my-12 my-lg-0" action="/fumen/delete_comment" method="get">
-                                                <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment">{{ comment.comment }}</textarea>
+                                                <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
                                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
+                                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" style="font-size:14px;" value={{ data.songid }}  readonly>
                                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" value={{ comment.id }}  readonly>
+                                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" style="font-size:14px;" value={{ comment.id }}  readonly>
                                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                                <input class="form-control mr-sm-10 col-sm-1" type="text" name="user_name" value={{ comment.accountname }}  readonly>
+                                                <input class="form-control mr-sm-10 col-sm-1" type="text" name="user_name" style="font-size:14px;" value={{ comment.accountname }}  readonly>
                                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                                <button class="btn btn-outline-success my-2 my-sm-0 col-sm-auto" type="submit">删除</button>
+                                                <button class="btn btn-outline-success my-2 my-sm-0 col-sm-auto" type="submit" style="font-size:14px;">删除</button>
                                             </form>
                                         {% else %}
                                             <p class="card-text">{{ comment.comment }}</p>
@@ -281,15 +340,14 @@
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <h5 class="card-title">无评论</h5>
+                        <p class="card-text"><small style="font-size:16px;">无评论 / No comment</small></p>
                         {% endif %}
                     </div>
                     <div class="card-body">
                         <div class="card text-black border-info mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;">
-                            <div class="card-header"><strong>新增评论</strong></div>
                             <div class="card-body">
                                 <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen" method="get">
-                                    <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论"></textarea>
+                                    <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论 / Input comment"></textarea>
                                     <div>&nbsp&nbsp&nbsp&nbsp</div>
                                     <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
                                     <div>&nbsp&nbsp&nbsp&nbsp</div>

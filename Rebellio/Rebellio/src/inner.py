@@ -121,7 +121,7 @@ def update_subdiffs(user_access_level):
     if user_access_level < 3:
         return None
 
-    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs()
+    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs(user_access_level)
     for fumen_diff in need_vote_subdiff_fumen_diffs:
         fumen_id = fumen_diff['fumen_id']
         difficulty = fumen_diff['difficulty']
@@ -143,14 +143,13 @@ def update_subdiffs(user_access_level):
             avg_level = int(total_level / vote_count)
 
         if difficulty == 0:
-            sql = 'UPDATE Songs SET subdiffB = {0}, IsVotingSubdiff = 0 WHERE SongID = {1}'.format(avg_level, fumen_id)
+            models.Songs.objects.filter(Q(songid=fumen_id)).update(isvotingsubdiff=0,subdiffb=avg_level)
         elif difficulty == 1:
-            sql = 'UPDATE Songs SET subdiffM = {0}, IsVotingSubdiff = 0 WHERE SongID = {1}'.format(avg_level, fumen_id)
+            models.Songs.objects.filter(Q(songid=fumen_id)).update(isvotingsubdiff=0,subdiffm=avg_level)
         elif difficulty == 2:
-            sql = 'UPDATE Songs SET subdiffH = {0}, IsVotingSubdiff = 0 WHERE SongID = {1}'.format(avg_level, fumen_id)
+            models.Songs.objects.filter(Q(songid=fumen_id)).update(isvotingsubdiff=0,subdiffh=avg_level)
         elif difficulty == 3:
-            sql = 'UPDATE Songs SET subdiffSP = {0}, IsVotingSubdiff = 0 WHERE SongID = {1}'.format(avg_level, fumen_id)
-        models.Songs.objects.raw(sql)
+            models.Songs.objects.filter(Q(songid=fumen_id)).update(isvotingsubdiff=0,subdiffsp=avg_level)
     return True
 
 def get_admins(user_access_level):

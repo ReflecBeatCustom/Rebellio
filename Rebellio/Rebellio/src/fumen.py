@@ -27,15 +27,6 @@ def set_fumens_format(fumens):
     for i in range(len(fumens)):
         # 设置日期格式
         fumens[i].createtime = fumens[i].createtime.strftime('%Y年%m月%d日')
-        # 设置谱面优先级
-        if fumens[i].accesslevel == 0:
-            fumens[i].accesslevel = '公共'
-        if fumens[i].accesslevel == 1:
-            fumens[i].accesslevel = '内测'
-        if fumens[i].accesslevel == 2:
-            fumens[i].accesslevel = '未发布官谱'
-        if fumens[i].accesslevel == 3:
-            fumens[i].accesslevel = '私人'
 
 def get_fumen_results(fumens, user_name):
     """
@@ -148,13 +139,13 @@ def get_fumen(fumen_id, user_access_level):
     set_fumens_format(fumens)
     return fumens[0]
 
-def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records):
+def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=False):
     """
     根据谱id名得到谱面信息
     """
     unfiltered_records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} ORDER BY Score DESC".format(fumen_id))
     if len(unfiltered_records) == 0:
-        return None, unfiltered_records
+        return None, unfiltered_records, None
     
     # 筛选出不同用户的考前成绩
     records = []
@@ -174,14 +165,14 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records):
         # 设置日期格式
         records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
         # 设置难度
-        if records[i].difficulty == 0:
-            records[i].difficulty = "BASIC"
-        if records[i].difficulty == 1:
-            records[i].difficulty = "MEDIUM"
-        if records[i].difficulty == 2:
-            records[i].difficulty = "HARD"
-        if records[i].difficulty == 3:
+        if records[i].difficulty == 3 or (is_special and records[i].difficulty == 0):
             records[i].difficulty = "SPECIAL"
+        elif records[i].difficulty == 0:
+            records[i].difficulty = "BASIC"
+        elif records[i].difficulty == 1:
+            records[i].difficulty = "MEDIUM"
+        elif records[i].difficulty == 2:
+            records[i].difficulty = "HARD"
         # 设置AR,SR
         records[i].sr = round(records[i].sr * 100, 1)
         records[i].ar = round(records[i].ar * 100, 1)
