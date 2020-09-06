@@ -151,16 +151,12 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=
     records = []
     users_set = {}
     for record in unfiltered_records:
-        if len(records) >= default_show_count:
-            break
         if users_set.__contains__(record.accountname):
             continue
         users_set[record.accountname] = True
         records.append(record)
-
     
     best_record = records[0]
-    user_best_record = None
     for i in range(len(records)):
         # 设置日期格式
         records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
@@ -187,9 +183,13 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=
             records[i].rank = 'AAA-'
         # 设置排名
         records[i].ranking = i + 1
+    
+    user_best_record = None
+    for i in range(len(records)):
         # 设置用户的最高排名
-        if records[i].accountname == user_name and not user_best_record:
+        if records[i].accountname == user_name:
             user_best_record = records[i]
+            break
 
     start_index = 0
     end_index = default_show_count if is_show_all_fumen_records == 0 and len(records) >= default_show_count else len(records)
