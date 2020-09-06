@@ -38,11 +38,14 @@ def get_fumen_record(user_name, fumen_id, is_show_all_records):
         if records[i].difficulty == 0:
             records[i].difficulty = "BASIC"
         if records[i].difficulty == 1:
-            records[i].difficulty = "NORMAL"
+            records[i].difficulty = "MEDIUM"
         if records[i].difficulty == 2:
             records[i].difficulty = "HARD"
         if records[i].difficulty == 3:
             records[i].difficulty = "SPECIAL"
+        # 设置AR,SR
+        records[i].sr = round(records[i].sr * 100, 1)
+        records[i].ar = round(records[i].ar * 100, 1)
 
     start_index = 0
     end_index = default_show_count if is_show_all_records == 0 and len(records) >= default_show_count else len(records)

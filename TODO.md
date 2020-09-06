@@ -9,3 +9,10 @@
 ## 所有操作的确认页面
 
 ## 删除评论的操作
+
+
+## 谱面发布需要设置accedlevel和songid
+
+## 包category和packid双主键，和谱一致
+
+## 包发布自动放到category=0，packid自增

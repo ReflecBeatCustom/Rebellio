@@ -128,9 +128,9 @@ def get_fumen(request):
     if fumen_detail is None:
         return redirect('/fumen')
     best_player_record, player_records = account.get_fumen_record(user_name, fumen_id, is_show_all_records)
-    best_fumen_record, fumen_records = fumen.get_fumen_record(fumen_id, is_show_all_fumen_records)
+    best_fumen_record, fumen_records, user_best_record = fumen.get_fumen_record(user_name, fumen_id, is_show_all_fumen_records)
     comments = account.get_fumen_comments(fumen_id, is_show_all_comments)
-    return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_player_record':best_player_record, 'player_records':player_records, 'best_fumen_record':best_fumen_record, 'fumen_records':fumen_records, 'comments':comments})
+    return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_player_record':best_player_record, 'player_records':player_records, 'best_fumen_record':best_fumen_record, 'fumen_records':fumen_records, 'user_best_record':user_best_record, 'comments':comments})
 
 @require_http_methods(['GET'])
 def delete_comment(request):

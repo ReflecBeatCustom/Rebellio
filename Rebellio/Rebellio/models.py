@@ -118,6 +118,8 @@ class Playrecords(models.Model):
     score = models.IntegerField(db_column='Score', blank=True, null=True)  # Field name made lowercase.
     jr = models.IntegerField(db_column='JR', blank=True, null=True)  # Field name made lowercase.
     note = models.IntegerField(db_column='Note', blank=True, null=True)  # Field name made lowercase.
+    ar = models.FloatField(db_column='AR', blank=True, null=True)  # Field name made lowercase.
+    sr = models.FloatField(db_column='SR', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = True

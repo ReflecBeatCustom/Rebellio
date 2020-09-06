@@ -148,7 +148,7 @@ def get_fumen(fumen_id, user_access_level):
     set_fumens_format(fumens)
     return fumens[0]
 
-def get_fumen_record(fumen_id, is_show_all_fumen_records):
+def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records):
     """
     根据谱id名得到谱面信息
     """
@@ -156,7 +156,7 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
     if len(unfiltered_records) == 0:
         return None, unfiltered_records
     
-    # 筛选出不同用户的前五个成绩
+    # 筛选出不同用户的考前成绩
     records = []
     users_set = {}
     for record in unfiltered_records:
@@ -169,6 +169,7 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
 
     
     best_record = records[0]
+    user_best_record = None
     for i in range(len(records)):
         # 设置日期格式
         records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
@@ -176,12 +177,33 @@ def get_fumen_record(fumen_id, is_show_all_fumen_records):
         if records[i].difficulty == 0:
             records[i].difficulty = "BASIC"
         if records[i].difficulty == 1:
-            records[i].difficulty = "NORMAL"
+            records[i].difficulty = "MEDIUM"
         if records[i].difficulty == 2:
             records[i].difficulty = "HARD"
         if records[i].difficulty == 3:
             records[i].difficulty = "SPECIAL"
+        # 设置AR,SR
+        records[i].sr = round(records[i].sr * 100, 1)
+        records[i].ar = round(records[i].ar * 100, 1)
+        # 设置评分(S,AAA+,AAA,AAA-)
+        if records[i].sr > 98 or records[i].ar > 98:
+            records[i].rank = 'S'
+        elif records[i].sr > 95 or records[i].ar > 95:
+            records[i].rank = 'AAA+'
+        elif records[i].sr > 90 or records[i].ar > 90:
+            records[i].rank = 'AAA'
+        else:
+            records[i].rank = 'AAA-'
+        # 设置排名
+        records[i].ranking = i + 1
+        # 设置用户的最高排名
+        if records[i].accountname == user_name and not user_best_record:
+            user_best_record = records[i]
 
     start_index = 0
     end_index = default_show_count if is_show_all_fumen_records == 0 and len(records) >= default_show_count else len(records)
-    return best_record, records[start_index + 1:end_index]
+    # 如果用户的成绩在返回的成绩列表内，置为None
+    if user_best_record and user_best_record.ranking <= default_show_count:
+        user_best_record = None
+
+    return best_record, records[start_index + 1:end_index], user_best_record
