@@ -349,10 +349,12 @@ def get_user_detail(request):
         return redirect('/login')
 
     user_name = request.GET.get('user_name', '')
-    if user_name == '':
+    view_user_name = request.session.get('user_name', '')
+    access_level = int(request.session.get('access_level', 0))
+    if user_name == '' or view_user_name == '':
         return redirect('/user/search_user')
 
-    result = user.get_user_detail(user_name)
+    result = user.get_user_detail(user_name, view_user_name, access_level)
     if result == None:
         return redirect('/user/search_user')
     return render(request, 'user/user_info.html', result)
