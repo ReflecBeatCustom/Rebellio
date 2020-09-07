@@ -1,12 +1,16 @@
 <div class="card mb-4" style="max-width: 100rem; height: 240px;">
     <div class="row no-gutters">
         <div class="col-md-3" style="max-width:240px;height:240px;">
-            <a href="/pack/pack_detail?pack_id={{ pack.pack.packid }}"><img src="https://chilundui.com/data/rbdx/image/pack/{{ pack.pack.packid }}.png" class="card-img" alt="{{ pack.title }}"></a>
+            {% if pack.pack.category == 0 %}
+                <a href="/pack/pack_detail?pack_id={{ pack.pack.packid }}&category={{ pack.pack.category }}"><img src="https://chilundui.com/data/rbdx/image/pack/{{ pack.pack.packid }}.png" class="card-img" alt="{{ pack.title }}"></a>
+            {% else %}
+                <a href="/pack/pack_detail?pack_id={{ pack.pack.packid }}&category={{ pack.pack.category }}"><img src="" class="card-img" alt="{{ pack.title }}"></a>
+            {% endif %}
         </div>
         <div class="col-md-9">
             <div class="d-flex flex-row bd-highlight mb-8" id="fumen-info">
                 <div class="card-body">
-                    <a href="/pack/pack_detail?pack_id={{ pack.pack.packid }}"><h4 class="card-title" style="color: #5f2525;">{{ pack.pack.title }}</h4></a>
+                    <a href="/pack/pack_detail?pack_id={{ pack.pack.packid }}&category={{ pack.pack.category }}"><h4 class="card-title" style="color: #5f2525;">{{ pack.pack.title }}</h4></a>
                     {% for fumen in pack.fumens %}
                         <p class="col-md-5" style="color: #6e2b2b; display: inline;"><a href="fumen/fumen_detail?fumen_id={{ fumen.fumen_id }}">{{ fumen.title }} - {{ fumen.packid }}</a></p>
                         <br>

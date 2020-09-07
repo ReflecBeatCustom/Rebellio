@@ -20,7 +20,7 @@
                     <br>
                     <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">曲包:&nbsp</h5>
                     {% if fumen.packid != 0 %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/pack/pack_detail?pack_id={{ fumen.packid }}">{{ fumen.packid }}</a></p>
+                        <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/pack/pack_detail?pack_id={{ fumen.packid }}&category={{ fumen.category }}">{{ fumen.packid }}</a></p>
                     {% else %}
                         <p class="card-text" style="color: #6e2b2b; display: inline;">无曲包</p>
                     {% endif %}

@@ -172,12 +172,14 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=
         # 设置AR,SR
         records[i].sr = float(str(records[i].sr * 100).split('.')[0] + '.' + str(records[i].sr * 100).split('.')[1][:2])
         records[i].ar = float(str(records[i].ar * 100).split('.')[0] + '.' + str(records[i].ar * 100).split('.')[1][:2])
-        # 设置评分(S,AAA+,AAA,AAA-)
-        if records[i].sr >= 98 or records[i].ar > 98:
+        # 设置评分(EXC,S,AAA+,AAA,AAA-)
+        if records[i].sr >= 100.0 or records[i].ar >= 100.0:
+            records[i].rank = 'EXC'
+        elif records[i].sr >= 98 or records[i].ar >= 98:
             records[i].rank = 'S'
-        elif records[i].sr >= 95 or records[i].ar > 95:
+        elif records[i].sr >= 95 or records[i].ar >= 95:
             records[i].rank = 'AAA+'
-        elif records[i].sr >= 90 or records[i].ar > 90:
+        elif records[i].sr >= 90 or records[i].ar >= 90:
             records[i].rank = 'AAA'
         else:
             records[i].rank = 'AAA-'

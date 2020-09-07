@@ -23,7 +23,8 @@ def get_packs_format(packs):
     result = []
     for i in range(len(packs)):
         pack_id = int(packs[i].packid)
-        fumens = models.Songs.objects.filter(Q(packid=pack_id))
+        category = int(packs[i].category)
+        fumens = models.Songs.objects.filter(Q(packid=pack_id) & Q(category=category))
         # 设置日期格式
         packs[i].createtime = packs[i].createtime.strftime('%Y年%m月%d日')
         result.append({'pack': packs[i], 'fumens': fumens})
@@ -54,7 +55,7 @@ def get_packs(user_access_level, start_page, page_size, keyword, category):
 
     return packs[start_index:end_index], total, total_page, pages, start_page
 
-def get_pack(user_access_level, pack_id):
+def get_pack(user_access_level, pack_id, category):
     """
     根据曲包id得到曲包信息
     """
@@ -64,7 +65,7 @@ def get_pack(user_access_level, pack_id):
     if user_access_level == 0:
         packs = models.Packs.objects.filter(Q(packid=pack_id) & Q(category__lte=0))
     else:
-        packs = models.Packs.objects.filter(Q(packid=pack_id))
+        packs = models.Packs.objects.filter(Q(packid=pack_id) & Q(category=category))
     if len(packs) == 0:
         return None
     packs = get_packs_format(packs)

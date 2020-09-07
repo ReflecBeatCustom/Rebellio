@@ -133,7 +133,7 @@ def get_fumen(request):
     return render(request, 'fumen/fumen_detail.html', {'data':fumen_detail, 'total':1, 'best_player_record':best_player_record, 'player_records':player_records, 'best_fumen_record':best_fumen_record, 'fumen_records':fumen_records, 'user_best_record':user_best_record, 'comments':comments})
 
 @require_http_methods(['GET'])
-def delete_comment(request):
+def delete_fumen_comment(request):
     if not request.session.get('is_login', None):
         return redirect('/login')
 
@@ -198,11 +198,27 @@ def get_pack(request):
     pack_id = int(request.GET.get('pack_id', 10))
     user_access_level = request.session.get('user_access_level', 0)
     is_show_all_comments = int(request.GET.get('is_show_all_comments', 0))
+    category = int(request.GET.get('category', 0))
 
-    pack_detail = pack.get_pack(user_access_level, pack_id)
+    pack_detail = pack.get_pack(user_access_level, pack_id, category)
     comments = account.get_pack_comments(pack_id, is_show_all_comments)
     result = {'data': pack_detail ,'comments': comments}
     return render(request, 'pack/pack_detail.html', result)
+
+@require_http_methods(['GET'])
+def delete_pack_comment(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    pack_id = int(request.GET.get('pack_id', 0))
+    comment_id = int(request.GET.get('comment_id', 0))
+    comment_user_name = request.GET.get('user_name', '')
+    user_access_level = request.session.get('user_access_level', 0)
+    user_name = request.session.get('user_name', '')
+    if comment_user_name == user_name or user_access_level >= 3:
+        models.Playerpackcomments.objects.filter(id=comment_id).delete()
+
+    return redirect('/pack/pack_detail/?pack_id={0}'.format(pack_id))
 
 # 内部功能
 @require_http_methods(['GET'])

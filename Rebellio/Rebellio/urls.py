@@ -32,11 +32,12 @@ urlpatterns = [
     path('fumen/own_fumen/', views.get_own_fumens),
     path('fumen/fumen_detail/', views.get_fumen),
     path('fumen/comment_on_fumen/', views.comment_on_fumen),
-    path('fumen/delete_comment/', views.delete_comment),
+    path('fumen/delete_comment/', views.delete_fumen_comment),
     # 曲包
     path('pack/packs/', views.get_packs),
     path('pack/pack_detail/', views.get_pack),
     path('pack/comment_on_pack/', views.comment_on_pack),
+    path('pack/delete_comment/', views.delete_pack_comment),
     # 内部
     path('inner/home/', views.inner_home),
     path('inner/subdiff_votes/', views.get_subdiff_votes),
