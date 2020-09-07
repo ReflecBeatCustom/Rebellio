@@ -40,6 +40,9 @@
           <li class="nav-item">
             <a class="nav-link" href="/pack/packs">曲包</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/search_user">玩家</a>
+          </li>
           {% if request.session.user_access_level >= 1 %}
             <li class="nav-item">
               <a class="nav-link" href="/inner/home">内部</a>
@@ -62,7 +65,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if request.session.is_login %}
-                <li><a href="#">当前在线: {{ request.session.user_name }}&nbsp</a></li>
+                <li><a href="/user/user_detail?user_name={{ request.session.user_name }}">当前在线: {{ request.session.user_name }}&nbsp</a></li>
                 {% if request.session.user_access_level == 0 %}
                   <strong>用户</strong>
                 {% elif request.session.user_access_level == 1 %}

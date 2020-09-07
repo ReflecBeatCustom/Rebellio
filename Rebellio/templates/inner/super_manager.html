@@ -45,15 +45,15 @@
             <p class="card-text my-3"><small class="text-muted">编辑用户的管理员权限</small></p>
             <h5>当前一级管理员:</h5>
             {% for name in level1_admins %}
-                <p class="col-md-3 my-1"><a href="#">{{ name }}</a></p>
+                <p class="col-md-3 my-1"><a href="/user/user_detail?user_name={{ name }}">{{ name }}</a></p>
             {% endfor %}
             <h5>当前二级管理员:</h5>
             {% for name in level2_admins %}
-                <p class="col-md-3 my-1"><a href="#">{{ name }}</a></p>
+                <p class="col-md-3 my-1"><a href="/user/user_detail?user_name={{ name }}">{{ name }}</a></p>
             {% endfor %}
             <h5>当前超级管理员:</h5>
             {% for name in level3_admins %}
-                <p class="col-md-3 my-1"><a href="#">{{ name }}</a></p>
+                <p class="col-md-3 my-1"><a href="/user/user_detail?user_name={{ name }}">{{ name }}</a></p>
             {% endfor %}
             <form class="form-inline my-12 my-lg-0" action="/inner/change_user_access_level" method="get">
                 <input class="form-control mr-sm-10 col-sm-2" type="text" name="user_name" placeholder="输入用户账号">

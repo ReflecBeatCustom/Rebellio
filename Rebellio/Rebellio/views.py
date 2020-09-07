@@ -10,6 +10,7 @@ from .src import account
 from .src import utils
 from .src import inner
 from .src import pack
+from .src import user
 import math
 
 
@@ -333,3 +334,25 @@ def change_user_access_level(request):
 
     result = inner.change_user_access_level(user_name, user_access_level, changed_user_name, access_level)
     return redirect('/inner/super_manager')
+
+# 用户个人页面
+@require_http_methods(['GET'])
+def search_user(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    return render(request, 'user/user_search.html', {'search_user':'active'})
+
+@require_http_methods(['GET'])
+def get_user_detail(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_name = request.GET.get('user_name', '')
+    if user_name == '':
+        return redirect('/user/search_user')
+
+    result = user.get_user_detail(user_name)
+    if result == None:
+        return redirect('/user/search_user')
+    return render(request, 'user/user_info.html', result)

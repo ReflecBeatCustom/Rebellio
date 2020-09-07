@@ -1,0 +1,15 @@
+<div class="p-2 bd-highlight col-sm-1">
+    <ul class="nav flex-column nav-pills">
+        <li class="nav-item">
+            <a class="nav-link {{ search_user }}" href="/user/search_user">玩家搜索</a>
+        </li>
+        {% if request.session.is_login %}
+            <li class="nav-item">
+                <a class="nav-link {{ my_info }}" href="/user/user_detail?user_name={{ request.session.user_name }}">我的</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ change_avatar }}" href="/user/change_avatar">更换头像</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

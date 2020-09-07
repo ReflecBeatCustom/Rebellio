@@ -38,6 +38,9 @@ urlpatterns = [
     path('pack/pack_detail/', views.get_pack),
     path('pack/comment_on_pack/', views.comment_on_pack),
     path('pack/delete_comment/', views.delete_pack_comment),
+    # 玩家
+    path('user/search_user/', views.search_user),
+    path('user/user_detail/', views.get_user_detail),
     # 内部
     path('inner/home/', views.inner_home),
     path('inner/subdiff_votes/', views.get_subdiff_votes),

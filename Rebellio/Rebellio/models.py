@@ -27,6 +27,8 @@ class Accounts(models.Model):
     nickname = models.CharField(db_column='Nickname', max_length=50, blank=True, null=True)  # Field name made lowercase.
     accesslevel = models.IntegerField(db_column='AccessLevel', blank=True, null=True)  # Field name made lowercase.
     id = models.IntegerField(primary_key=True)
+    signature = models.TextField(db_column='signature', blank=True, null=True)
+    avatar = models.IntegerField(db_column='avatar')
 
     class Meta:
         managed = True

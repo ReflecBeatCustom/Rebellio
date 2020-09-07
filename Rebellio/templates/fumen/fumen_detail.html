@@ -80,7 +80,7 @@
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ best_fumen_record.accountname }}</a></span></p>
+                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if best_fumen_record.rank == "EXC" %}
@@ -119,7 +119,7 @@
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ best_fumen_record.accountname }}</a></span></p>
+                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if best_fumen_record.rank == "EXC" %}
@@ -161,7 +161,7 @@
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ record.accountname }}</a></span></p>
+                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if record.rank == "EXC" %}
@@ -200,7 +200,7 @@
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ record.accountname }}</a></span></p>
+                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if record.rank == "EXC" %}
@@ -241,7 +241,7 @@
                                     <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ user_best_record.ranking }}</span></p>
                                 </div>
                                 <div class="container col-md-2 align-self-center">
-                                    <p class="card-text"><span style="color:black;font-size:16px"><a href="#">{{ user_best_record.accountname }}</a></span></p>
+                                    <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ user_best_record.accountname }}">{{ user_best_record.accountname }}</a></span></p>
                                 </div>
                                 <div class="container col-md-2 align-self-center">
                                     {% if user_best_record.rank == "EXC" %}
@@ -362,7 +362,7 @@
                     {% if comments %}
                         {% for comment in comments %}
                             <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
-                                <div class="card-header" style="font-size:14px;"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                                <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
                                         <form class="form-inline my-12 my-lg-0" action="/fumen/delete_comment" method="get">
