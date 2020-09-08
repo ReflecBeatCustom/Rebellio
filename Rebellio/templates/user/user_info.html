@@ -16,7 +16,16 @@
                                 <img src="https://chilundui.com/data/rbdx/image/song/{{ user.avatar }}.png" style="max-width:200px;height:200px;border-radius:50%;">
                             </div>
                             <div class="container col-md-10" style="float:left;">
-                                <p style="color:#00cc00	;font-size:24px;"><strong>{{ user.accountname }}</strong></p>
+                                {% if user.accesslevel == 0 %}
+                                    <p style="color:#b37100	;font-size:28px;"><strong>{{ user.accountname }}</strong></p>
+                                {% elif user.accesslevel < 3 %}
+                                    <p style="font-size:28px;"><span style="color:#8585ad"><strong>[Contributor]</strong></span>&nbsp&nbsp<span style="color:#e69100"><strong>{{ user.accountname }}</strong></span></p>
+                                {% else %}
+                                    <p style="font-size:28px;"><span style="color:#52527a"><strong>[Legend]</strong></span>&nbsp&nbsp<span style="color:#ffa70f"><strong>{{ user.accountname }}</strong></span></p>
+                                {% endif %}
+                                <div>
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Skill Point[Under beta test]:</strong></strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ user.skillpoint }}</strong></span></p>
+                                </div>
                                 {% if user.signature  %}
                                     <small style="color:grey;font-size:16px;text-indent:2ch">{{ user.signature }}</small>
                                 {% else %}
@@ -28,10 +37,66 @@
                 </div>
             </div>
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                <div class="card-header" style="background-color:#d0c8c8;"><strong>高分榜 / High scores</strong></div>
+                <div class="card-body">
+                    {% for record in user_high_score_records %}
+                        <div class="card mb-3" style="max-width:100rem;background-color:bisque;;border-color:bisque;border-width:0.5ch;">
+                            <div class="row" style="padding:10px">
+                                <div class="container col-md-1 align-self-center">
+                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
+                                </div>
+                                <div class="container col-md-1 align-self-center">
+                                    <a href="/fumen/fumen_detail?fumen_id={{ record.fumen.songid }}"><img src="https://chilundui.com/data/rbdx/image/song/{{ record.fumen.songid }}.png" style="max-width:100px;height:100px;"></a>
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    <p class="card-text" align="center"><span style="color:grey;font-size:16px;"><a href="/fumen/fumen_detail?fumen_id={{ record.fumen.songid }}">{{ record.fumen.title }}</a></span></p>
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    {% if record.rank == "EXC" %}
+                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                    {% elif record.rank == "S" %}
+                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                    {% else %}
+                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                    {% endif %}
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if record.ar != 0.0 %}
+                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.ar }}%</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.sr }}%</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    {% endif %}
+                                    {% if record.difficulty == 'BASIC' %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% elif record.difficulty == 'MEDIUM' %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% elif record.difficulty == 'HARD' %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% endif %}
+                                </div>
+                                <div class="container col-md-2">
+                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>最近游玩记录 / Recent plays</strong></div>
                 <div class="card-body">
                     {% for record in recent_records %}
-                        <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
+                        <div class="card mb-3" style="max-width:100rem;background-color:bisque;;border-color:bisque;border-width:0.5ch;">
                             <div class="row" style="padding:10px">
                                 <div class="container col-md-1 align-self-center">
                                     <a href="/fumen/fumen_detail?fumen_id={{ record.fumen.songid }}"><img src="https://chilundui.com/data/rbdx/image/song/{{ record.fumen.songid }}.png" style="max-width:100px;height:100px;"></a>
@@ -62,7 +127,15 @@
                                     {% else %}
                                         <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
+                                    {% if record.difficulty == 'BASIC' %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% elif record.difficulty == 'MEDIUM' %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% elif record.difficulty == 'HARD' %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>{{ record.difficulty }}</strong></span></p>
+                                    {% endif %}
                                 </div>
                                 <div class="container col-md-2">
                                     <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>

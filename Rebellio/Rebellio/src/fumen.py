@@ -143,49 +143,48 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=
     """
     根据谱id名得到谱面信息
     """
-    unfiltered_records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} ORDER BY Score DESC".format(fumen_id))
+    unfiltered_records = models.Playrecords.objects.raw("SELECT * FROM (SELECT *, MAX(Score) AS max_score FROM Playrecords WHERE SongID = {0} GROUP BY AccountName) AS a ORDER BY max_score DESC".format(fumen_id))
     if len(unfiltered_records) == 0:
-        return None, unfiltered_records, None
+        return None, records, None
     
-    # 筛选出不同用户的考前成绩
     records = []
-    users_set = {}
-    for record in unfiltered_records:
-        if users_set.__contains__(record.accountname):
+    for i in range(len(unfiltered_records)):
+        # 得到用户的头像信息
+        user_infos = models.Accounts.objects.filter(Q(accountname=unfiltered_records[i].accountname))
+        if len(user_infos) == 0:
             continue
-        users_set[record.accountname] = True
-        records.append(record)
+        user_info = user_infos[0]
+        unfiltered_records[i].avatar = user_info.avatar
+        # 设置日期格式
+        unfiltered_records[i].logtime = unfiltered_records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
+        # 设置难度
+        if unfiltered_records[i].difficulty == 3 or (is_special and unfiltered_records[i].difficulty == 0):
+            unfiltered_records[i].difficulty = "SPECIAL"
+        elif unfiltered_records[i].difficulty == 0:
+            unfiltered_records[i].difficulty = "BASIC"
+        elif unfiltered_records[i].difficulty == 1:
+            unfiltered_records[i].difficulty = "MEDIUM"
+        elif unfiltered_records[i].difficulty == 2:
+            unfiltered_records[i].difficulty = "HARD"
+        # 设置AR,SR
+        unfiltered_records[i].sr = float(str(unfiltered_records[i].sr * 100).split('.')[0] + '.' + str(unfiltered_records[i].sr * 100).split('.')[1][:2])
+        unfiltered_records[i].ar = float(str(unfiltered_records[i].ar * 100).split('.')[0] + '.' + str(unfiltered_records[i].ar * 100).split('.')[1][:2])
+        # 设置评分(EXC,S,AAA+,AAA,AAA-)
+        if unfiltered_records[i].sr >= 100.0 or unfiltered_records[i].ar >= 100.0:
+            unfiltered_records[i].rank = 'EXC'
+        elif unfiltered_records[i].sr >= 98 or unfiltered_records[i].ar >= 98:
+            unfiltered_records[i].rank = 'S'
+        elif unfiltered_records[i].sr >= 95 or unfiltered_records[i].ar >= 95:
+            unfiltered_records[i].rank = 'AAA+'
+        elif unfiltered_records[i].sr >= 90 or unfiltered_records[i].ar >= 90:
+            unfiltered_records[i].rank = 'AAA'
+        else:
+            unfiltered_records[i].rank = 'AAA-'
+        # 设置排名
+        unfiltered_records[i].ranking = i + 1
+        records.append(unfiltered_records[i])
     
     best_record = records[0]
-    for i in range(len(records)):
-        # 设置日期格式
-        records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
-        # 设置难度
-        if records[i].difficulty == 3 or (is_special and records[i].difficulty == 0):
-            records[i].difficulty = "SPECIAL"
-        elif records[i].difficulty == 0:
-            records[i].difficulty = "BASIC"
-        elif records[i].difficulty == 1:
-            records[i].difficulty = "MEDIUM"
-        elif records[i].difficulty == 2:
-            records[i].difficulty = "HARD"
-        # 设置AR,SR
-        records[i].sr = float(str(records[i].sr * 100).split('.')[0] + '.' + str(records[i].sr * 100).split('.')[1][:2])
-        records[i].ar = float(str(records[i].ar * 100).split('.')[0] + '.' + str(records[i].ar * 100).split('.')[1][:2])
-        # 设置评分(EXC,S,AAA+,AAA,AAA-)
-        if records[i].sr >= 100.0 or records[i].ar >= 100.0:
-            records[i].rank = 'EXC'
-        elif records[i].sr >= 98 or records[i].ar >= 98:
-            records[i].rank = 'S'
-        elif records[i].sr >= 95 or records[i].ar >= 95:
-            records[i].rank = 'AAA+'
-        elif records[i].sr >= 90 or records[i].ar >= 90:
-            records[i].rank = 'AAA'
-        else:
-            records[i].rank = 'AAA-'
-        # 设置排名
-        records[i].ranking = i + 1
-    
     user_best_record = None
     for i in range(len(records)):
         # 设置用户的最高排名

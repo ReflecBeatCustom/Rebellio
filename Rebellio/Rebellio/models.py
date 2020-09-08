@@ -29,6 +29,7 @@ class Accounts(models.Model):
     id = models.IntegerField(primary_key=True)
     signature = models.TextField(db_column='signature', blank=True, null=True)
     avatar = models.IntegerField(db_column='avatar')
+    skillpoint = models.IntegerField(db_column='SkillPoint')  # Field name made lowercase.
 
     class Meta:
         managed = True
@@ -136,6 +137,8 @@ class Songs(models.Model):
     creator = models.TextField(db_column='Creator', blank=True, null=True)  # Field name made lowercase.
     title = models.TextField(db_column='Title', blank=True, null=True)  # Field name made lowercase.
     artist = models.TextField(db_column='Artist', blank=True, null=True)  # Field name made lowercase.
+    chartauthorb = models.TextField(db_column='ChartAuthorB', blank=True, null=True)  # Field name made lowercase.
+    chartauthorm = models.TextField(db_column='ChartAuthorM', blank=True, null=True)  # Field name made lowercase.
     chartauthor = models.TextField(db_column='ChartAuthor', blank=True, null=True)  # Field name made lowercase.
     diffb = models.IntegerField(db_column='diffB', blank=True, null=True)  # Field name made lowercase.
     diffm = models.IntegerField(db_column='diffM', blank=True, null=True)  # Field name made lowercase.

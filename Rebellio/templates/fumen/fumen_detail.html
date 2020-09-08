@@ -76,19 +76,22 @@
                         {% if request.session.user_name == best_fumen_record.accountname %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2 align-self-center">
+                                    <div class="container col-md-1 align-self-center">
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
                                     </div>
+                                    <div class="container col-md-1 align-self-center">
+                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ best_fumen_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
+                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if best_fumen_record.rank == "EXC" %}
-                                            <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                         {% elif best_fumen_record.rank == "S" %}
-                                            <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                         {% else %}
-                                            <p class="card-text"><span style="color:black;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                         {% endif %}
                                     </div>
                                     <div class="container col-md-2">
@@ -115,19 +118,22 @@
                         {% else %}
                             <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;max-height:100px;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2 align-self-center">
+                                    <div class="container col-md-1 align-self-center">
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
                                     </div>
+                                    <div class="container col-md-1 align-self-center">
+                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ best_fumen_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
+                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if best_fumen_record.rank == "EXC" %}
-                                            <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                         {% elif best_fumen_record.rank == "S" %}
-                                            <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                         {% else %}
-                                            <p class="card-text"><span style="color:grey;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
                                         {% endif %}
                                     </div>
                                     <div class="container col-md-2">
@@ -157,19 +163,22 @@
                         {% if request.session.user_name == record.accountname %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2 align-self-center">
+                                    <div class="container col-md-1 align-self-center">
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                     </div>
+                                    <div class="container col-md-1 align-self-center">
+                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
+                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if record.rank == "EXC" %}
-                                            <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
                                         {% elif record.rank == "S" %}
-                                            <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
                                         {% else %}
-                                            <p class="card-text"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
                                         {% endif %}
                                     </div>
                                     <div class="container col-md-2">
@@ -196,19 +205,22 @@
                         {% else %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
                                 <div class="row" style="padding:10px">
-                                    <div class="container col-md-2 align-self-center">
+                                    <div class="container col-md-1 align-self-center">
                                         <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                     </div>
+                                    <div class="container col-md-1 align-self-center">
+                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    </div>
                                     <div class="container col-md-2 align-self-center">
-                                        <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
+                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
                                     </div>
                                     <div class="container col-md-2 align-self-center">
                                         {% if record.rank == "EXC" %}
-                                            <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
                                         {% elif record.rank == "S" %}
-                                            <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
                                         {% else %}
-                                            <p class="card-text"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
                                         {% endif %}
                                     </div>
                                     <div class="container col-md-2">
@@ -237,19 +249,22 @@
                     {% if user_best_record %}
                         <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                             <div class="row" style="padding:10px">
-                                <div class="container col-md-2 align-self-center">
+                                <div class="container col-md-1 align-self-center">
                                     <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ user_best_record.ranking }}</span></p>
                                 </div>
+                                <div class="container col-md-1 align-self-center">
+                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ user_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                </div>
                                 <div class="container col-md-2 align-self-center">
-                                    <p class="card-text"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ user_best_record.accountname }}">{{ user_best_record.accountname }}</a></span></p>
+                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ user_best_record.accountname }}">{{ user_best_record.accountname }}</a></span></p>
                                 </div>
                                 <div class="container col-md-2 align-self-center">
                                     {% if user_best_record.rank == "EXC" %}
-                                        <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
+                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
                                     {% elif user_best_record.rank == "S" %}
-                                        <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
+                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
                                     {% else %}
-                                        <p class="card-text"><span style="color:grey;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
+                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
                                     {% endif %}
                                 </div>
                                 <div class="container col-md-2">
