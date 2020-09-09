@@ -33,14 +33,15 @@ def get_packs_format(packs):
 def get_packs(user_access_level, start_page, page_size, keyword, category):
     sql = "SELECT * FROM Packs WHERE 1=1"
     if keyword != '':
-        sql += " AND title LIKE '%{0}%'".format(keyword)
+        sql += " AND Title LIKE '%%{0}%%'".format(keyword)
     if user_access_level == 0 and category > 0:
-        sql += " AND category = 0"
+        sql += " AND Category = 0"
     else:
-        sql += " AND category = {0}".format(category)
+        sql += " AND Category = {0}".format(category)
     sql += " ORDER BY CreateTime DESC"
     packs = models.Packs.objects.raw(sql)
-    packs = get_packs_format(packs)
+    if len(packs) != 0:
+        packs = get_packs_format(packs)
 
     total = len(packs)
     total_page = math.floor(len(packs) / page_size) + 1

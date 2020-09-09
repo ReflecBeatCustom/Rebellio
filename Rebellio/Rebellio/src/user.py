@@ -25,41 +25,40 @@ def get_user_high_scores(user_name, view_user_name, access_level):
     high_score_records = []
     for fumen in played_fumens:
         fumen_id = fumen.songid
-        sql = "SELECT * FROM (SELECT *, MAX(Score) AS max_score FROM Playrecords WHERE SongID = {0} GROUP BY AccountName) AS a ORDER BY max_score DESC".format(fumen_id)
-        records = models.Playrecords.objects.raw(sql)
-        for i in range(10):
-            if records[i].accountname == user_name:
-                records[i].ranking = i+1
-                # 设置谱面信息
-                fumen = played_fumen_dict[records[i].songid]
-                records[i].fumen = fumen
-                # 设置日期格式
-                records[i].logtime = records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
-                # 设置难度
-                if records[i].difficulty == 3 or (fumen.diffsp != 0 and records[i].difficulty == 0):
-                    records[i].difficulty = "SPECIAL"
-                elif records[i].difficulty == 0:
-                    records[i].difficulty = "BASIC"
-                elif records[i].difficulty == 1:
-                    records[i].difficulty = "MEDIUM"
-                elif records[i].difficulty == 2:
-                    records[i].difficulty = "HARD"
-                # 设置AR,SR
-                records[i].sr = float(str(records[i].sr * 100).split('.')[0] + '.' + str(records[i].sr * 100).split('.')[1][:2])
-                records[i].ar = float(str(records[i].ar * 100).split('.')[0] + '.' + str(records[i].ar * 100).split('.')[1][:2])
-                # 设置评分(EXC,S,AAA+,AAA,AAA-)
-                if records[i].sr >= 100.0 or records[i].ar >= 100.0:
-                    records[i].rank = 'EXC'
-                elif records[i].sr >= 98 or records[i].ar >= 98:
-                    records[i].rank = 'S'
-                elif records[i].sr >= 95 or records[i].ar >= 95:
-                    records[i].rank = 'AAA+'
-                elif records[i].sr >= 90 or records[i].ar >= 90:
-                    records[i].rank = 'AAA'
-                else:
-                    records[i].rank = 'AAA-'
-                high_score_records.append(records[i])
-                break
+        records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} ORDER BY Score DESC LIMIT 1".format(fumen_id))
+        if records[0].accountname != user_name:
+            continue
+        records[0].ranking = 1
+        # 设置谱面信息
+        fumen = played_fumen_dict[records[0].songid]
+        records[0].fumen = fumen
+        # 设置日期格式
+        records[0].logtime = records[0].logtime.strftime('%Y年%m月%d日 %H时%M分')
+        # 设置难度
+        if records[0].difficulty == 3 or (fumen.diffsp != 0 and records[0].difficulty == 0):
+            records[0].difficulty = "SPECIAL"
+        elif records[0].difficulty == 0:
+            records[0].difficulty = "BASIC"
+        elif records[0].difficulty == 1:
+            records[0].difficulty = "MEDIUM"
+        elif records[0].difficulty == 2:
+            records[0].difficulty = "HARD"
+        # 设置AR,SR
+        records[0].sr = float(str(records[0].sr * 100).split('.')[0] + '.' + str(records[0].sr * 100).split('.')[1][:2])
+        records[0].ar = float(str(records[0].ar * 100).split('.')[0] + '.' + str(records[0].ar * 100).split('.')[1][:2])
+        # 设置评分(EXC,S,AAA+,AAA,AAA-)
+        if records[0].sr >= 100.0 or records[0].ar >= 100.0:
+            records[0].rank = 'EXC'
+        elif records[0].sr >= 98 or records[0].ar >= 98:
+            records[0].rank = 'S'
+        elif records[0].sr >= 95 or records[0].ar >= 95:
+            records[0].rank = 'AAA+'
+        elif records[0].sr >= 90 or records[0].ar >= 90:
+            records[0].rank = 'AAA'
+        else:
+            records[0].rank = 'AAA-'
+        high_score_records.append(records[0])
+        
     def comparator(x, y):
         if x.ranking < y.ranking:
             return -1

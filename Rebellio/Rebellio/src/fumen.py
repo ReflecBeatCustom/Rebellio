@@ -143,47 +143,54 @@ def get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, is_special=
     """
     根据谱id名得到谱面信息
     """
-    unfiltered_records = models.Playrecords.objects.raw("SELECT * FROM (SELECT *, MAX(Score) AS max_score FROM Playrecords WHERE SongID = {0} GROUP BY AccountName) AS a ORDER BY max_score DESC".format(fumen_id))
+    unfiltered_records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} ORDER BY Score DESC".format(fumen_id))
     if len(unfiltered_records) == 0:
-        return None, records, None
+        return None, unfiltered_records, None
     
+    # 筛选出不同用户的考前成绩
     records = []
-    for i in range(len(unfiltered_records)):
+    users_set = {}
+    i = 0
+    for record in unfiltered_records:
+        if users_set.__contains__(record.accountname):
+            continue
         # 得到用户的头像信息
-        user_infos = models.Accounts.objects.filter(Q(accountname=unfiltered_records[i].accountname))
+        user_infos = models.Accounts.objects.filter(Q(accountname=record.accountname))
         if len(user_infos) == 0:
             continue
         user_info = user_infos[0]
-        unfiltered_records[i].avatar = user_info.avatar
+        record.avatar = user_info.avatar
         # 设置日期格式
-        unfiltered_records[i].logtime = unfiltered_records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
+        record.logtime = record.logtime.strftime('%Y年%m月%d日 %H时%M分')
         # 设置难度
-        if unfiltered_records[i].difficulty == 3 or (is_special and unfiltered_records[i].difficulty == 0):
-            unfiltered_records[i].difficulty = "SPECIAL"
-        elif unfiltered_records[i].difficulty == 0:
-            unfiltered_records[i].difficulty = "BASIC"
-        elif unfiltered_records[i].difficulty == 1:
-            unfiltered_records[i].difficulty = "MEDIUM"
-        elif unfiltered_records[i].difficulty == 2:
-            unfiltered_records[i].difficulty = "HARD"
+        if record.difficulty == 3 or (is_special and record.difficulty == 0):
+            record.difficulty = "SPECIAL"
+        elif record.difficulty == 0:
+            record.difficulty = "BASIC"
+        elif record.difficulty == 1:
+            record.difficulty = "MEDIUM"
+        elif record.difficulty == 2:
+            record.difficulty = "HARD"
         # 设置AR,SR
-        unfiltered_records[i].sr = float(str(unfiltered_records[i].sr * 100).split('.')[0] + '.' + str(unfiltered_records[i].sr * 100).split('.')[1][:2])
-        unfiltered_records[i].ar = float(str(unfiltered_records[i].ar * 100).split('.')[0] + '.' + str(unfiltered_records[i].ar * 100).split('.')[1][:2])
+        record.sr = float(str(record.sr * 100).split('.')[0] + '.' + str(record.sr * 100).split('.')[1][:2])
+        record.ar = float(str(record.ar * 100).split('.')[0] + '.' + str(record.ar * 100).split('.')[1][:2])
         # 设置评分(EXC,S,AAA+,AAA,AAA-)
-        if unfiltered_records[i].sr >= 100.0 or unfiltered_records[i].ar >= 100.0:
-            unfiltered_records[i].rank = 'EXC'
-        elif unfiltered_records[i].sr >= 98 or unfiltered_records[i].ar >= 98:
-            unfiltered_records[i].rank = 'S'
-        elif unfiltered_records[i].sr >= 95 or unfiltered_records[i].ar >= 95:
-            unfiltered_records[i].rank = 'AAA+'
-        elif unfiltered_records[i].sr >= 90 or unfiltered_records[i].ar >= 90:
-            unfiltered_records[i].rank = 'AAA'
+        if record.sr >= 100.0 or record.ar >= 100.0:
+            record.rank = 'EXC'
+        elif record.sr >= 98 or record.ar >= 98:
+            record.rank = 'S'
+        elif record.sr >= 95 or record.ar >= 95:
+            record.rank = 'AAA+'
+        elif record.sr >= 90 or record.ar >= 90:
+            record.rank = 'AAA'
         else:
-            unfiltered_records[i].rank = 'AAA-'
+            record.rank = 'AAA-'
         # 设置排名
-        unfiltered_records[i].ranking = i + 1
-        records.append(unfiltered_records[i])
-    
+        record.ranking = i + 1
+        users_set[record.accountname] = True
+        records.append(record)
+        i += 1
+
     best_record = records[0]
     user_best_record = None
     for i in range(len(records)):
