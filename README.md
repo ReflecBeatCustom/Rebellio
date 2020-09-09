@@ -2,14 +2,12 @@
 
 服务器
 
-python version == 3.6.9
-
-pip3 install django
-pip3 install pymysql
-pip3 install django-simple-captcha
-
-python manage.py makemigrations
-python manage.py migrate --fake-initial
+## 部署
+```
+docker build -t rebellio .
+cd etc
+./start.sh
+```
 
 # Rbdx看板页面功能设计
 
