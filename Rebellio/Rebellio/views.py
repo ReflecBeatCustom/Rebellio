@@ -350,7 +350,7 @@ def get_user_detail(request):
 
     user_name = request.GET.get('user_name', '')
     view_user_name = request.session.get('user_name', '')
-    start_page = int(request.GET.get('start_page', 1))
+    access_level = int(request.session.get('access_level', 0))
     if user_name == '' or view_user_name == '':
         return redirect('/user/search_user')
 
@@ -358,3 +358,45 @@ def get_user_detail(request):
     if result == None:
         return redirect('/user/search_user')
     return render(request, 'user/user_info.html', result)
+
+@require_http_methods(['GET'])
+def get_available_avatar(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_name = request.session.get('user_name', '')
+
+    result = user.get_available_avatar(user_name)
+    return render(request, 'user/user_avatar.html', result)
+
+@require_http_methods(['GET'])
+def set_avatar(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_name = request.session.get('user_name', '')
+    avatar_id = request.GET.get('avatar_id', '')
+
+    user.set_avatar(user_name, avatar_id)
+    return redirect('/user/user_detail?user_name={0}'.format(user_name))
+
+@require_http_methods(['GET'])
+def user_info_set(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_name = request.session.get('user_name', '')
+    users = models.Accounts.objects.filter(accountname=user_name)
+    return render(request, 'user/user_info_set.html', {'user': users[0], 'user_info_set': 'active'})
+
+@require_http_methods(['GET'])
+def set_user_info(request):
+    if not request.session.get('is_login', None):
+        return redirect('/login')
+
+    user_name = request.session.get('user_name', '')
+    signature = request.GET.get('signature', '')
+
+    user.set_user_info(user_name, signature)
+
+    return redirect('/user/user_info_set?user_name={0}'.format(user_name))

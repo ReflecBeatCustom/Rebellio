@@ -41,6 +41,10 @@ urlpatterns = [
     # 玩家
     path('user/search_user/', views.search_user),
     path('user/user_detail/', views.get_user_detail),
+    path('user/get_available_avatar/', views.get_available_avatar),
+    path('user/set_avatar/', views.set_avatar),
+    path('user/user_info_set/', views.user_info_set),
+    path('user/set_user_info/', views.set_user_info),
     # 内部
     path('inner/home/', views.inner_home),
     path('inner/subdiff_votes/', views.get_subdiff_votes),

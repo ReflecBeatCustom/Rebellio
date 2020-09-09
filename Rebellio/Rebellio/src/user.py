@@ -124,3 +124,20 @@ def get_user_detail(user_name, view_user_name, access_level):
 
     result = {'user':user, 'recent_records':filtered_rencent_records[0: default_show_count], 'my_info':'active', 'user_high_score_records': user_high_score_records}
     return result
+
+def get_available_avatar(user_name):
+    fumens = models.Songs.objects.raw("SELECT DISTINCT * FROM (SELECT s.* FROM Playrecords AS r LEFT JOIN Songs AS s on s.SongID = r.SongID WHERE r.AccountName = '{0}' AND (r.AR >= 0.98 or r.SR >= 0.98)) AS result".format(user_name))
+    fumen_ids = [fumen.songid for fumen in fumens]
+    return {'avatar_ids': fumen_ids, 'get_available_avatar': 'active'}
+
+def set_avatar(user_name, avatar_id):
+    """
+    avatar_id就是谱面id
+    """
+    records = models.Songs.objects.raw("SELECT * FROM Playrecords WHERE AccountName = '{0}' AND SongID = {1} AND (AR >= 0.98 or SR >= 0.98)".format(user_name, avatar_id))
+    if len(records) == 0:
+        return
+    models.Accounts.objects.filter(accountname=user_name).update(avatar=avatar_id)
+
+def set_user_info(user_name, signature):
+    models.Accounts.objects.filter(accountname=user_name).update(signature=signature)

@@ -6,16 +6,16 @@
 {% block content %}
     <div class="d-flex flex-row bd-highlight mb-3">
         {% include 'user/user_navigator.html' %}
-        <div class="p-2 bd-highlight col-sm-12">
+        <div class="p-2 bd-highlight col-sm-11">
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>个人信息 / User info</strong></div>
                 <div class="card-body">
                     <div class="fumen-details-content">
                         <div class="row">
-                            <div class="container col-md-2" style="float:left;">
+                            <div class="col-md-2" style="float:left;">
                                 <img src="https://chilundui.com/data/rbdx/image/song/{{ user.avatar }}.png" style="max-width:200px;height:200px;border-radius:50%;">
                             </div>
-                            <div class="container col-md-10" style="float:left;">
+                            <div class="col-md-10" style="float:left;">
                                 {% if user.accesslevel == 0 %}
                                     <p style="color:#b37100	;font-size:28px;"><strong>{{ user.accountname }}</strong></p>
                                 {% elif user.accesslevel < 3 %}
