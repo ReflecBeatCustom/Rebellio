@@ -350,7 +350,7 @@ def get_user_detail(request):
 
     user_name = request.GET.get('user_name', '')
     view_user_name = request.session.get('user_name', '')
-    access_level = int(request.session.get('access_level', 0))
+    start_page = int(request.GET.get('start_page', 1))
     if user_name == '' or view_user_name == '':
         return redirect('/user/search_user')
 
