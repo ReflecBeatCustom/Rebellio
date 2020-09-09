@@ -7,4 +7,4 @@ COPY . /data/github.com/ReflecBeatCustom/Rebellio
 RUN pip install django pymysql django-simple-captcha
 
 WORKDIR /data/github.com/ReflecBeatCustom/Rebellio/Rebellio
-ENTRYPOINT ["/bin/bash", "python", "manage.py", "runserver", "0.0.0.0:8080"]
+ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8080"]
