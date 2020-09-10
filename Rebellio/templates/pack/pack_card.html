@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <a href="/pack/pack_detail?pack_id={{ pack.pack.packid }}&category={{ pack.pack.category }}"><h4 class="card-title" style="color: #5f2525;">{{ pack.pack.title }}</h4></a>
                     {% for fumen in pack.fumens %}
-                        <p class="col-md-5" style="color: #6e2b2b; display: inline;"><a href="fumen/fumen_detail?fumen_id={{ fumen.fumen_id }}">{{ fumen.title }} - {{ fumen.packid }}</a></p>
+                        <p class="col-md-5" style="color: #6e2b2b; display: inline;"><a href="/fumen/fumen_detail/?fumen_id={{ fumen.songid }}">{{ fumen.title }} - {{ fumen.packid }}</a></p>
                         <br>
                     {% endfor %}
                     <p class="card-text my-3"><small class="text-muted">{{ pack.pack.createtime }}</small></p>

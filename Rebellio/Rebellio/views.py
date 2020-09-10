@@ -127,7 +127,7 @@ def get_fumen(request):
 
     fumen_detail = fumen.get_fumen(fumen_id, user_access_level)
     if fumen_detail is None:
-        return redirect('/fumen')
+        return redirect('/fumen/fumens')
     best_player_record, player_records = account.get_fumen_record(user_name, fumen_id, is_show_all_records)
     best_fumen_record, fumen_records, user_best_record = fumen.get_fumen_record(user_name, fumen_id, is_show_all_fumen_records, fumen_detail.diffsp != 0)
     comments = account.get_fumen_comments(fumen_id, is_show_all_comments)
