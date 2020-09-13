@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/fumen_detail.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -12,57 +11,65 @@
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>谱面信息 / Fumen details</strong></div>
                 <div class="card-body">
                     <div class="fumen-details-content">
-                        <h4>{{ data.title }}</h4>
-                        <p><small class="text-muted"><strong>{{ data.songid }}</strong></small></p>
+                        <div class="row">
+                            <div class="col-md-6" style="text-align:left">
+                                <h4>{{ result.fumen.title }}</h4>
+                                <p><small class="text-muted"><strong>{{ result.fumen.songid }}</strong></small></p>
+                                {% if result.fumen.difficulty == 0 %}
+                                <p style="font-size:24px;color:#19A403;"><strong>BASIC</strong></p>
+                                {% elif result.fumen.difficulty == 1 %}
+                                <p style="font-size:24px;color:#FF8A01"><strong>MEDIUM</strong></p>
+                                {% elif result.fumen.difficulty == 2 %}
+                                <p style="font-size:24px;color:#F30A0A;"><strong>HARD</strong></p>
+                                {% else %}
+                                <p style="font-size:24px;color:#00D2E9;"><strong>SPECIAL</strong></p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                        </div>
                         <div class="border-top my-3"></div>
                         <div class="row">
-                            <div class="container col-md-6" style="float:left">
-                                <p class="card-text"><strong>作曲家 / Artist:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ data.artist }}'>{{ data.artist }}</a></p>
-                                <p class="card-text"><strong>做谱人 / Chart author:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ data.chartauthor }}'>{{ data.chartauthor }}</a></p>
-                                {% if data.diffsp != 0 %}
-                                    <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffsp }}">{{ data.diffsp }}</a></p>
-                                {% else %}
-                                    <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ data.diffb }}">{{ data.diffb }}</a> / <a href="/fumen/fumens?level={{ data.diffm }}">{{ data.diffm }}</a> / <a href="/fumen/fumens?level={{ data.diffh }}">{{ data.diffh }}</a></p>
-                                {% endif %}
-                                {% if data.packid != 0 %}
-                                    <p class="card-text"><strong>曲包 / Pack:&nbsp&nbsp&nbsp&nbsp</strong><a href='/pack/pack_detail?pack_id={{ data.packid }}&category={{ data.category }}'>{{ data.packid }}</a></p>
-                                {% else %}
-                                    <p class="card-text"><strong>曲包 / Pack:&nbsp&nbsp&nbsp&nbsp</strong>无曲包</p>
-                                {% endif %}
+                            <div class="container col-md-6" style="text-align:left;">
+                                <p class="card-text"><strong>作曲家 / Artist:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ result.fumen.artist }}'>{{ result.fumen.artist }}</a></p>
+                                <p class="card-text"><strong>做谱人 / Chart author:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ result.fumen.chartauthor }}'>{{ result.fumen.chartauthor }}</a></p>
+                                <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ result.fumen.diff }}">{{ result.fumen.diff }}</a></p>
                                 {% if request.session.user_access_level >= 1 %}
-                                    <p class="card-text"><strong>上传者 / Uploader:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.creator }}</p>
+                                    <p class="card-text"><strong>上传者 / Uploader:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.creator }}</p>
                                 {% endif %}
-                                <p class="card-text"><strong>创建时间 / Create time:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.createtime }}</p>
-                                <p class="card-text"><strong>发布时间 / Publish time:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.publishtime }}</p>
+                                <p class="card-text"><strong>创建时间 / Create time:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.createtime }}</p>
+                                <p class="card-text"><strong>发布时间 / Publish time:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.publishtime }}</p>
                                 {% if request.session.user_access_level >= 1 %}
-                                    {% if data.category == 0 %}
+                                    {% if result.fumen.category == 0 %}
                                         <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>已发布</p>
                                     {% endif %}
-                                    {% if data.category == 1 %}
+                                    {% if result.fumen.category == 1 %}
                                         <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>审核中</p>
                                     {% endif %}
-                                    {% if data.category == 2 %}
+                                    {% if result.fumen.category == 2 %}
                                         <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>官谱</p>
                                     {% endif %}
-                                    {% if data.category == 3 %}
+                                    {% if result.fumen.category == 3 %}
                                         <p class="card-text"><strong>谱面类型 / Fumen type:&nbsp&nbsp&nbsp&nbsp</strong>内测</p>
                                     {% endif %}
                                 {% endif %}
                             </div>
-                            <div class="container col-md-6" style="float:right;">
-                                <img src="https://chilundui.com/data/rbdx/image/song/{{ data.songid }}.png" style="max-width:300px;height:300px;margin-left:460px;">
+                            <div class="container col-md-6" style="text-align:right;">
+                                <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen.songid }}.png" style="max-width:300px;max-height:300px;">
                             </div>
                         </div>
                         <div class="border-top my-3"></div>
                         <div>
                             <div class="container col-md-12" style="float:left;">
                                 <blockquote class="blockquote">
-                                    {% if data.authordescription != '' %}
-                                        <p style="color:grey;font-size:16px;text-indent:2ch">{{ data.authordescription }}</p>
+                                    {% if result.fumen.authordescription != '' %}
+                                        <p style="color:grey;font-size:16px;text-indent:2ch">{{ result.fumen.authordescription }}</p>
                                     {% else %}
                                         <p style="color:grey;font-size:16px;text-indent:2ch">这个做谱人很懒，什么都没留下</p>
                                     {% endif %}
-                                    <footer class="blockquote-footer text-right">{{ data.chartauthor }}</footer>
+                                    <footer class="blockquote-footer text-right">{{ result.fumen.chartauthor }}</footer>
                                 </blockquote>
                             </div>
                         </div>
@@ -72,267 +79,193 @@
             <div class="card text-black border-secondary mb-3" style="max-width:100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>高分榜 / High score</strong></div>
                 <div class="card-body">
-                    {% if best_fumen_record %}
-                        {% if request.session.user_name == best_fumen_record.accountname %}
-                            <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
-                                <div class="row" style="padding:10px">
-                                    <div class="container col-md-1 align-self-center">
-                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
-                                    </div>
-                                    <div class="container col-md-1 align-self-center">
-                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ best_fumen_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        {% if best_fumen_record.rank == "EXC" %}
-                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
-                                        {% elif best_fumen_record.rank == "S" %}
-                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
-                                        {% else %}
-                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if best_fumen_record.ar != 0.0 %}
-                                            <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.ar }}%</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.sr }}%</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.score }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if best_fumen_record.jr != -1 %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.jr }}</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.difficulty }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><small style="color:grey;font-size:12px">{{ best_fumen_record.logtime }}</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;">
-                                <div class="row" style="padding:10px">
-                                    <div class="container col-md-1 align-self-center">
-                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ best_fumen_record.ranking }}</span></p>
-                                    </div>
-                                    <div class="container col-md-1 align-self-center">
-                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ best_fumen_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ best_fumen_record.accountname }}">{{ best_fumen_record.accountname }}</a></span></p>
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        {% if best_fumen_record.rank == "EXC" %}
-                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
-                                        {% elif best_fumen_record.rank == "S" %}
-                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
-                                        {% else %}
-                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ best_fumen_record.rank }}</strong></span></p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if best_fumen_record.ar != 0.0 %}
-                                            <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.ar }}%</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.sr }}%</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.score }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if best_fumen_record.jr != -1 %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.jr }}</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ best_fumen_record.difficulty }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><small style="color:grey;font-size:12px">{{ best_fumen_record.logtime }}</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                    {% for record in fumen_records %}
-                        {% if request.session.user_name == record.accountname %}
-                            <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
-                                <div class="row" style="padding:10px">
-                                    <div class="container col-md-1 align-self-center">
-                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
-                                    </div>
-                                    <div class="container col-md-1 align-self-center">
-                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        {% if record.rank == "EXC" %}
-                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
-                                        {% elif record.rank == "S" %}
-                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
-                                        {% else %}
-                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if record.ar != 0.0 %}
-                                            <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.ar }}%</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.sr }}%</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if record.jr != -1 %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
-                                <div class="row" style="padding:10px">
-                                    <div class="container col-md-1 align-self-center">
-                                        <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
-                                    </div>
-                                    <div class="container col-md-1 align-self-center">
-                                        <img src="https://chilundui.com/data/rbdx/image/song/{{ record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
-                                    </div>
-                                    <div class="container col-md-2 align-self-center">
-                                        {% if record.rank == "EXC" %}
-                                            <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
-                                        {% elif record.rank == "S" %}
-                                            <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
-                                        {% else %}
-                                            <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if record.ar != 0.0 %}
-                                            <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.ar }}%</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.sr }}%</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        {% if record.jr != -1 %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
-                                        {% else %}
-                                            <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
-                                        {% endif %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
-                                    </div>
-                                    <div class="container col-md-2">
-                                        <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    {% if user_best_record %}
+                    {% if result.fumen_player_best_record %}
+                        <h5 class="card-title" style="font-size:16px;">我的 / My best rank</h5>
                         <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
                             <div class="row" style="padding:10px">
                                 <div class="container col-md-1 align-self-center">
-                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ user_best_record.ranking }}</span></p>
+                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_player_best_record.ranking }}</span></p>
                                 </div>
                                 <div class="container col-md-1 align-self-center">
-                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ user_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_player_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
                                 </div>
                                 <div class="container col-md-2 align-self-center">
-                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ user_best_record.accountname }}">{{ user_best_record.accountname }}</a></span></p>
+                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ result.fumen_player_best_record.accountname }}">{{ result.fumen_player_best_record.accountname }}</a></span></p>
                                 </div>
                                 <div class="container col-md-2 align-self-center">
-                                    {% if user_best_record.rank == "EXC" %}
-                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
-                                    {% elif user_best_record.rank == "S" %}
-                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
+                                    {% if result.fumen_player_best_record.rank == "EXC" %}
+                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                    {% elif result.fumen_player_best_record.rank == "S" %}
+                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
                                     {% else %}
-                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ user_best_record.rank }}</strong></span></p>
+                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
                                     {% endif %}
                                 </div>
                                 <div class="container col-md-2">
-                                    {% if user_best_record.ar != 0.0 %}
-                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.ar }}%</span></p>
+                                    {% if result.fumen_player_best_record.ar != 0.0 %}
+                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.ar }}%</span></p>
                                     {% else %}
-                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.sr }}%</span></p>
+                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.sr }}%</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.score }}</span></p>
+                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.score }}</span></p>
                                 </div>
                                 <div class="container col-md-2">
-                                    {% if user_best_record.jr != -1 %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.jr }}</span></p>
+                                    {% if result.fumen_player_best_record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.jr }}</span></p>
                                     {% else %}
                                         <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ user_best_record.difficulty }}</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.difficulty }}</span></p>
                                 </div>
                                 <div class="container col-md-2">
-                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ user_best_record.logtime }}</small></p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                <div class="card-header" style="background-color:#d0c8c8;"><strong>我的游玩历史 / My play history</strong></div>
-                <div class="card-body">
-                    {% if best_player_record %}
-                        <h5 class="card-title" style="font-size:16px;">最高成绩 / Best play</h5>
-                        <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;">
-                            <div class="row" style="padding:10px">
-                                <div class="container col-md-2 align-self-center">
-                                    {% if best_player_record.rank == "EXC" %}
-                                        <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ best_player_record.rank }}</strong></span></p>
-                                    {% elif best_player_record.rank == "S" %}
-                                        <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ best_player_record.rank }}</strong></span></p>
-                                    {% else %}
-                                        <p class="card-text"><span style="color:grey;font-size:32px;"><strong>{{ best_player_record.rank }}</strong></span></p>
-                                    {% endif %}
-                                </div>
-                                <div class="container col-md-2">
-                                    {% if best_player_record.ar != 0.0 %}
-                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.ar }}%</span></p>
-                                    {% else %}
-                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.sr }}%</span></p>
-                                    {% endif %}
-                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.score }}</span></p>
-                                </div>
-                                <div class="container col-md-2">
-                                    {% if best_player_record.jr != -1 %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.jr }}</span></p>
-                                    {% else %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
-                                    {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ best_player_record.difficulty }}</span></p>
-                                </div>
-                                <div class="container col-md-2">
-                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ best_player_record.logtime }}</small></p>
+                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_player_best_record.logtime }}</small></p>
                                 </div>
                             </div>
                         </div>
                         <div class="border-top my-3"></div>
                     {% endif %}
-                    {% if player_records %}
+                    <h5 class="card-title" style="font-size:16px;">排行榜 / Ranks</h5>
+                    {% if result.fumen_best_record %}
+                        {% if request.session.user_name == result.fumen_best_record.accountname %}
+                        <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
+                        {% else %}
+                        <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;">
+                        {% endif %}
+                            <div class="row" style="padding:10px">
+                                <div class="container col-md-1 align-self-center">
+                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_best_record.ranking }}</span></p>
+                                </div>
+                                <div class="container col-md-1 align-self-center">
+                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ result.fumen_best_record.accountname }}">{{ result.fumen_best_record.accountname }}</a></span></p>
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    {% if result.fumen_best_record.rank == "EXC" %}
+                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ result.fumen_best_record.rank }}</strong></span></p>
+                                    {% elif result.fumen_best_record.rank == "S" %}
+                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ result.fumen_best_record.rank }}</strong></span></p>
+                                    {% else %}
+                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ result.fumen_best_record.rank }}</strong></span></p>
+                                    {% endif %}
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if result.fumen_best_record.ar != 0.0 %}
+                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.ar }}%</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.sr }}%</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.score }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if result.fumen_best_record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.jr }}</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.difficulty }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_best_record.logtime }}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% for record in result.fumen_records %}
+                        {% if request.session.user_name == record.accountname %}
+                        <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
+                        {% else %}
+                        <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
+                        {% endif %}
+                            <div class="row" style="padding:10px">
+                                <div class="container col-md-1 align-self-center">
+                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
+                                </div>
+                                <div class="container col-md-1 align-self-center">
+                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    {% if record.rank == "EXC" %}
+                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                    {% elif record.rank == "S" %}
+                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                    {% else %}
+                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ record.rank }}</strong></span></p>
+                                    {% endif %}
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if record.ar != 0.0 %}
+                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.ar }}%</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.sr }}%</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ record.score }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ record.jr }}</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
+                <div class="card-header" style="background-color:#d0c8c8;"><strong>我的游玩历史 / My play history</strong></div>
+                <div class="card-body">
+                    {% if result.fumen_player_best_record %}
+                        <h5 class="card-title" style="font-size:16px;">最高成绩 / Best play</h5>
+                        <div class="card mb-3" style="max-width:100rem;background-color:gold;border-color:gold;">
+                            <div class="row" style="padding:10px">
+                                <div class="container col-md-1 align-self-center">
+                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_player_best_record.ranking }}</span></p>
+                                </div>
+                                <div class="container col-md-2 align-self-center">
+                                    {% if result.fumen_player_best_record.rank == "EXC" %}
+                                        <p class="card-text"><span style="color:#715fd3;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                    {% elif result.fumen_player_best_record.rank == "S" %}
+                                        <p class="card-text"><span style="color:#20a6df;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                    {% else %}
+                                        <p class="card-text"><span style="color:grey;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                    {% endif %}
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if result.fumen_player_best_record.ar != 0.0 %}
+                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.ar }}%</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.sr }}%</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.score }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    {% if result.fumen_player_best_record.jr != -1 %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.jr }}</span></p>
+                                    {% else %}
+                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.difficulty }}</span></p>
+                                </div>
+                                <div class="container col-md-2">
+                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_player_best_record.logtime }}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top my-3"></div>
+                    {% endif %}
+                    {% if result.fumen_player_records %}
                         <h5 class="card-title" style="font-size:16px;">历史成绩 / Play history</h5>
-                        {% for record in player_records %}
+                        {% for record in result.fumen_player_records %}
                             <div class="card mb-3" style="max-width:100rem;background-color:#cae8e8;border-color:#cae8e8;">
                                 <div class="row" style="padding:10px">
                                     <div class="container col-md-2 align-self-center">
@@ -374,16 +307,18 @@
             <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>评论信息 / Comments</strong></div>
                 <div class="card-body">
-                    {% if comments %}
-                        {% for comment in comments %}
+                    {% if result.fumen_comments %}
+                        {% for comment in result.fumen_comments %}
                             <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
                                 <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
-                                        <form class="form-inline my-12 my-lg-0" action="/fumen/delete_comment" method="get">
+                                        <form class="form-inline my-12 my-lg-0" action="/fumen/delete_fumen_comment" method="get">
                                             <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" style="font-size:14px;" value={{ data.songid }}  readonly>
+                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" style="font-size:14px;" value={{ result.fumen.songid }}  readonly>
+                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="difficulty" value={{ result.fumen.difficulty }}  readonly>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
                                             <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" style="font-size:14px;" value={{ comment.id }}  readonly>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
@@ -404,10 +339,12 @@
                 <div class="card-body">
                     <div class="card text-black mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;border-color:bisque;">
                         <div class="card-body">
-                            <form class="form-inline my-12 my-lg-0" action="/fumen/comment_on_fumen" method="get">
+                            <form class="form-inline my-12 my-lg-0" action="/fumen/create_fumen_comment" method="get">
                                 <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论 / Input comment"></textarea>
                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ data.songid }}  readonly>
+                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="difficulty" value={{ result.fumen.difficulty }}  readonly>
+                                <div>&nbsp&nbsp&nbsp&nbsp</div>
+                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ result.fumen.songid }}  readonly>
                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
                             </form>

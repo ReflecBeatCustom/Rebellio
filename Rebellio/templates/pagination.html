@@ -1,21 +1,21 @@
 <div class="mr-sm-2"><strong>每页显示数量:</strong></div>
 <select class="form-control mr-sm-2" name="page_size">
-    {% if page_size == 10 %}
+    {% if result.pagination_info.page_size == 10 %}
         <option value=10 selected>10</option>
     {% else %}
         <option value=10>10</option>
     {% endif %}
-    {% if page_size == 20 %}
+    {% if result.pagination_info.page_size == 20 %}
         <option value=20 selected>20</option>
     {% else %}
         <option value=20>20</option>
     {% endif %}
-    {% if page_size == 50 %}
+    {% if result.pagination_info.page_size == 50 %}
         <option value=50 selected>50</option>
     {% else %}
         <option value=50>50</option>
     {% endif %}
-    {% if page_size == 100 %}
+    {% if result.pagination_info.page_size == 100 %}
         <option value=100 selected>100</option>
     {% else %}
         <option value=100>100</option>
@@ -24,8 +24,8 @@
 <div class="mr-sm-2"><strong> 第</strong></div>
 <div id="page-selector">
     <select class="form-control mr-sm-2" name="start_page">
-        {% for i in pages %}
-            {% if i == start_page %}
+        {% for i in result.pagination_info.pages %}
+            {% if i == result.pagination_info.start_page %}
                 <option value={{ i }} selected>{{ i }}</option>
             {% else %}
                 <option value={{ i }}>{{ i }}</option>
@@ -33,5 +33,5 @@
         {% endfor %}
     </select>
 </div>
-<div class="mr-sm-2">/{{ total_page }}页</div>
-<div class="mr-sm-2"><strong> 共 </strong>{{ total }}<strong> 条记录</strong></div>
+<div class="mr-sm-2">/{{ result.pagination_info.total_page }}页</div>
+<div class="mr-sm-2"><strong> 共 </strong>{{ result.pagination_info.total }}<strong> 条记录</strong></div>

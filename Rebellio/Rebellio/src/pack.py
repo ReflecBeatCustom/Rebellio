@@ -1,73 +1,95 @@
 import math
 from .. import models
+from . import utils
+from .types import pack_types
 from django.db.models import Q
 
-def set_return_result(result, sub_page, total, keyword, category, start_page, page_size, total_page, pages):
-    """
-    设置返回值使其携带传入的参数(使页面更美观，用户使用更方便)
-    """
-    result[sub_page] = 'active'
-    result['sub_page'] = sub_page
-    result['keyword'] = keyword
-    result['category'] = category
-    result['start_page'] = start_page
-    result['page_size'] = page_size
-    result['total_page'] = total_page
-    result['total'] = total
-    result['pages'] = pages
 
-def get_packs_format(packs):
-    """
-    格式化曲包的格式，得到曲包的谱面信息
-    """
-    result = []
-    for i in range(len(packs)):
-        pack_id = int(packs[i].packid)
-        category = int(packs[i].category)
-        fumens = models.Songs.objects.filter(Q(packid=pack_id) & Q(category=category))
-        # 设置日期格式
-        packs[i].createtime = packs[i].createtime.strftime('%Y年%m月%d日')
-        result.append({'pack': packs[i], 'fumens': fumens})
-    return result
+default_show_count = 10
 
-def get_packs(user_access_level, start_page, page_size, keyword, category):
+
+def get_packs(session_info, pagination_info, get_packs_params):
     sql = "SELECT * FROM Packs WHERE 1=1"
-    if keyword != '':
-        sql += " AND Title LIKE '%%{0}%%'".format(keyword)
-    if user_access_level == 0 and category > 0:
+    if get_packs_params.keyword != '':
+        sql += " AND Title LIKE '%%{0}%%'".format(get_packs_params.keyword)
+    if session_info.user_access_level < 1 and get_packs_params.category > 0:
         sql += " AND Category = 0"
     else:
-        sql += " AND Category = {0}".format(category)
+        sql += " AND Category = {0}".format(get_packs_params.category)
     sql += " ORDER BY CreateTime DESC"
-    packs = models.Packs.objects.raw(sql)
-    if len(packs) != 0:
-        packs = get_packs_format(packs)
 
-    total = len(packs)
-    total_page = math.floor(len(packs) / page_size) + 1
-    pages = [i + 1 for i in range(total_page)]
-    
-    if (start_page - 1) * page_size < len(packs):
-        start_index = (start_page - 1) * page_size
-    else:
-        start_index = 0
-        start_page = 1
-    end_index = min(start_index + page_size, len(packs))
+    unpagination_packs = models.Packs.objects.raw(sql)
+    unformated_packs, pagination_info = utils.get_pagination_result(unpagination_packs, pagination_info)
+    packs = utils.get_formated_packs(unformated_packs, [2,3])
 
-    return packs[start_index:end_index], total, total_page, pages, start_page
+    get_packs_response = pack_types.GetPacksResponse(get_packs_params, packs, pagination_info)
 
-def get_pack(user_access_level, pack_id, category):
+    return get_packs_response
+
+
+def get_pack(session_info, get_pack_params):
     """
     根据曲包id得到曲包信息
     """
-    if pack_id == 0:
+    if get_pack_params.pack_id == 0:
         return None
-    packs = []
-    if user_access_level == 0:
-        packs = models.Packs.objects.filter(Q(packid=pack_id) & Q(category__lte=0))
+
+    if session_info.user_access_level == 0:
+        unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category__lte=0))
     else:
-        packs = models.Packs.objects.filter(Q(packid=pack_id) & Q(category=category))
+        unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category=get_pack_params.category))
+
+    # 得到曲包结果
+    packs = utils.get_formated_packs(unformated_packs)
     if len(packs) == 0:
         return None
-    packs = get_packs_format(packs)
-    return packs[0]
+    pack = packs[0]
+
+    # 得到用户谱面上的最高分
+    for i in range(len(pack.fumens)):
+        fumen_id = pack.fumens[i].songid
+        records = models.Playrecords.objects.raw(
+            "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
+                fumen_id, session_info.user_name, pack.fumens[i].difficulty))
+        if len(records) == 0:
+            continue
+        best_record = records[0]
+        rate = best_record.ar if best_record.ar != 0.0 else best_record.sr
+        best_record.rank = utils.get_rank_from_rate(rate)
+        best_record.rate = utils.get_percentage_from_rate(rate)
+        pack.fumens[i].best_record = best_record
+
+    # 获得曲包的评论
+    pack_comments = get_pack_comments(pack.packid, get_pack_params.is_show_all_pack_comments)
+
+    get_pack_response = pack_types.GetPackResponse(get_pack_params, pack, pack_comments)
+
+    return get_pack_response
+
+
+def parse_get_packs_params(request):
+    keyword = request.GET.get('keyword', '')
+    category = request.GET.get('category', 0)
+    get_packs_params = pack_types.GetPacksParams(keyword, category)
+    return get_packs_params
+
+
+def parse_get_pack_params(request):
+    pack_id = int(request.GET.get('pack_id', 0))
+    category = int(request.GET.get('category', 0))
+    is_show_all_pack_comments = bool(request.GET.get('is_show_all_pack_comments', False))
+    get_pack_params = pack_types.GetPackParams(pack_id, category, is_show_all_pack_comments)
+    return get_pack_params
+
+
+def get_pack_comments(pack_id, is_show_all_comments):
+    comments = models.Playerpackcomments.objects.filter(Q(packid=pack_id)).order_by('-createtime')
+    if len(comments) == 0:
+        return comments
+
+    for i in range(len(comments)):
+        comments[i].createtime = comments[i].createtime.strftime('%Y-%m-%d %H:%M:%S')
+
+    start_index = 0
+    end_index = default_show_count if not is_show_all_comments and len(comments) >= default_show_count else len(comments)
+    return comments[start_index:end_index]

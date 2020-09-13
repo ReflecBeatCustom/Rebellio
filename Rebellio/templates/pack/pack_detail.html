@@ -7,12 +7,12 @@
         {% include 'pack/pack_navigator.html' %}
         <div class="p-2 bd-highlight col-sm-11">
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                <strong class="card-header" style="background-color:#d0c8c8;">{{ data.pack.title }}</strong>
+                <strong class="card-header" style="background-color:#d0c8c8;">{{ result.pack.title }}</strong>
                 <div class="card-body">
                     <div class="fumen-details-content">
-                        <h4>{{ data.pack.comment }}</h4>
-                        <p class="card-text" style="font-size:16px;"><strong>创建时间 / Create time:&nbsp&nbsp&nbsp&nbsp</strong>{{ data.pack.createtime }}</p>
-                        {% for fumen in data.fumens %}
+                        <h4>{{ result.pack.comment }}</h4>
+                        <p class="card-text" style="font-size:16px;"><strong>创建时间 / Create time:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.pack.createtime }}</p>
+                        {% for fumen in result.pack.fumens %}
                             {% include 'fumen/fumen_card.html' %}
                         {% endfor %}
                         </blockquote>
@@ -22,8 +22,8 @@
             <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>评论信息 / Comments</strong></div>
                 <div class="card-body">
-                    {% if comments %}
-                        {% for comment in comments %}
+                    {% if result.pack_comments %}
+                        {% for comment in result.pack_comments %}
                             <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
                                 <div class="card-header" style="font-size:14px;"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 <div class="card-body">
@@ -31,7 +31,7 @@
                                         <form class="form-inline my-12 my-lg-0" action="/pack/delete_comment" method="get">
                                             <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" style="font-size:14px;" value={{ data.pack.packid }}  readonly>
+                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" style="font-size:14px;" value={{ result.pack.packid }}  readonly>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
                                             <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" style="font-size:14px;" value={{ comment.id }}  readonly>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
@@ -55,7 +55,7 @@
                             <form class="form-inline my-12 my-lg-0" action="/pack/comment_on_pack" method="get">
                                 <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论 / Input comment"></textarea>
                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" value={{ data.pack.packid }}  readonly>
+                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" value={{ result.pack.packid }}  readonly>
                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
                             </form>

@@ -1,6 +1,6 @@
 import math
 from .. import models
-from . import fumen
+from . import utils
 from django.db.models import Q
 
 need_vote_level = 10
@@ -76,16 +76,20 @@ def get_subdiff_vote(user_name, user_access_level):
         result.append({'title': title, 'difficulty': difficulty, 'level': level, 'fumen_id': fumen_id, 'avg_level': avg_level, 'subdiff_votes': subdiff_votes})
     return result
 
-def get_advice_fumens(user_access_level):
+def get_advice_fumens():
     """
     获得当前审核列表的谱面
     """
-    if user_access_level < 1:
-        return None
+    unformated_fumens = models.Songs.objects.filter(Q(category=1))
 
-    fumens = models.Songs.objects.filter(Q(category=1))
-    fumen.set_fumens_format(fumens)
-    return fumens
+    advice_fumens = []
+    for fumen in unformated_fumens:
+        if fumen.diffsp != 0:
+            advice_fumens.extend(utils.get_formated_fumens([fumen], [3]))
+        else:
+            advice_fumens.extend(utils.get_formated_fumens([fumen], [2]))
+
+    return advice_fumens
 
 def add_subdiff_vote_fumen(user_access_level, fumen_id):
     """

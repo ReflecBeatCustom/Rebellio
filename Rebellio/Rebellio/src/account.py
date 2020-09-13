@@ -86,18 +86,6 @@ def get_pack_comments(pack_id, is_show_all_comments):
     end_index = default_show_count if is_show_all_comments == 0 and len(comments) >= default_show_count else len(comments)
     return comments[start_index:end_index]
 
-def comment_on_fumen(fumen_id, user_name, user_access_level, comment):
-    sql = "SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {2}".format(user_access_level, user_name, fumen_id)
-    fumens = models.Songs.objects.raw(sql)
-    if len(fumens) == 0:
-        return False
-    if comment == '':
-        return False
-
-    comment = models.Playersongcomments(accountname=user_name, songid=fumen_id, comment=comment)
-    comment.save()
-    return True
-
 def comment_on_pack(pack_id, user_name, user_access_level, comment):
     sql = "SELECT * FROM Packs WHERE PackID = {0}".format(pack_id)
     if user_access_level == 0:

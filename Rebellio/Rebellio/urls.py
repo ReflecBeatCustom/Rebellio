@@ -28,11 +28,12 @@ urlpatterns = [
     path('logout/', views.logout),
     # 谱面
     path('fumen/fumens/', views.get_fumens),
-    path('fumen/unlocked_fumen/', views.get_unlocked_fumens),
-    path('fumen/own_fumen/', views.get_own_fumens),
+    path('fumen/unlocked_fumens/', views.get_unlocked_fumens),
+    path('fumen/own_fumens/', views.get_own_fumens),
     path('fumen/fumen_detail/', views.get_fumen),
-    path('fumen/comment_on_fumen/', views.comment_on_fumen),
-    path('fumen/delete_comment/', views.delete_fumen_comment),
+    path('fumen/create_fumen_comment/', views.create_fumen_comment),
+    path('fumen/update_fumen_comment/', views.update_fumen_comment),
+    path('fumen/delete_fumen_comment/', views.delete_fumen_comment),
     # 曲包
     path('pack/packs/', views.get_packs),
     path('pack/pack_detail/', views.get_pack),

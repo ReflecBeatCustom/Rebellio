@@ -27,7 +27,7 @@
                     <br>
                     {% if request.session.user_access_level >= 1 %}
                         <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">上传者:&nbsp</h5>
-                        <p class="card-text" style="color: #6e2b2b; display: inline;">{{ fumen.creator }}</a></p>
+                        <p class="card-text" style="color: #6e2b2b; display: inline;">{{ fumen.creator }}</p>
                         <br>
                     {% endif %}
                     <p class="card-text my-3"><small class="text-muted">{{ fumen.createtime }}</small></p>

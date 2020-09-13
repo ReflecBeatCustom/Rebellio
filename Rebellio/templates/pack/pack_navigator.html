@@ -1,12 +1,24 @@
 <div class="p-2 bd-highlight col-sm-1">
     <ul class="nav flex-column nav-pills">
+        {% if name == 'packs' %}
         <li class="nav-item">
-            <a class="nav-link {{ packs }}" href="/pack/packs">曲包一览</a>
+            <a class="nav-link active" href="/pack/packs">曲包一览</a>
         </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="/pack/packs">曲包一览</a>
+        </li>
+        {% endif %}
         {% if request.session.user_access_level >= 3 %}
-        <li class="nav-item">
-            <a class="nav-link {{ create_pack }} disabled" href="/#">创建曲包</a>
-        </li>
+            {% if name == 'create_pack' %}
+            <li class="nav-item">
+                <a class="nav-link active disabled" href="/#">创建曲包</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/#">创建曲包</a>
+            </li>
+            {% endif %}
         {% endif %}
     </ul>
 </div>

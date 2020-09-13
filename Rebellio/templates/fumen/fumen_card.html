@@ -1,42 +1,75 @@
-<div class="card mb-4" style="max-width: 100rem; height: 240px;">
+{% if not fumen.best_record %}
+<div class="card mb-4" style="width:auto;height:auto;background-color:#d9d9d9;border-color:#d9d9d9;">
+{% else %}
+    {% if fumen.best_record.rate >= 98 %}
+    <div class="card mb-4" style="width:auto;height:auto;background-color:#ff8080;border-color:#ff8080;">
+    {% elif fumen.best_record.rate >= 95 %}
+    <div class="card mb-4" style="width:auto;height:auto;background-color:#ffff99;border-color:#ffff99;">
+    {% else %}
+    <div class="card mb-4" style="width:auto;height:auto;background-color:#d9d9d9;border-color:#d9d9d9;">
+    {% endif %}
+{% endif %}
     <div class="row no-gutters">
-        <div class="col-md-3" style="max-width:240px;height:240px;">
-            <a href="/fumen/fumen_detail?fumen_id={{ fumen.songid }}"><img src="https://chilundui.com/data/rbdx/image/song/{{ fumen.songid }}.png" class="card-img" alt="{{ fumen.title }}"></a>
+        <div class="col-md-2" style="width:auto;height:auto;">
+            <a href="/fumen/fumen_detail?fumen_id={{ fumen.songid }}&difficulty={{ fumen.difficulty }}"><img src="https://chilundui.com/data/rbdx/image/song/{{ fumen.songid }}.png" class="card-img" alt="{{ fumen.title }}" style="align-items:center;justify-content:center;width:100%;height:auto"></a>
         </div>
-        <div class="rows">
-            <div class="d-flex flex-row bd-highlight mb-11" id="fumen-info">
-                <div class="card-body">
-                    <a href="/fumen/fumen_detail?fumen_id={{ fumen.songid }}"><h4 class="card-title" style="color: #5f2525;">{{ fumen.title }}</h4></a>
-                    <a href="/fumen/{{ sub_page }}?keyword={{ fumen.artist }}"><p class="card-text my-3"><small class="text-muted"><strong>{{ fumen.artist }}</strong></small></p></a>
-                    <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">做谱人:&nbsp</h5>
-                    {% if fumen.diffsp != 0 %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;">- / - / - / <a href="/fumen/{{ sub_page }}?fumen_creator={{ fumen.chartauthor }}">{{ fumen.chartauthor }}</a></p>
-                    {% else %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/fumen/{{ sub_page }}?fumen_creator={{ fumen.chartauthorb }}">{{ fumen.chartauthorb }}</a> / <a href="/fumen/{{ sub_page }}?fumen_creator={{ fumen.chartauthorm }}">{{ fumen.chartauthorm }}</a> / <a href="/fumen/{{ sub_page }}?fumen_creator={{ fumen.chartauthor }}">{{ fumen.chartauthor }}</a></p>
-                    {% endif %}
+        <div class="col-md-3 justify-content-start">
+            <div class="card-body">
+                <a href="/fumen/fumen_detail?fumen_id={{ fumen.songid }}&difficulty={{ fumen.difficulty }}"><h4 class="card-title" style="color: #5f2525;">{{ fumen.title }}</h4></a>
+                <a href="/fumen/{{ name }}?keyword={{ fumen.artist }}"><p class="card-text my-3"><small class="text-muted"><strong>{{ fumen.artist }}</strong></small></p></a>
+                <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">做谱人:&nbsp</h5>
+                <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/fumen/{{ name }}?fumen_creator={{ fumen.chartauthor }}">{{ fumen.chartauthor }}</a></p>
+                <br>
+                <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">难度:&nbsp</h5>
+                <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/fumen/{{ name }}?level={{ fumen.diff }}">{{ fumen.diff }}</a></p>
+                <br>
+                <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">曲包:&nbsp</h5>
+                {% if fumen.packid != 0 %}
+                    <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/pack/pack_detail?pack_id={{ fumen.packid }}&category={{ fumen.category }}">{{ fumen.packid }}</a></p>
+                {% else %}
+                    <p class="card-text" style="color: #6e2b2b; display: inline;">无曲包</p>
+                {% endif %}
+                <br>
+                {% if request.session.user_access_level >= 1 %}
+                    <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">上传者:&nbsp</h5>
+                    <p class="card-text" style="color: #6e2b2b; display: inline;">{{ fumen.creator }}</p>
                     <br>
-                    <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">难度:&nbsp</h5>
-                    {% if fumen.diffsp != 0 %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;">- / - / - / <a href="/fumen/{{ sub_page }}?level={{ fumen.diffsp }}">{{ fumen.diffsp }}</a></p>
-                    {% else %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/fumen/{{ sub_page }}?level={{ fumen.diffb }}">{{ fumen.diffb }}</a> / <a href="/fumen/{{ sub_page }}?level={{ fumen.diffm }}">{{ fumen.diffm }}</a> / <a href="/fumen/{{ sub_page }}?level={{ fumen.diffh }}">{{ fumen.diffh }}</a></p>
-                    {% endif %}
-                    <br>
-                    <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">曲包:&nbsp</h5>
-                    {% if fumen.packid != 0 %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;"><a href="/pack/pack_detail?pack_id={{ fumen.packid }}&category={{ fumen.category }}">{{ fumen.packid }}</a></p>
-                    {% else %}
-                        <p class="card-text" style="color: #6e2b2b; display: inline;">无曲包</p>
-                    {% endif %}
-                    <br>
-                    {% if request.session.user_access_level >= 1 %}
-                        <h5 class="card-title my-3" style="font-size: 16px ;color: #5f2525; display: inline;">上传者:&nbsp</h5>
-                        <p class="card-text" style="color: #6e2b2b; display: inline;">{{ fumen.creator }}</a></p>
-                        <br>
-                    {% endif %}
-                    <p class="card-text my-3"><small class="text-muted">{{ fumen.createtime }}</small></p>
-                </div>
+                {% endif %}
+                <p class="card-text my-3"><small class="text-muted">{{ fumen.createtime }}</small></p>
             </div>
         </div>
+        <div class="col-md-3 align-self-center justify-content-start">
+            {% if fumen.difficulty == 0 %}
+            <p style="font-size:32px;color:#19A403;"><strong>BASIC</strong></p>
+            {% elif fumen.difficulty == 1 %}
+            <p style="font-size:32px;color:#FF8A01"><strong>MEDIUM</strong></p>
+            {% elif fumen.difficulty == 2 %}
+            <p style="font-size:32px;color:#F30A0A;"><strong>HARD</strong></p>
+            {% else %}
+            <p style="font-size:32px;color:#00D2E9;"><strong>SPECIAL</strong></p>
+            {% endif %}
+        </div>
+        <div class="col-md-3 align-self-center justify-content-start">
+            {% if fumen.best_record %}
+                {% if fumen.best_record.rank == 'EXC' %}
+                <p style="font-size:32px;display:inline;color:#715fd3;"><strong>{{ fumen.best_record.rank }}</strong></p>
+                {% elif fumen.best_record.rank == 'S' %}
+                <p style="font-size:32px;display:inline;color:#20a6df;"><strong>{{ fumen.best_record.rank }}</strong></p>
+                {% elif fumen.best_record.rank == 'AAA+' %}
+                <p style="font-size:32px;display:inline;color:#75b9d7"><strong>{{ fumen.best_record.rank }}</strong></p>
+                {% else %}
+                <p style="font-size:32px;display:inline;color:grey"><strong>{{ fumen.best_record.rank }}</strong></p>
+                {% endif %}
+            <br>
+            <p style="font-size:18px;display:inline;">Rate:&nbsp</p>
+            <p style="font-size:18px;display:inline;">{{ fumen.best_record.rate }}%</p>
+            <br>
+            <p style="font-size:18px;display:inline;">Score:&nbsp</p>
+            <p style="font-size:18px;display:inline;">{{ fumen.best_record.score }}</p>
+            <br>
+            <p style="font-size:18px;display:inline;">JR:&nbsp</p>
+            <p style="font-size:18px;display:inline;">{{ fumen.best_record.jr }}</p>
+            {% endif %}
+        </div>
     </div>
-  </div>
+</div>
