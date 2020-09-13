@@ -34,15 +34,6 @@ def get_user_high_scores(user_name, view_user_name, access_level):
         records[0].fumen = fumen
         # 设置日期格式
         records[0].logtime = records[0].logtime.strftime('%Y年%m月%d日 %H时%M分')
-        # 设置难度
-        if records[0].difficulty == 3 or (fumen.diffsp != 0 and records[0].difficulty == 0):
-            records[0].difficulty = "SPECIAL"
-        elif records[0].difficulty == 0:
-            records[0].difficulty = "BASIC"
-        elif records[0].difficulty == 1:
-            records[0].difficulty = "MEDIUM"
-        elif records[0].difficulty == 2:
-            records[0].difficulty = "HARD"
         # 设置AR,SR
         records[0].sr = float(str(records[0].sr * 100).split('.')[0] + '.' + str(records[0].sr * 100).split('.')[1][:2])
         records[0].ar = float(str(records[0].ar * 100).split('.')[0] + '.' + str(records[0].ar * 100).split('.')[1][:2])
@@ -94,15 +85,6 @@ def get_user_detail(user_name, view_user_name, access_level):
         recent_records[i].fumen = fumen
         # 设置日期格式
         recent_records[i].logtime = recent_records[i].logtime.strftime('%Y年%m月%d日 %H时%M分')
-        # 设置难度
-        if recent_records[i].difficulty == 3 or (fumen.diffsp != 0 and recent_records[i].difficulty == 0):
-            recent_records[i].difficulty = "SPECIAL"
-        elif recent_records[i].difficulty == 0:
-            recent_records[i].difficulty = "BASIC"
-        elif recent_records[i].difficulty == 1:
-            recent_records[i].difficulty = "MEDIUM"
-        elif recent_records[i].difficulty == 2:
-            recent_records[i].difficulty = "HARD"
         # 设置AR,SR
         recent_records[i].sr = float(str(recent_records[i].sr * 100).split('.')[0] + '.' + str(recent_records[i].sr * 100).split('.')[1][:2])
         recent_records[i].ar = float(str(recent_records[i].ar * 100).split('.')[0] + '.' + str(recent_records[i].ar * 100).split('.')[1][:2])

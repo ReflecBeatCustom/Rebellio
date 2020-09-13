@@ -182,7 +182,7 @@ def get_fumen_records(fumen_id, difficulty, is_show_all_fumen_records):
     得到所有玩家的游玩记录
     """
     unpagination_records = models.Playrecords.objects.raw(
-        "SELECT * FROM (SELECT AccountName, MAX(Score) AS Score, SongID, Difficulty, LogTime, JR, Note, SR, id, AR FROM Playrecords WHERE SongID = {0} AND Difficulty = {1} GROUP BY AccountName) AS a ORDER BY Score DESC, LogTime".format(
+        "SELECT * FROM (SELECT MAX(Score) AS Score, SongID, Difficulty, LogTime, MAX(JR) AS JR, Note, MAX(SR) AS SR, id, MAX(AR) AS AR FROM Playrecords WHERE SongID = {0} AND Difficulty = {1} GROUP BY AccountName) AS a ORDER BY Score DESC, LogTime".format(
             fumen_id, difficulty))
     if len(unpagination_records) == 0:
         return []
