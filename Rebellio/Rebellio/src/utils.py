@@ -103,12 +103,15 @@ def get_formated_fumens(fumens, difficultys=None):
 
 
         # 如果是special难度，直接添加
-        if fumen.diffsp != 0 and (difficultys is not None or 3 in difficultys):
-            fumen_special = copy.deepcopy(fumen)
-            fumen_special.difficulty = 3
-            fumen_special.diff = fumen_special.diffsp
-            fumen_special.chartauthor = fumen_special.chartauthor
-            formated_fumens.append(fumen_special)
+        if fumen.diffsp != 0:
+            if difficultys is not None and 3 not in difficultys:
+                pass
+            else:
+                fumen_special = copy.deepcopy(fumen)
+                fumen_special.difficulty = 3
+                fumen_special.diff = fumen_special.diffsp
+                fumen_special.chartauthor = fumen_special.chartauthor
+                formated_fumens.append(fumen_special)
             continue
 
         # 如果不是special难度，拆分为BASIC,MEDIUM,HARD

@@ -1,5 +1,4 @@
-MYIP="0.0.0.0"
-VOLTA_VERSION="v1.0.12"
+REBELLIO_VERSION = "v0.0.2"
 docker stop rebellio
 docker rm rebellio
-docker run --network=host -id --restart=always --name="rebellio" rebellio
+docker run --network=host -id --restart=always --name="rebellio" rebellio:${REBELLIO_VERSION}
