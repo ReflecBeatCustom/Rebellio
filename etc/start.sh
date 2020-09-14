@@ -1,4 +1,5 @@
-REBELLIO_VERSION = "v0.0.2"
+cd ..
+docker build -t rebellio .
 docker stop rebellio
 docker rm rebellio
-docker run --network=host -id --restart=always --name="rebellio" rebellio:${REBELLIO_VERSION}
+docker run --network=host -id --restart=always --name="rebellio" rebellio
