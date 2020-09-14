@@ -161,6 +161,8 @@ def get_formated_fumens(fumens, session_info):
         best_record.rate = get_percentage_from_rate(rate)
         fumen.best_record = best_record
 
+        formated_fumens.append(fumen)
+
     return formated_fumens
 
 

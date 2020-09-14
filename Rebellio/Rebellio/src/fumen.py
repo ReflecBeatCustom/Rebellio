@@ -44,10 +44,10 @@ def get_fumens(get_fumens_params, pagination_info, session_info):
 
     sql += ') AS result ORDER BY result.CreateTime DESC'
 
-    unpagination_fumens = models.Songs.objects.raw(sql)
-    unformatted_fumens, pagination_info = utils.get_pagination_result(unpagination_fumens, pagination_info)
-    difficulty_splitted_fumens = utils.get_difficulty_splitted_fumens(unformatted_fumens)
-    fumens = utils.get_formated_fumens(difficulty_splitted_fumens, session_info)
+    raw_fumens = models.Songs.objects.raw(sql)
+    difficulty_splitted_fumens = utils.get_difficulty_splitted_fumens(raw_fumens)
+    pagination_fumens, pagination_info = utils.get_pagination_result(difficulty_splitted_fumens, pagination_info)
+    fumens = utils.get_formated_fumens(pagination_fumens, session_info)
 
     get_fumens_response = fumen_types.GetFumensResponse(get_fumens_params, fumens, pagination_info)
 
@@ -70,6 +70,7 @@ def get_fumen(get_fumen_params, session_info):
     fumens = utils.get_formated_fumens(difficulty_splitted_fumens, session_info)
     if len(fumens) == 0:
         return None
+    fumen = fumens[0]
 
     # 得到用户的游玩记录
     fumen_player_records = get_fumen_player_records(get_fumen_params.fumen_id, get_fumen_params.difficulty,
@@ -90,7 +91,7 @@ def get_fumen(get_fumen_params, session_info):
     # 得到谱面的评论记录
     fumen_comments = get_fumen_comments(get_fumen_params.fumen_id, get_fumen_params.is_show_all_comments)
 
-    get_fumen_response = fumen_types.GetFumenResponse(get_fumen_params, fumens[0], fumen_records, fumen_best_record,
+    get_fumen_response = fumen_types.GetFumenResponse(get_fumen_params, fumen, fumen_records, fumen_best_record,
                                                       fumen_player_records, fumen_player_best_record, fumen_comments)
     return get_fumen_response
 
