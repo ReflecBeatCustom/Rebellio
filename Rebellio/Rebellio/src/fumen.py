@@ -46,21 +46,8 @@ def get_fumens(get_fumens_params, pagination_info, session_info):
 
     unpagination_fumens = models.Songs.objects.raw(sql)
     unformatted_fumens, pagination_info = utils.get_pagination_result(unpagination_fumens, pagination_info)
-    fumens = utils.get_formated_fumens(unformatted_fumens)
-
-    # 得到用户谱面上的最高分
-    for i in range(len(fumens)):
-        fumen_id = fumens[i].songid
-        records = models.Playrecords.objects.raw(
-            "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
-                fumen_id, session_info.user_name, fumens[i].difficulty))
-        if len(records) == 0:
-            continue
-        best_record = records[0]
-        rate = best_record.ar if best_record.ar != 0.0 else best_record.sr
-        best_record.rank = utils.get_rank_from_rate(rate)
-        best_record.rate = utils.get_percentage_from_rate(rate)
-        fumens[i].best_record = best_record
+    difficulty_splitted_fumens = utils.get_difficulty_splitted_fumens(unformatted_fumens)
+    fumens = utils.get_formated_fumens(difficulty_splitted_fumens, session_info)
 
     get_fumens_response = fumen_types.GetFumensResponse(get_fumens_params, fumens, pagination_info)
 
@@ -79,7 +66,8 @@ def get_fumen(get_fumen_params, session_info):
     if len(unformatted_fumens) == 0:
         return None
 
-    fumens = utils.get_formated_fumens(unformatted_fumens, [get_fumen_params.difficulty])
+    difficulty_splitted_fumens = utils.get_difficulty_splitted_fumens(unformatted_fumens, [get_fumen_params.difficulty])
+    fumens = utils.get_formated_fumens(difficulty_splitted_fumens, session_info)
     if len(fumens) == 0:
         return None
 

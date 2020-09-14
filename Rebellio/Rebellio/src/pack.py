@@ -20,7 +20,7 @@ def get_packs(session_info, pagination_info, get_packs_params):
 
     unpagination_packs = models.Packs.objects.raw(sql)
     unformated_packs, pagination_info = utils.get_pagination_result(unpagination_packs, pagination_info)
-    packs = utils.get_formated_packs(unformated_packs, [2,3])
+    packs = utils.get_formated_packs(unformated_packs, session_info, [2,3])
 
     get_packs_response = pack_types.GetPacksResponse(get_packs_params, packs, pagination_info)
 
@@ -40,7 +40,7 @@ def get_pack(session_info, get_pack_params):
         unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category=get_pack_params.category))
 
     # 得到曲包结果
-    packs = utils.get_formated_packs(unformated_packs)
+    packs = utils.get_formated_packs(unformated_packs, session_info)
     if len(packs) == 0:
         return None
     pack = packs[0]

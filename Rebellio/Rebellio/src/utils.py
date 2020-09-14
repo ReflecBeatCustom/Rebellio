@@ -45,7 +45,55 @@ def get_pagination_result(result, pagination_info):
     return result[start_index:end_index], pagination_info
 
 
-def get_formated_fumens(fumens, difficultys=None):
+def get_difficulty_splitted_fumens(fumens, difficultys=None):
+    difficulty_splitted_fumens = []
+    for fumen in fumens:
+        # 如果是special难度，直接添加
+        if fumen.diffsp != 0:
+            if difficultys is not None and 3 not in difficultys:
+                pass
+            else:
+                fumen_special = copy.deepcopy(fumen)
+                fumen_special.difficulty = 3
+                fumen_special.diff = fumen_special.diffsp
+                fumen_special.chartauthor = fumen_special.chartauthor
+                difficulty_splitted_fumens.append(fumen_special)
+            continue
+
+
+        # 如果不是special难度，拆分为BASIC,MEDIUM,HARD
+        fumen_basic = copy.deepcopy(fumen)
+        fumen_basic.difficulty = 0
+        fumen_basic.diff = fumen_basic.diffb
+        fumen_basic.chartauthor = fumen_basic.chartauthorb if fumen_basic.chartauthorb != '' else fumen_basic.chartauthor
+
+        fumen_medium = copy.deepcopy(fumen)
+        fumen_medium.difficulty = 1
+        fumen_medium.diff = fumen_medium.diffm
+        fumen_medium.chartauthor = fumen_medium.chartauthorm if fumen_medium.chartauthorm != '' else fumen_medium.chartauthor
+
+        fumen_hard = copy.deepcopy(fumen)
+        fumen_hard.difficulty = 2
+        fumen_hard.diff = fumen_hard.diffh
+        fumen_hard.chartauthor = fumen_hard.chartauthor
+
+        # 如果传递了difficulty参数，则返回指定难度
+        if difficultys is not None:
+            if 0 in difficultys:
+                difficulty_splitted_fumens.append(fumen_basic)
+            if 1 in difficultys:
+                difficulty_splitted_fumens.append(fumen_medium)
+            if 2 in difficultys:
+                difficulty_splitted_fumens.append(fumen_hard)
+        else:
+            difficulty_splitted_fumens.append(fumen_basic)
+            difficulty_splitted_fumens.append(fumen_medium)
+            difficulty_splitted_fumens.append(fumen_hard)
+
+    return difficulty_splitted_fumens
+
+
+def get_formated_fumens(fumens, session_info):
     """
     标准化谱面的格式
 
@@ -100,53 +148,23 @@ def get_formated_fumens(fumens, difficultys=None):
         # 设置日期格式
         fumen.createtime = fumen.createtime.strftime('%Y-%m-%d')
 
-
-
-        # 如果是special难度，直接添加
-        if fumen.diffsp != 0:
-            if difficultys is not None and 3 not in difficultys:
-                pass
-            else:
-                fumen_special = copy.deepcopy(fumen)
-                fumen_special.difficulty = 3
-                fumen_special.diff = fumen_special.diffsp
-                fumen_special.chartauthor = fumen_special.chartauthor
-                formated_fumens.append(fumen_special)
+        # 得到用户谱面上的最高分
+        fumen_id = fumen.songid
+        records = models.Playrecords.objects.raw(
+            "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
+                fumen_id, session_info.user_name, fumen.difficulty))
+        if len(records) == 0:
             continue
-
-        # 如果不是special难度，拆分为BASIC,MEDIUM,HARD
-        fumen_basic = copy.deepcopy(fumen)
-        fumen_basic.difficulty = 0
-        fumen_basic.diff = fumen_basic.diffb
-        fumen_basic.chartauthor = fumen_basic.chartauthorb if fumen_basic.chartauthorb != '' else fumen_basic.chartauthor
-
-        fumen_medium = copy.deepcopy(fumen)
-        fumen_medium.difficulty = 1
-        fumen_medium.diff = fumen_medium.diffm
-        fumen_medium.chartauthor = fumen_medium.chartauthorm if fumen_medium.chartauthorm != '' else fumen_medium.chartauthor
-
-        fumen_hard = copy.deepcopy(fumen)
-        fumen_hard.difficulty = 2
-        fumen_hard.diff = fumen_hard.diffh
-        fumen_hard.chartauthor = fumen_hard.chartauthor
-
-        # 如果传递了difficulty参数，则返回指定难度
-        if difficultys is not None:
-            if 0 in difficultys:
-                formated_fumens.append(fumen_basic)
-            if 1 in difficultys:
-                formated_fumens.append(fumen_medium)
-            if 2 in difficultys:
-                formated_fumens.append(fumen_hard)
-        else:
-            formated_fumens.append(fumen_basic)
-            formated_fumens.append(fumen_medium)
-            formated_fumens.append(fumen_hard)
+        best_record = records[0]
+        rate = best_record.ar if best_record.ar != 0.0 else best_record.sr
+        best_record.rank = get_rank_from_rate(rate)
+        best_record.rate = get_percentage_from_rate(rate)
+        fumen.best_record = best_record
 
     return formated_fumens
 
 
-def get_formated_packs(packs, difficultys=None):
+def get_formated_packs(packs, session_info, difficultys=None):
     """
     格式化曲包的格式，得到曲包的谱面信息
     """
@@ -155,7 +173,8 @@ def get_formated_packs(packs, difficultys=None):
         pack_id = pack.packid
         category = pack.category
         unformated_fumens = models.Songs.objects.filter(Q(packid=pack_id) & Q(category=category))
-        fumens = get_formated_fumens(unformated_fumens, difficultys)
+        difficulty_splitted_fumens = get_difficulty_splitted_fumens(unformated_fumens, difficultys)
+        fumens = get_formated_fumens(difficulty_splitted_fumens, session_info)
 
         pack.fumens = fumens
         formated_packs.append(pack)

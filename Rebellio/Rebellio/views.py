@@ -258,7 +258,9 @@ def get_subdiff_votes(request):
 @decorators.is_admin_decorator
 def get_advice_fumens(request):
 
-    fumens = inner.get_advice_fumens()
+    session_info = utils.get_session_info(request)
+
+    fumens = inner.get_advice_fumens(session_info)
     result = {'data': fumens, 'name': 'fumens'}
     return render(request, 'inner/advice_fumens.html', result)
 

@@ -76,7 +76,7 @@ def get_subdiff_vote(user_name, user_access_level):
         result.append({'title': title, 'difficulty': difficulty, 'level': level, 'fumen_id': fumen_id, 'avg_level': avg_level, 'subdiff_votes': subdiff_votes})
     return result
 
-def get_advice_fumens():
+def get_advice_fumens(session_info):
     """
     获得当前审核列表的谱面
     """
@@ -85,9 +85,11 @@ def get_advice_fumens():
     advice_fumens = []
     for fumen in unformated_fumens:
         if fumen.diffsp != 0:
-            advice_fumens.extend(utils.get_formated_fumens([fumen], [3]))
+            difficulty_splitted_fumens = utils.get_difficulty_splitted_fumens([fumen], [3])
+            advice_fumens.extend(utils.get_formated_fumens(difficulty_splitted_fumens, session_info))
         else:
-            advice_fumens.extend(utils.get_formated_fumens([fumen], [2]))
+            difficulty_splitted_fumens = utils.get_difficulty_splitted_fumens([fumen], [2])
+            advice_fumens.extend(utils.get_formated_fumens(difficulty_splitted_fumens, session_info))
 
     return advice_fumens
 
