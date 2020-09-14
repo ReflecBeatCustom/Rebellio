@@ -154,7 +154,9 @@ def get_formated_fumens(fumens, session_info):
             "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
                 fumen_id, session_info.user_name, fumen.difficulty))
         if len(records) == 0:
+            formated_fumens.append(fumen)
             continue
+
         best_record = records[0]
         rate = best_record.ar if best_record.ar != 0.0 else best_record.sr
         best_record.rank = get_rank_from_rate(rate)
