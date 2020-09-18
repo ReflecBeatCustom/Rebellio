@@ -26,7 +26,7 @@ def get_pagination_result(result, pagination_info):
     获得分页结果
     """
     if len(result) == 0:
-        return []
+        return [], pagination_info
 
     total = len(result)
     total_page = math.floor(len(result) / pagination_info.page_size) + 1

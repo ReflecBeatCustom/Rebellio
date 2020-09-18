@@ -61,8 +61,10 @@ def get_fumen(get_fumen_params, session_info):
     if get_fumen_params.fumen_id == 0:
         return None
 
-    unformatted_fumens = models.Songs.objects.filter(
-        Q(songid=get_fumen_params.fumen_id) & Q(accesslevel__lte=session_info.user_access_level))
+
+    sql = "SELECT DISTINCT * FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {2})".format(
+        session_info.user_access_level, session_info.user_name, get_fumen_params.fumen_id)
+    unformatted_fumens = models.Songs.objects.raw(sql)
     if len(unformatted_fumens) == 0:
         return None
 
