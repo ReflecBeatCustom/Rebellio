@@ -36,7 +36,6 @@
                                 <p class="card-text"><strong>作曲家 / Artist:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ result.fumen.artist }}'>{{ result.fumen.artist }}</a></p>
                                 <p class="card-text"><strong>做谱人 / Chart author:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ result.fumen.chartauthor }}'>{{ result.fumen.chartauthor }}</a></p>
                                 <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ result.fumen.diff }}">{{ result.fumen.diff }}</a></p>
-                                <p class="card-text"><strong>曲包 / Pack id:&nbsp&nbsp&nbsp&nbsp</strong><a href="/pack/pack_detail?packid={{ result.fumen.packid }}">{{ result.fumen.packid }}</a></p>
                                 {% if request.session.user_access_level >= 1 %}
                                     <p class="card-text"><strong>上传者 / Uploader:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.creator }}</p>
                                 {% endif %}
@@ -112,11 +111,19 @@
                                 </div>
                                 <div class="container col-md-2">
                                     {% if result.fumen_player_best_record.jr != -1 %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.jr }}</span></p>
+                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.jr }}</span></p>
                                     {% else %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.difficulty }}</span></p>
+                                    {% if result.fumen_player_best_record.difficulty == 0 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    {% elif result.fumen_player_best_record.difficulty == 1 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    {% elif result.fumen_player_best_record.difficulty == 2 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    {% else %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    {% endif %}
                                 </div>
                                 <div class="container col-md-2">
                                     <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_player_best_record.logtime }}</small></p>
@@ -161,11 +168,19 @@
                                 </div>
                                 <div class="container col-md-2">
                                     {% if result.fumen_best_record.jr != -1 %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.jr }}</span></p>
+                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.jr }}</span></p>
                                     {% else %}
-                                        <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_best_record.difficulty }}</span></p>
+                                    {% if result.fumen_best_record.difficulty == 0 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    {% elif result.fumen_best_record.difficulty == 1 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    {% elif result.fumen_best_record.difficulty == 2 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    {% else %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    {% endif %}
                                 </div>
                                 <div class="container col-md-2">
                                     <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_best_record.logtime }}</small></p>
@@ -212,7 +227,15 @@
                                     {% else %}
                                         <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
+                                    {% if record.difficulty == 0 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    {% elif record.difficulty == 1 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    {% elif record.difficulty == 2 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    {% else %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    {% endif %}
                                 </div>
                                 <div class="container col-md-2">
                                     <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
@@ -255,7 +278,15 @@
                                     {% else %}
                                         <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.difficulty }}</span></p>
+                                    {% if result.fumen_player_best_record.difficulty == 0 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    {% elif result.fumen_player_best_record.difficulty == 1 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    {% elif result.fumen_player_best_record.difficulty == 2 %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    {% else %}
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    {% endif %}
                                 </div>
                                 <div class="container col-md-2">
                                     <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_player_best_record.logtime }}</small></p>
@@ -292,7 +323,15 @@
                                         {% else %}
                                             <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                         {% endif %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:black;font-size:16px">{{ record.difficulty }}</span></p>
+                                        {% if record.difficulty == 0 %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                        {% elif record.difficulty == 1 %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                        {% elif record.difficulty == 2 %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                        {% else %}
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                        {% endif %}
                                     </div>
                                     <div class="container col-md-2">
                                         <p class="card-text"><small style="color:grey;font-size:12px">{{ record.logtime }}</small></p>
