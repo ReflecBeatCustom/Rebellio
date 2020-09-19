@@ -45,7 +45,8 @@ class CreateFumenCommentParams(object):
 
 
 class UpdateFumenCommentParams(object):
-    def __init__(self, comment_id, difficulty, comment):
+    def __init__(self, fumen_id, comment_id, difficulty, comment):
+        self.fumen_id = fumen_id
         self.comment_id = comment_id
         self.difficulty = difficulty
         self.comment = comment

@@ -11,6 +11,25 @@ class GetPackParams(object):
         self.is_show_all_pack_comments = is_show_all_pack_comments
 
 
+class CreatePackCommentParams(object):
+    def __init__(self, pack_id, comment):
+        self.pack_id = pack_id
+        self.comment = comment
+
+
+class UpdatePackCommentParams(object):
+    def __init__(self, pack_id, comment_id, comment):
+        self.pack_id = pack_id
+        self.comment_id = comment_id
+        self.comment = comment
+
+
+class DeletePackCommentParams(object):
+    def __init__(self, pack_id, comment_id):
+        self.pack_id = pack_id
+        self.comment_id = comment_id
+
+
 class GetPacksResponse(object):
     def __init__(self, get_packs_params, packs, pagination_info):
         self.get_packs_params = get_packs_params

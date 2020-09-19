@@ -181,33 +181,37 @@ def get_pack(request):
 
 
 @require_http_methods(['GET'])
-def comment_on_pack(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
+@decorators.is_login_decorator
+def create_pack_comment(request):
+    
+    session_info = utils.get_session_info(request)
+    create_pack_comment_params = pack.parse_create_pack_comment_params(request)
 
-    pack_id = int(request.GET.get('pack_id', 0))
-    comment = request.GET.get('comment', 0)
-    user_access_level = request.session.get('user_access_level', 0)
-    user_name = request.session.get('user_name', '')
+    _ = pack.create_pack_comment(session_info, create_pack_comment_params)
 
-    result = account.comment_on_pack(pack_id, user_name, user_access_level, comment)
-    return redirect('/pack/pack_detail?pack_id={0}'.format(pack_id))
+    return redirect('/pack/pack_detail?pack_id={0}'.format(create_pack_comment_params.pack_id))
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
+def update_pack_comment(request):
+
+    session_info = utils.get_session_info(request)
+    update_pack_comment_params = pack.parse_update_pack_comment_params(request)
+
+    _ = pack.update_pack_comment(update_pack_comment_params, session_info)
+    return redirect('/fumen/fumen_detail/?pack_id={0}'.format(update_pack_comment_params.pack_id))
+
+
+@require_http_methods(['GET'])
+@decorators.is_login_decorator
 def delete_pack_comment(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
+    
+    session_info = utils.get_session_info(request)
+    delete_pack_comment_params = pack.parse_delete_pack_comment_params(request)
 
-    pack_id = int(request.GET.get('pack_id', 0))
-    comment_id = int(request.GET.get('comment_id', 0))
-    comment_user_name = request.GET.get('user_name', '')
-    user_access_level = request.session.get('user_access_level', 0)
-    user_name = request.session.get('user_name', '')
-    if comment_user_name == user_name or user_access_level >= 3:
-        models.Playerpackcomments.objects.filter(id=comment_id).delete()
-
-    return redirect('/pack/pack_detail/?pack_id={0}'.format(pack_id))
+    _ = pack.delete_pack_comment(delete_pack_comment_params, session_info)
+    return redirect('/fumen/fumen_detail/?pack_id={0}'.format(delete_pack_comment_params.pack_id))
 
 
 """
@@ -345,17 +349,14 @@ def change_user_access_level(request):
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
 def search_user(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
-
     return render(request, 'user/user_search.html', {'search_user': 'active'})
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
 def get_user_detail(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
     user_name = request.GET.get('user_name', '')
     view_user_name = request.session.get('user_name', '')
@@ -370,9 +371,8 @@ def get_user_detail(request):
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
 def get_available_avatar(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
     user_name = request.session.get('user_name', '')
 
@@ -381,9 +381,8 @@ def get_available_avatar(request):
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
 def set_avatar(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
     user_name = request.session.get('user_name', '')
     avatar_id = request.GET.get('avatar_id', '')
@@ -393,9 +392,8 @@ def set_avatar(request):
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
 def user_info_set(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
     user_name = request.session.get('user_name', '')
     users = models.Accounts.objects.filter(accountname=user_name)
@@ -403,9 +401,8 @@ def user_info_set(request):
 
 
 @require_http_methods(['GET'])
+@decorators.is_login_decorator
 def set_user_info(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
     user_name = request.session.get('user_name', '')
     signature = request.GET.get('signature', '')

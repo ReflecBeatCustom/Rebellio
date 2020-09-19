@@ -37,8 +37,9 @@ urlpatterns = [
     # 曲包
     path('pack/packs/', views.get_packs),
     path('pack/pack_detail/', views.get_pack),
-    path('pack/comment_on_pack/', views.comment_on_pack),
-    path('pack/delete_comment/', views.delete_pack_comment),
+    path('pack/create_pack_comment/', views.create_pack_comment),
+    path('pack/update_pack_comment/', views.update_pack_comment),
+    path('pack/delete_pack_comment/', views.delete_pack_comment),
     # 玩家
     path('user/search_user/', views.search_user),
     path('user/user_detail/', views.get_user_detail),

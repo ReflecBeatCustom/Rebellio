@@ -61,41 +61,4 @@ def get_fumen_record(user_name, fumen_id, is_show_all_records):
     start_index = 0
     end_index = default_show_count if is_show_all_records == 0 and len(records) >= default_show_count else len(records)
     return best_record, records[start_index:end_index]
-
-def get_fumen_comments(fumen_id, is_show_all_comments):
-    comments = models.Playersongcomments.objects.filter(Q(songid=fumen_id)).order_by('-createtime')
-    if len(comments) == 0:
-        return comments
-
-    for i in range(len(comments)):
-        comments[i].createtime = comments[i].createtime.strftime('%Y年%m月%d日 %H:%M:%S')
-
-    start_index = 0
-    end_index = default_show_count if is_show_all_comments == 0 and len(comments) >= default_show_count else len(comments)
-    return comments[start_index:end_index]
-
-def get_pack_comments(pack_id, is_show_all_comments):
-    comments = models.Playerpackcomments.objects.filter(Q(packid=pack_id)).order_by('-createtime')
-    if len(comments) == 0:
-        return comments
-
-    for i in range(len(comments)):
-        comments[i].createtime = comments[i].createtime.strftime('%Y年%m月%d日 %H:%M:%S')
-
-    start_index = 0
-    end_index = default_show_count if is_show_all_comments == 0 and len(comments) >= default_show_count else len(comments)
-    return comments[start_index:end_index]
-
-def comment_on_pack(pack_id, user_name, user_access_level, comment):
-    sql = "SELECT * FROM Packs WHERE PackID = {0}".format(pack_id)
-    if user_access_level == 0:
-        sql += " AND category = 0"
-    packs = models.Packs.objects.raw(sql)
-    if len(packs) == 0:
-        return False
-    if comment == '':
-        return False
-
-    comment = models.Playerpackcomments(accountname=user_name, packid=pack_id, comment=comment)
-    comment.save()
-    return True
+    

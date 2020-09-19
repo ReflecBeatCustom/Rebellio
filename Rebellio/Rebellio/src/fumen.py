@@ -62,7 +62,7 @@ def get_fumen(get_fumen_params, session_info):
         return None
 
 
-    sql = "SELECT DISTINCT * FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {2})".format(
+    sql = "SELECT DISTINCT * FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}') AND s.SongID = {2}) AS a".format(
         session_info.user_access_level, session_info.user_name, get_fumen_params.fumen_id)
     unformatted_fumens = models.Songs.objects.raw(sql)
     if len(unformatted_fumens) == 0:
@@ -266,10 +266,11 @@ def parse_create_fumen_comment_params(request):
 
 
 def parse_update_fumen_comment_params(request):
+    fumen_id = int(request.GET.get('fumen_id', 0))
     comment_id = int(request.GET.get('comment_id', 0))
     difficulty = int(request.GET.get('difficulty', 0))
     comment = request.GET.get('comment', '')
-    update_fumen_comment_params = fumen_types.UpdateFumenCommentParams(comment_id, difficulty, comment)
+    update_fumen_comment_params = fumen_types.UpdateFumenCommentParams(fumen_id, comment_id, difficulty, comment)
     return update_fumen_comment_params
 
 

@@ -1,4 +1,5 @@
 import math
+from django.db import connection
 from .. import models
 from . import utils
 from .types import pack_types
@@ -67,6 +68,69 @@ def get_pack(session_info, get_pack_params):
     return get_pack_response
 
 
+def create_pack_comment(session_info, create_pack_comment_params):
+    if create_pack_comment_params.comment == '':
+        return False
+
+    sql = "SELECT * FROM Packs WHERE PackID = {0}".format(create_pack_comment_params.pack_id)
+    if session_info.user_access_level == 0:
+        sql += " AND category = 0"
+    packs = models.Packs.objects.raw(sql)
+    if len(packs) == 0:
+        return False
+
+    comment = models.Playerpackcomments(accountname=session_info.user_name, packid=create_pack_comment_params.pack_id, comment=create_pack_comment_params.comment)
+    comment.save()
+    return True
+
+
+def get_pack_comments(pack_id, is_show_all_comments):
+    comments = models.Playerpackcomments.objects.filter(Q(packid=pack_id)).order_by('-createtime')
+    if len(comments) == 0:
+        return comments
+
+    for i in range(len(comments)):
+        comments[i].createtime = comments[i].createtime.strftime('%Y-%m-%d %H:%M:%S')
+
+    start_index = 0
+    end_index = default_show_count if not is_show_all_comments and len(comments) >= default_show_count else len(comments)
+    return comments[start_index:end_index]
+
+
+def update_pack_comment(session_info, update_pack_comment_params):
+    if update_pack_comment_params.comment == '' or update_pack_comment_params.comment_id == 0:
+        return False
+
+    # 验证用户是否可以修改这个评论
+    cur = connection.cursor()
+    cur.execute("SELECT AccountName FROM PlayerPackComments WHERE id = {0}".format(update_pack_comment_params.comment_id))
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return False
+    if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
+        return False
+
+    models.Playerpackcomments.objects.filter(id=update_pack_comment_params.comment_id).update(comment=update_pack_comment_params.comment)
+    return True
+
+
+def delete_pack_comment(session_info, delete_pack_comment_params):
+    if delete_pack_comment_params.comment_id == 0:
+        return False
+
+    # 验证用户是否可以删除这个评论
+    cur = connection.cursor()
+    cur.execute("SELECT AccountName FROM PlayerPackComments WHERE id = {0}".format(delete_pack_comment_params.comment_id))
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return False
+    if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
+        return False
+
+    models.Playerpackcomments.objects.filter(id=delete_pack_comment_params.comment_id).delete()
+    return True
+
+
 def parse_get_packs_params(request):
     keyword = request.GET.get('keyword', '')
     category = request.GET.get('category', 0)
@@ -82,14 +146,23 @@ def parse_get_pack_params(request):
     return get_pack_params
 
 
-def get_pack_comments(pack_id, is_show_all_comments):
-    comments = models.Playerpackcomments.objects.filter(Q(packid=pack_id)).order_by('-createtime')
-    if len(comments) == 0:
-        return comments
+def parse_create_pack_comment_params(request):
+    pack_id = int(request.GET.get('pack_id', 0))
+    comment = request.GET.get('comment', 0)
+    create_pack_comment_params = pack_types.CreatePackCommentParams(pack_id, comment)
+    return create_pack_comment_params
 
-    for i in range(len(comments)):
-        comments[i].createtime = comments[i].createtime.strftime('%Y-%m-%d %H:%M:%S')
 
-    start_index = 0
-    end_index = default_show_count if not is_show_all_comments and len(comments) >= default_show_count else len(comments)
-    return comments[start_index:end_index]
+def parse_update_pack_comment_params(request):
+    pack_id = int(request.GET.get('pack_id', 0))
+    comment_id = int(request.GET.get('comment_id', 0))
+    comment = request.GET.get('comment', 0)
+    update_pack_comment_params = pack_types.UpdatePackCommentParams(pack_id, comment_id, comment)
+    return update_pack_comment_params
+
+
+def parse_delete_pack_comment_params(request):
+    pack_id = int(request.GET.get('pack_id', 0))
+    comment_id = int(request.GET.get('comment_id', 0))
+    delete_pack_comment_params = pack_types.DeletePackCommentParams(pack_id, comment_id)
+    return delete_pack_comment_params

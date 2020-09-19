@@ -28,7 +28,7 @@
                                 <div class="card-header" style="font-size:14px;"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
-                                        <form class="form-inline my-12 my-lg-0" action="/pack/delete_comment" method="get">
+                                        <form class="form-inline my-12 my-lg-0" action="/pack/delete_pack_comment" method="get">
                                             <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
                                             <div>&nbsp&nbsp&nbsp&nbsp</div>
                                             <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" style="font-size:14px;" value={{ result.pack.packid }}  readonly>
@@ -52,7 +52,7 @@
                 <div class="card-body">
                     <div class="card text-black mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;border-color:bisque;">
                         <div class="card-body">
-                            <form class="form-inline my-12 my-lg-0" action="/pack/comment_on_pack" method="get">
+                            <form class="form-inline my-12 my-lg-0" action="/pack/create_pack_comment" method="get">
                                 <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论 / Input comment"></textarea>
                                 <div>&nbsp&nbsp&nbsp&nbsp</div>
                                 <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" value={{ result.pack.packid }}  readonly>
