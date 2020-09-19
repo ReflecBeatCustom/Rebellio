@@ -45,7 +45,7 @@ def get_fumens(get_fumens_params, pagination_info, session_info):
     sql += ') AS result ORDER BY result.CreateTime DESC'
 
     raw_fumens = models.Songs.objects.raw(sql)
-    difficulty_splitted_fumens = [fumen for fumen in utils.get_difficulty_splitted_fumens(raw_fumens) if fumen.diff == get_fumens_params.fumen_level] # 筛选出指定难度的谱面
+    difficulty_splitted_fumens = [fumen for fumen in utils.get_difficulty_splitted_fumens(raw_fumens) if fumen.diff == get_fumens_params.fumen_level or get_fumens_params.fumen_level == 0] # 筛选出指定难度的谱面
     pagination_fumens, pagination_info = utils.get_pagination_result(difficulty_splitted_fumens, pagination_info)
     fumens = utils.get_formated_fumens(pagination_fumens, session_info)
 
