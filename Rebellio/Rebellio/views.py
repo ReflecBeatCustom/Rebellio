@@ -199,7 +199,7 @@ def update_pack_comment(request):
     session_info = utils.get_session_info(request)
     update_pack_comment_params = pack.parse_update_pack_comment_params(request)
 
-    _ = pack.update_pack_comment(update_pack_comment_params, session_info)
+    _ = pack.update_pack_comment(session_info, update_pack_comment_params)
     return redirect('/fumen/fumen_detail/?pack_id={0}'.format(update_pack_comment_params.pack_id))
 
 
@@ -210,7 +210,7 @@ def delete_pack_comment(request):
     session_info = utils.get_session_info(request)
     delete_pack_comment_params = pack.parse_delete_pack_comment_params(request)
 
-    _ = pack.delete_pack_comment(delete_pack_comment_params, session_info)
+    _ = pack.delete_pack_comment(session_info, delete_pack_comment_params)
     return redirect('/fumen/fumen_detail/?pack_id={0}'.format(delete_pack_comment_params.pack_id))
 
 
