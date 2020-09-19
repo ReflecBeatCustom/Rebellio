@@ -200,7 +200,7 @@ def update_pack_comment(request):
     update_pack_comment_params = pack.parse_update_pack_comment_params(request)
 
     _ = pack.update_pack_comment(session_info, update_pack_comment_params)
-    return redirect('/fumen/fumen_detail/?pack_id={0}'.format(update_pack_comment_params.pack_id))
+    return redirect('/pack/pack_detail/?pack_id={0}'.format(update_pack_comment_params.pack_id))
 
 
 @require_http_methods(['GET'])
@@ -211,7 +211,7 @@ def delete_pack_comment(request):
     delete_pack_comment_params = pack.parse_delete_pack_comment_params(request)
 
     _ = pack.delete_pack_comment(session_info, delete_pack_comment_params)
-    return redirect('/fumen/fumen_detail/?pack_id={0}'.format(delete_pack_comment_params.pack_id))
+    return redirect('/pack/pack_detail/?pack_id={0}'.format(delete_pack_comment_params.pack_id))
 
 
 """
