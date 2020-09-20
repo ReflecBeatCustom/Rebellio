@@ -472,7 +472,7 @@
 		    console.log("click on btn_view_fumen_comment");
 		    const parentNode = $(this).parent();
             const comment_id = parentNode.find(".comment_id").html();
-            const url = "/inner/view_fumen_comment?"+"&comment_id="+comment_id;
+            const url = "/inner/view_fumen_comment?"+"comment_id="+comment_id;
             $.get(url, function ( data ) {
                 if (!data.result) {
                     alert("确认评论失败!")

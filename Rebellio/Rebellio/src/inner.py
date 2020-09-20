@@ -10,6 +10,8 @@ need_vote_level = 10
 
 def view_fumen_comment(view_fumen_comment_params, session_info):
     comment_id = view_fumen_comment_params.comment_id
+    if comment_id == 0:
+        return False
     comments = models.Playersongcomments.objects.filter(comment_id=comment_id)
 
     if len(comments) == 0:
@@ -30,7 +32,7 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
 
 
 def parse_view_fumen_comment_params(request):
-    comment_id = int(request.GET.get('fumen_id', 0))
+    comment_id = int(request.GET.get('comment_id', 0))
 
     view_fumen_comment_params = inner_types.ViewFumenCommentParams(comment_id)
     return view_fumen_comment_params
