@@ -32,7 +32,7 @@
                                     <p class="pack_id" style="font-size:14px;display:none">{{ result.pack.packid }}</p>
                                     <p class="comment_id" style="font-size:14px;display:none">{{ comment.id }}</p>
                                     <button class="btn btn-outline-success update_pack_comment" type="button" style="font-size:14px;">修改</button>
-                                    <button class="btn btn-outline-success update_pack_comment" type="button" style="font-size:14px;">删除</button>
+                                    <button class="btn btn-outline-success delete_pack_comment" type="button" style="font-size:14px;">删除</button>
                                     {% else %}
                                     <p class="card-text">{{ comment.comment }}</p>
                                     {% endif %}
@@ -79,7 +79,7 @@
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
             const comment_id = parentNode.find(".comment_id").html();
-            const fumen_id = parentNode.find(".pack_id").html();
+            const pack_id = parentNode.find(".pack_id").html();
             const url = "/pack/update_pack_comment?"+"pack_id="+pack_id+"&comment_id="+comment_id+"&comment="+comment;
             $.get(url, function ( data ) {
                 if (!data.result) {
