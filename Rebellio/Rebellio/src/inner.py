@@ -3,7 +3,7 @@ from .. import models
 from . import utils
 from .types import inner_types
 from django.db.models import Q
-from datetime import datetime
+import datetime
 
 need_vote_level = 10
 
@@ -26,7 +26,7 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
     if fumen.creator != session_info.user_name:
         return False
 
-    models.Playersongcomments.objects.filter(id=comment_id).update(isviewedbyauthor=1, authorviewtime=datetime.utcnow())
+    models.Playersongcomments.objects.filter(id=comment_id).update(isviewedbyauthor=1, authorviewtime=datetime.datetime.utcnow()+datetime.timedelta(hours=8))
     return True
 
 

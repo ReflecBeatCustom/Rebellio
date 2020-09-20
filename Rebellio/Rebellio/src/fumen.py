@@ -1,6 +1,6 @@
 from django.db import connection
 from django.db.models import Q
-from datetime import datetime
+import datetime
 from . import utils
 from .types import fumen_types
 from .. import models
@@ -237,7 +237,7 @@ def update_fumen_comment(update_fumen_comment_params, session_info):
     if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
         return False
 
-    models.Playersongcomments.objects.filter(id=update_fumen_comment_params.comment_id).update(comment=update_fumen_comment_params.comment, isok=update_fumen_comment_params.is_ok, isviewedbyauthor=0, createtime=datetime.utcnow())
+    models.Playersongcomments.objects.filter(id=update_fumen_comment_params.comment_id).update(comment=update_fumen_comment_params.comment, isok=update_fumen_comment_params.is_ok, isviewedbyauthor=0, createtime=datetime.datetime.utcnow()+datetime.timedelta(hours=8))
     return True
 
 
