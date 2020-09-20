@@ -2,17 +2,15 @@ from django.http import HttpResponse
 from . import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-from django.db.models import Q
+import json
 from . import models
 from . import forms
 from .src import fumen
-from .src import account
 from .src import utils
 from .src import inner
 from .src import pack
 from .src import user
 from .src import decorators
-import math
 
 
 def test(request):
@@ -126,8 +124,8 @@ def create_fumen_comment(request):
     session_info = utils.get_session_info(request)
     create_fumen_comment_params = fumen.parse_create_fumen_comment_params(request)
 
-    _ = fumen.create_fumen_comment(create_fumen_comment_params, session_info)
-    return redirect('/fumen/fumen_detail/?fumen_id={0}&difficulty={1}'.format(create_fumen_comment_params.fumen_id, create_fumen_comment_params.difficulty))
+    result = fumen.create_fumen_comment(create_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
@@ -137,8 +135,8 @@ def update_fumen_comment(request):
     session_info = utils.get_session_info(request)
     update_fumen_comment_params = fumen.parse_update_fumen_comment_params(request)
 
-    _ = fumen.update_fumen_comment(update_fumen_comment_params, session_info)
-    return redirect('/fumen/fumen_detail/?fumen_id={0}&difficulty={1}'.format(update_fumen_comment_params.fumen_id, update_fumen_comment_params.difficulty))
+    result = fumen.update_fumen_comment(update_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
@@ -148,8 +146,8 @@ def delete_fumen_comment(request):
     session_info = utils.get_session_info(request)
     delete_fumen_comment_params = fumen.parse_delete_fumen_comment_params(request)
 
-    _ = fumen.delete_fumen_comment(delete_fumen_comment_params, session_info)
-    return redirect('/fumen/fumen_detail/?fumen_id={0}&difficulty={1}'.format(delete_fumen_comment_params.fumen_id, delete_fumen_comment_params.difficulty))
+    result = fumen.delete_fumen_comment(delete_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
 
 
 """
@@ -187,9 +185,8 @@ def create_pack_comment(request):
     session_info = utils.get_session_info(request)
     create_pack_comment_params = pack.parse_create_pack_comment_params(request)
 
-    _ = pack.create_pack_comment(session_info, create_pack_comment_params)
-
-    return redirect('/pack/pack_detail?pack_id={0}'.format(create_pack_comment_params.pack_id))
+    result = pack.create_pack_comment(session_info, create_pack_comment_params)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
@@ -199,8 +196,8 @@ def update_pack_comment(request):
     session_info = utils.get_session_info(request)
     update_pack_comment_params = pack.parse_update_pack_comment_params(request)
 
-    _ = pack.update_pack_comment(session_info, update_pack_comment_params)
-    return redirect('/pack/pack_detail/?pack_id={0}'.format(update_pack_comment_params.pack_id))
+    result = pack.update_pack_comment(session_info, update_pack_comment_params)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
@@ -210,8 +207,8 @@ def delete_pack_comment(request):
     session_info = utils.get_session_info(request)
     delete_pack_comment_params = pack.parse_delete_pack_comment_params(request)
 
-    _ = pack.delete_pack_comment(session_info, delete_pack_comment_params)
-    return redirect('/pack/pack_detail/?pack_id={0}'.format(delete_pack_comment_params.pack_id))
+    result = pack.delete_pack_comment(session_info, delete_pack_comment_params)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
 
 
 """

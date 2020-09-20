@@ -28,19 +28,13 @@
                                 <div class="card-header" style="font-size:14px;"><strong>评论人: </strong>{{ comment.accountname }}&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
-                                        <form class="form-inline my-12 my-lg-0" action="/pack/delete_pack_comment" method="get">
-                                            <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" style="font-size:14px;" value={{ result.pack.packid }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" style="font-size:14px;" value={{ comment.id }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="text" name="user_name" style="font-size:14px;" value={{ comment.accountname }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <button class="btn btn-outline-success my-2 my-sm-0 col-sm-auto" type="submit" style="font-size:14px;">删除</button>
-                                        </form>
+                                    <textarea class="form-control" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
+                                    <p class="pack_id" style="font-size:14px;display:none">{{ result.pack.packid }}</p>
+                                    <p class="comment_id" style="font-size:14px;display:none">{{ comment.id }}</p>
+                                    <button class="btn btn-outline-success" type="button" id="update_pack_comment" style="font-size:14px;">修改</button>
+                                    <button class="btn btn-outline-success" type="button" id="delete_pack_comment" style="font-size:14px;">删除</button>
                                     {% else %}
-                                        <p class="card-text">{{ comment.comment }}</p>
+                                    <p class="card-text">{{ comment.comment }}</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -52,17 +46,63 @@
                 <div class="card-body">
                     <div class="card text-black mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;border-color:bisque;">
                         <div class="card-body">
-                            <form class="form-inline my-12 my-lg-0" action="/pack/create_pack_comment" method="get">
-                                <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论 / Input comment"></textarea>
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="pack_id" value={{ result.pack.packid }}  readonly>
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
-                            </form>
+                            <textarea class="form-control" name="comment" id="comment" placeholder="输入评论 / Input comment"></textarea>
+                            <p class="pack_id" style="font-size:14px;display:none">{{ result.pack.packid }}</p>
+                            <button class="btn btn-outline-success" type="button" id="create_pack_comment">提交</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $("#create_pack_comment").click(function() {
+		    console.log("click on btn_create_pack_comment");
+		    const parentNode = $(this).parent();
+            const comment = parentNode.children("textarea").val();
+            const pack_id = parentNode.find(".pack_id").html();
+            const url = "/pack/create_pack_comment?"+"pack_id="+pack_id+"&comment="+comment;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("新增评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
+
+        $("#update_pack_comment").click(function() {
+		    console.log("click on btn_update_pack_comment");
+		    const parentNode = $(this).parent();
+            const comment = parentNode.children("textarea").val();
+            const comment_id = parentNode.find(".comment_id").html();
+            const fumen_id = parentNode.find(".pack_id").html();
+            const url = "/pack/update_pack_comment?"+"pack_id="+pack_id+"&comment_id="+comment_id+"&comment="+comment;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("修改评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
+
+        $("#delete_pack_comment").click(function() {
+		    console.log("click on btn_delete_pack_comment");
+		    const parentNode = $(this).parent();
+            const comment_id = parentNode.find(".comment_id").html();
+            const pack_id = parentNode.find(".pack_id").html();
+            const url = "/pack/delete_pack_comment?"+"pack_id="+pack_id+"&comment_id="+comment_id;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("删除评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
+    </script>
 {% endblock %}

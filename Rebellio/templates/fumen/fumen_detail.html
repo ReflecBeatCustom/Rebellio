@@ -14,15 +14,15 @@
                         <div class="row">
                             <div class="col-md-6" style="text-align:left">
                                 <h4>{{ result.fumen.title }}</h4>
-                                <p><small class="text-muted"><strong>{{ result.fumen.songid }}</strong></small></p>
+                                <p><small class="text-muted"><strong id="fumen_id">{{ result.fumen.songid }}</strong></small></p>
                                 {% if result.fumen.difficulty == 0 %}
-                                <p style="font-size:24px;color:#19A403;"><strong>BASIC</strong></p>
+                                <p style="font-size:24px;color:#19A403;"><strong id="difficulty">BASIC</strong></p>
                                 {% elif result.fumen.difficulty == 1 %}
-                                <p style="font-size:24px;color:#FF8A01"><strong>MEDIUM</strong></p>
+                                <p style="font-size:24px;color:#FF8A01"><strong id="difficulty">MEDIUM</strong></p>
                                 {% elif result.fumen.difficulty == 2 %}
-                                <p style="font-size:24px;color:#F30A0A;"><strong>HARD</strong></p>
+                                <p style="font-size:24px;color:#F30A0A;"><strong id="difficulty">HARD</strong></p>
                                 {% else %}
-                                <p style="font-size:24px;color:#00D2E9;"><strong>SPECIAL</strong></p>
+                                <p style="font-size:24px;color:#00D2E9;"><strong id="difficulty">SPECIAL</strong></p>
                                 {% endif %}
                             </div>
                             <div class="col-md-5">
@@ -80,57 +80,57 @@
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>高分榜 / High score</strong></div>
                 <div class="card-body">
                     {% if result.fumen_player_best_record %}
-                        <h5 class="card-title" style="font-size:16px;">我的 / My best rank</h5>
-                        <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
-                            <div class="row" style="padding:10px">
-                                <div class="container col-md-1 align-self-center">
-                                    <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_player_best_record.ranking }}</span></p>
-                                </div>
-                                <div class="container col-md-1 align-self-center">
-                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_player_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
-                                </div>
-                                <div class="container col-md-2 align-self-center">
-                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ result.fumen_player_best_record.accountname }}">{{ result.fumen_player_best_record.accountname }}</a></span></p>
-                                </div>
-                                <div class="container col-md-2 align-self-center">
-                                    {% if result.fumen_player_best_record.rank == "EXC" %}
-                                        <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
-                                    {% elif result.fumen_player_best_record.rank == "S" %}
-                                        <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
-                                    {% else %}
-                                        <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
-                                    {% endif %}
-                                </div>
-                                <div class="container col-md-2">
-                                    {% if result.fumen_player_best_record.ar != 0.0 %}
-                                        <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.ar }}%</span></p>
-                                    {% else %}
-                                        <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.sr }}%</span></p>
-                                    {% endif %}
-                                    <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.score }}</span></p>
-                                </div>
-                                <div class="container col-md-2">
-                                    {% if result.fumen_player_best_record.jr != -1 %}
-                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.jr }}</span></p>
-                                    {% else %}
-                                    <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
-                                    {% endif %}
-                                    {% if result.fumen_player_best_record.difficulty == 0 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
-                                    {% elif result.fumen_player_best_record.difficulty == 1 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
-                                    {% elif result.fumen_player_best_record.difficulty == 2 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
-                                    {% else %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
-                                    {% endif %}
-                                </div>
-                                <div class="container col-md-2">
-                                    <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_player_best_record.logtime }}</small></p>
-                                </div>
+                    <h5 class="card-title" style="font-size:16px;">我的 / My best rank</h5>
+                    <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
+                        <div class="row" style="padding:10px">
+                            <div class="container col-md-1 align-self-center">
+                                <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_player_best_record.ranking }}</span></p>
+                            </div>
+                            <div class="container col-md-1 align-self-center">
+                                <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_player_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                            </div>
+                            <div class="container col-md-2 align-self-center">
+                                <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ result.fumen_player_best_record.accountname }}">{{ result.fumen_player_best_record.accountname }}</a></span></p>
+                            </div>
+                            <div class="container col-md-2 align-self-center">
+                                {% if result.fumen_player_best_record.rank == "EXC" %}
+                                    <p class="card-text" align="center"><span style="color:#715fd3;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                {% elif result.fumen_player_best_record.rank == "S" %}
+                                    <p class="card-text" align="center"><span style="color:#20a6df;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                {% else %}
+                                    <p class="card-text" align="center"><span style="color:grey;font-size:32px;"><strong>{{ result.fumen_player_best_record.rank }}</strong></span></p>
+                                {% endif %}
+                            </div>
+                            <div class="container col-md-2">
+                                {% if result.fumen_player_best_record.ar != 0.0 %}
+                                    <p class="card-text"><strong>AR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.ar }}%</span></p>
+                                {% else %}
+                                    <p class="card-text"><strong>SR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.sr }}%</span></p>
+                                {% endif %}
+                                <p class="card-text"><strong>Score:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.score }}</span></p>
+                            </div>
+                            <div class="container col-md-2">
+                                {% if result.fumen_player_best_record.jr != -1 %}
+                                <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">{{ result.fumen_player_best_record.jr }}</span></p>
+                                {% else %}
+                                <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
+                                {% endif %}
+                                {% if result.fumen_player_best_record.difficulty == 0 %}
+                                <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>BASIC</strong></span></p>
+                                {% elif result.fumen_player_best_record.difficulty == 1 %}
+                                <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>MEDIUM</strong></span></p>
+                                {% elif result.fumen_player_best_record.difficulty == 2 %}
+                                <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>HARD</strong></span></p>
+                                {% else %}
+                                <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>SPECIAL</strong></span></p>
+                                {% endif %}
+                            </div>
+                            <div class="container col-md-2">
+                                <p class="card-text"><small style="color:grey;font-size:12px">{{ result.fumen_player_best_record.logtime }}</small></p>
                             </div>
                         </div>
-                        <div class="border-top my-3"></div>
+                    </div>
+                    <div class="border-top my-3"></div>
                     {% endif %}
                     <h5 class="card-title" style="font-size:16px;">排行榜 / Ranks</h5>
                     {% if result.fumen_best_record %}
@@ -173,13 +173,13 @@
                                     <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
                                     {% if result.fumen_best_record.difficulty == 0 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>BASIC</strong></span></p>
                                     {% elif result.fumen_best_record.difficulty == 1 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>MEDIUM</strong></span></p>
                                     {% elif result.fumen_best_record.difficulty == 2 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>HARD</strong></span></p>
                                     {% else %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>SPECIAL</strong></span></p>
                                     {% endif %}
                                 </div>
                                 <div class="container col-md-2">
@@ -228,13 +228,13 @@
                                         <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
                                     {% if record.difficulty == 0 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>BASIC</strong></span></p>
                                     {% elif record.difficulty == 1 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>MEDIUM</strong></span></p>
                                     {% elif record.difficulty == 2 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>HARD</strong></span></p>
                                     {% else %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>SPECIAL</strong></span></p>
                                     {% endif %}
                                 </div>
                                 <div class="container col-md-2">
@@ -279,13 +279,13 @@
                                         <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                     {% endif %}
                                     {% if result.fumen_player_best_record.difficulty == 0 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>BASIC</strong></span></p>
                                     {% elif result.fumen_player_best_record.difficulty == 1 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>MEDIUM</strong></span></p>
                                     {% elif result.fumen_player_best_record.difficulty == 2 %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>HARD</strong></span></p>
                                     {% else %}
-                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                    <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>SPECIAL</strong></span></p>
                                     {% endif %}
                                 </div>
                                 <div class="container col-md-2">
@@ -324,13 +324,13 @@
                                             <p class="card-text"><strong>JR:&nbsp</strong><span style="color:black;font-size:16px">-</span></p>
                                         {% endif %}
                                         {% if record.difficulty == 0 %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px">BASIC</span></p>
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#19A403;font-size:16px"><strong>BASIC</strong></span></p>
                                         {% elif record.difficulty == 1 %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px">MEDIUM</span></p>
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#FF8A01;font-size:16px"><strong>MEDIUM</strong></span></p>
                                         {% elif record.difficulty == 2 %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px">HARD</span></p>
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#F30A0A;font-size:16px"><strong>HARD</strong></span></p>
                                         {% else %}
-                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px">SPECIAL</span></p>
+                                        <p class="card-text"><strong>Difficulty:&nbsp</strong><span style="color:#00D2E9;font-size:16px"><strong>SPECIAL</strong></span></p>
                                         {% endif %}
                                     </div>
                                     <div class="container col-md-2">
@@ -344,7 +344,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="card text-black border-info mb-3" style="max-width: 100rem;">
+        <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>评论信息 / Comments</strong></div>
                 <div class="card-body">
                     {% if result.fumen_comments %}
@@ -353,21 +353,14 @@
                                 <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
-                                        <form class="form-inline my-12 my-lg-0" action="/fumen/delete_fumen_comment" method="get">
-                                            <textarea class="form-control mr-sm-10 col-sm-7" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" style="font-size:14px;" value={{ result.fumen.songid }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="difficulty" value={{ result.fumen.difficulty }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="number" name="comment_id" style="font-size:14px;" value={{ comment.id }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <input class="form-control mr-sm-10 col-sm-1" type="text" name="user_name" style="font-size:14px;" value={{ comment.accountname }}  readonly>
-                                            <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                            <button class="btn btn-outline-success my-2 my-sm-0 col-sm-auto" type="submit" style="font-size:14px;">删除</button>
-                                        </form>
+                                    <textarea class="form-control" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
+                                    <p class="difficulty" style="font-size:14px;display:none">{{ result.fumen.difficulty }}</p>
+                                    <p class="fumen_id" style="font-size:14px;display:none">{{ result.fumen.songid }}</p>
+                                    <p class="comment_id" style="font-size:14px;display:none">{{ comment.id }}</p>
+                                    <button class="btn btn-outline-success" type="button" id="update_fumen_comment" style="font-size:14px;">修改</button>
+                                    <button class="btn btn-outline-success" type="button" id="delete_fumen_comment" style="font-size:14px;">删除</button>
                                     {% else %}
-                                        <p class="card-text">{{ comment.comment }}</p>
+                                    <p class="card-text">{{ comment.comment }}</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -379,15 +372,10 @@
                 <div class="card-body">
                     <div class="card text-black mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;border-color:bisque;">
                         <div class="card-body">
-                            <form class="form-inline my-12 my-lg-0" action="/fumen/create_fumen_comment" method="get">
-                                <textarea class="form-control mr-sm-10 col-sm-10" name="comment" placeholder="输入评论 / Input comment"></textarea>
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="difficulty" value={{ result.fumen.difficulty }}  readonly>
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ result.fumen.songid }}  readonly>
-                                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
-                            </form>
+                            <textarea class="form-control" name="comment" id="comment" placeholder="输入评论 / Input comment"></textarea>
+                            <p class="difficulty" style="font-size:14px;display:none">{{ result.fumen.difficulty }}</p>
+                            <p class="fumen_id" style="font-size:14px;display:none">{{ result.fumen.songid }}</p>
+                            <button class="btn btn-outline-success" type="button" id="create_fumen_comment">提交</button>
                         </div>
                     </div>
                 </div>
@@ -396,6 +384,55 @@
     </div>
 {% endblock %}
 
-<script type="text/javascript">
+{% block script %}
+    <script type="text/javascript">
+        $("#create_fumen_comment").click(function() {
+		    console.log("click on btn_create_fumen_comment");
+		    const parentNode = $(this).parent();
+            const comment = parentNode.children("textarea").val();
+            const fumen_id = parentNode.find(".fumen_id").html();
+            const difficulty = parentNode.find(".difficulty").html();
+            const url = "/fumen/create_fumen_comment?"+"fumen_id="+fumen_id+"&difficulty="+difficulty+"&comment="+comment;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("新增评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
 
-</script>
+        $("#update_fumen_comment").click(function() {
+		    console.log("click on btn_update_fumen_comment");
+		    const parentNode = $(this).parent();
+            const comment = parentNode.children("textarea").val();
+            const comment_id = parentNode.find(".comment_id").html();
+            const fumen_id = parentNode.find(".fumen_id").html();
+            const difficulty = parentNode.find(".difficulty").html();
+            const url = "/fumen/update_fumen_comment?"+"fumen_id="+fumen_id+"&comment_id="+comment_id+"&difficulty="+difficulty+"&comment="+comment;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("修改评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
+
+        $("#delete_fumen_comment").click(function() {
+		    console.log("click on btn_delete_fumen_comment");
+		    const parentNode = $(this).parent();
+            const comment_id = parentNode.find(".comment_id").html();
+            const fumen_id = parentNode.find(".fumen_id").html();
+            const difficulty = parentNode.find(".difficulty").html();
+            const url = "/fumen/delete_fumen_comment?"+"fumen_id="+fumen_id+"&comment_id="+comment_id+"&difficulty="+difficulty;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("删除评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
+    </script>
+{% endblock %}
