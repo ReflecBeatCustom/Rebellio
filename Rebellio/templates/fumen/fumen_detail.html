@@ -355,7 +355,7 @@
                                 {% elif result.fumen.category == 1 and comment.isok == 0 and comment.isviewedbyauthor == 1 %}
                                 <div class="card-header" style="font-size:14px;background-color:#ffff80;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}&nbsp&nbsp<strong>做谱人确认时间: </strong>{{ comment.authorviewtime }}</div>
                                 {% elif result.fumen.category == 1 %}
-                                <div class="card-header" style="font-size:14px;background-color:#ffff80;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
+                                <div class="card-header" style="font-size:14px;background-color:#ff3333;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
                                 {% else %}
                                 <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
                                 {% endif %}
@@ -373,9 +373,9 @@
                                         <option value=1>ok</option>
                                         {% endif %}
                                         {% if comment.isok == 0 %}
-                                        <option value=1 selected>not ok</option>
+                                        <option value=0 selected>not ok</option>
                                         {% else %}
-                                        <option value=1>not ok</option>
+                                        <option value=0>not ok</option>
                                         {% endif %}
                                     </select>
                                     {% endif %}
