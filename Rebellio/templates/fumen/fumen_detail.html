@@ -421,7 +421,10 @@
 		    console.log("click on btn_create_fumen_comment");
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
-            const is_ok = parentNode.find(".is_ok").val();
+            let is_ok = parentNode.find(".is_ok").val();
+            if (!is_ok) {
+                is_ok = 1;
+            }
             const fumen_id = parentNode.find(".fumen_id").html();
             const difficulty = parentNode.find(".difficulty").html();
             const url = "/fumen/create_fumen_comment?"+"fumen_id="+fumen_id+"&difficulty="+difficulty+"&comment="+comment+"&is_ok="+is_ok;
@@ -438,7 +441,10 @@
 		    console.log("click on btn_update_fumen_comment");
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
-            const is_ok = parentNode.find(".is_ok").val();
+            let is_ok = parentNode.find(".is_ok").val();
+            if (!is_ok) {
+                is_ok = 1;
+            }
             const comment_id = parentNode.find(".comment_id").html();
             const fumen_id = parentNode.find(".fumen_id").html();
             const difficulty = parentNode.find(".difficulty").html();
