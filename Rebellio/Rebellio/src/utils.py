@@ -232,6 +232,11 @@ def get_formated_comments(comments):
     for comment in comments:
         # 规范化时间
         comment.createtime = comment.createtime.strftime('%Y-%m-%d %H:%M:%S')
+        comment.updatetime = comment.updatetime.strftime('%Y-%m-%d %H:%M:%S')
+        if comment.authorviewtime:
+            comment.authorviewtime = comment.authorviewtime.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            comment.authorviewtime = None
         formated_comments.append(comment)
     return formated_comments
 

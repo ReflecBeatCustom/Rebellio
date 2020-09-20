@@ -340,6 +340,18 @@ def change_user_access_level(request):
     return redirect('/inner/super_manager')
 
 
+@require_http_methods(['GET'])
+@decorators.is_login_decorator
+@decorators.is_admin_decorator
+def view_fumen_comment(request):
+
+    session_info = utils.get_session_info(request)
+    view_fumen_comment_params = inner.parse_view_fumen_comment_params(request)
+
+    result = inner.view_fumen_comment(view_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
+
+
 """
 用户功能
 """

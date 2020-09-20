@@ -218,7 +218,7 @@ def create_fumen_comment(create_fumen_comment_params, session_info):
     if len(rows) == 0:
         return False
 
-    comment = models.Playersongcomments(accountname=session_info.user_name, songid=create_fumen_comment_params.fumen_id, comment=create_fumen_comment_params.comment)
+    comment = models.Playersongcomments(accountname=session_info.user_name, songid=create_fumen_comment_params.fumen_id, comment=create_fumen_comment_params.comment, isok=create_fumen_comment_params.is_ok, isviewedbyauthor=0)
     comment.save()
     return True
 
@@ -236,7 +236,7 @@ def update_fumen_comment(update_fumen_comment_params, session_info):
     if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
         return False
 
-    comment = models.Playersongcomments.objects.filter(id=update_fumen_comment_params.comment_id).update(comment=update_fumen_comment_params.comment)
+    models.Playersongcomments.objects.filter(id=update_fumen_comment_params.comment_id).update(comment=update_fumen_comment_params.comment, isok=update_fumen_comment_params.is_ok, isviewedbyauthor=0)
     return True
 
 
@@ -261,7 +261,8 @@ def parse_create_fumen_comment_params(request):
     fumen_id = int(request.GET.get('fumen_id', 0))
     difficulty = int(request.GET.get('difficulty', 0))
     comment = request.GET.get('comment', '')
-    create_fumen_comment_params = fumen_types.CreateFumenCommentParams(fumen_id, difficulty, comment)
+    is_ok = int(request.GET.get('is_ok', 1))
+    create_fumen_comment_params = fumen_types.CreateFumenCommentParams(fumen_id, difficulty, comment, is_ok)
     return create_fumen_comment_params
 
 
@@ -270,7 +271,8 @@ def parse_update_fumen_comment_params(request):
     comment_id = int(request.GET.get('comment_id', 0))
     difficulty = int(request.GET.get('difficulty', 0))
     comment = request.GET.get('comment', '')
-    update_fumen_comment_params = fumen_types.UpdateFumenCommentParams(fumen_id, comment_id, difficulty, comment)
+    is_ok = int(request.GET.get('is_ok', 1))
+    update_fumen_comment_params = fumen_types.UpdateFumenCommentParams(fumen_id, comment_id, difficulty, comment, is_ok)
     return update_fumen_comment_params
 
 

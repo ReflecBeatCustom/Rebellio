@@ -31,8 +31,8 @@
                                     <textarea class="form-control" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
                                     <p class="pack_id" style="font-size:14px;display:none">{{ result.pack.packid }}</p>
                                     <p class="comment_id" style="font-size:14px;display:none">{{ comment.id }}</p>
-                                    <button class="btn btn-outline-success" type="button" id="update_pack_comment" style="font-size:14px;">修改</button>
-                                    <button class="btn btn-outline-success" type="button" id="delete_pack_comment" style="font-size:14px;">删除</button>
+                                    <button class="btn btn-outline-success update_pack_comment" type="button" style="font-size:14px;">修改</button>
+                                    <button class="btn btn-outline-success update_pack_comment" type="button" style="font-size:14px;">删除</button>
                                     {% else %}
                                     <p class="card-text">{{ comment.comment }}</p>
                                     {% endif %}
@@ -48,7 +48,7 @@
                         <div class="card-body">
                             <textarea class="form-control" name="comment" id="comment" placeholder="输入评论 / Input comment"></textarea>
                             <p class="pack_id" style="font-size:14px;display:none">{{ result.pack.packid }}</p>
-                            <button class="btn btn-outline-success" type="button" id="create_pack_comment">提交</button>
+                            <button class="btn btn-outline-success create_pack_comment" type="button">提交</button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
 
 {% block script %}
     <script type="text/javascript">
-        $("#create_pack_comment").click(function() {
+        $(".create_pack_comment").click(function() {
 		    console.log("click on btn_create_pack_comment");
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
@@ -74,7 +74,7 @@
             });
         });
 
-        $("#update_pack_comment").click(function() {
+        $(".update_pack_comment").click(function() {
 		    console.log("click on btn_update_pack_comment");
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
@@ -90,7 +90,7 @@
             });
         });
 
-        $("#delete_pack_comment").click(function() {
+        $(".delete_pack_comment").click(function() {
 		    console.log("click on btn_delete_pack_comment");
 		    const parentNode = $(this).parent();
             const comment_id = parentNode.find(".comment_id").html();

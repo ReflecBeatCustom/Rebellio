@@ -350,15 +350,40 @@
                     {% if result.fumen_comments %}
                         {% for comment in result.fumen_comments %}
                             <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
-                                <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                                {% if result.fumen.category == 1 and comment.isok == 1 %}
+                                <div class="card-header" style="font-size:14px;background-color:#00ff00;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
+                                {% elif result.fumen.category == 1 and comment.isok == 0 and comment.isviewedbyauthor == 1 %}
+                                <div class="card-header" style="font-size:14px;background-color:#ffff80;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}&nbsp&nbsp<strong>做谱人确认时间: </strong>{{ comment.authorviewtime }}</div>
+                                {% elif result.fumen.category == 1 %}
+                                <div class="card-header" style="font-size:14px;background-color:#ffff80;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
+                                {% else %}
+                                <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
+                                {% endif %}
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}
-                                    <textarea class="form-control" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
+                                    <textarea class="col-md-12" type="text" name="comment" style="font-size:14px;">{{ comment.comment }}</textarea>
                                     <p class="difficulty" style="font-size:14px;display:none">{{ result.fumen.difficulty }}</p>
                                     <p class="fumen_id" style="font-size:14px;display:none">{{ result.fumen.songid }}</p>
                                     <p class="comment_id" style="font-size:14px;display:none">{{ comment.id }}</p>
-                                    <button class="btn btn-outline-success" type="button" id="update_fumen_comment" style="font-size:14px;">修改</button>
-                                    <button class="btn btn-outline-success" type="button" id="delete_fumen_comment" style="font-size:14px;">删除</button>
+                                    {% if result.fumen.category == 1 and request.session.user_access_level >= 1 %}
+                                    <select class="col-md-2 mr-sm-2 is_ok" style="display:inline">
+                                        {% if comment.isok == 1 %}
+                                        <option value=1 selected>ok</option>
+                                        {% else %}
+                                        <option value=1>ok</option>
+                                        {% endif %}
+                                        {% if comment.isok == 0 %}
+                                        <option value=1 selected>not ok</option>
+                                        {% else %}
+                                        <option value=1>not ok</option>
+                                        {% endif %}
+                                    </select>
+                                    {% endif %}
+                                    <button class="btn btn-outline-success update_fumen_comment" type="button" style="font-size:14px;">修改</button>
+                                    <button class="btn btn-outline-success delete_fumen_comment" type="button" style="font-size:14px;">删除</button>
+                                        {% if request.session.user_name == result.fumen.creator and comment.isok == 0 and comment.isviewedbyauthor == 0 %}
+                                        <button class="btn btn-outline-success view_fumen_comment" type="button" style="font-size:14px;">确认</button>
+                                        {% endif %}
                                     {% else %}
                                     <p class="card-text">{{ comment.comment }}</p>
                                     {% endif %}
@@ -372,10 +397,16 @@
                 <div class="card-body">
                     <div class="card text-black mb-3" style="max-width: 100rem; margin-top: auto; background-color: bisque;border-color:bisque;">
                         <div class="card-body">
-                            <textarea class="form-control" name="comment" id="comment" placeholder="输入评论 / Input comment"></textarea>
+                            <textarea class="col-md-12" name="comment" id="comment" placeholder="输入评论 / Input comment"></textarea>
                             <p class="difficulty" style="font-size:14px;display:none">{{ result.fumen.difficulty }}</p>
                             <p class="fumen_id" style="font-size:14px;display:none">{{ result.fumen.songid }}</p>
-                            <button class="btn btn-outline-success" type="button" id="create_fumen_comment">提交</button>
+                            {% if result.fumen.category == 1 and request.session.user_access_level >= 1 %}
+                            <select class="col-md-2 is_ok" style="display:inline">
+                                <option value=1 selected>ok</option>
+                                <option value=0>not ok</option>
+                            </select>
+                            {% endif %}
+                            <button class="btn btn-outline-success create_fumen_comment" type="button">提交</button>
                         </div>
                     </div>
                 </div>
@@ -386,13 +417,14 @@
 
 {% block script %}
     <script type="text/javascript">
-        $("#create_fumen_comment").click(function() {
+        $(".create_fumen_comment").click(function() {
 		    console.log("click on btn_create_fumen_comment");
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
+            const is_ok = parentNode.find(".is_ok").val();
             const fumen_id = parentNode.find(".fumen_id").html();
             const difficulty = parentNode.find(".difficulty").html();
-            const url = "/fumen/create_fumen_comment?"+"fumen_id="+fumen_id+"&difficulty="+difficulty+"&comment="+comment;
+            const url = "/fumen/create_fumen_comment?"+"fumen_id="+fumen_id+"&difficulty="+difficulty+"&comment="+comment+"&is_ok="+is_ok;
             $.get(url, function ( data ) {
                 if (!data.result) {
                     alert("新增评论失败!")
@@ -402,14 +434,15 @@
             });
         });
 
-        $("#update_fumen_comment").click(function() {
+        $(".update_fumen_comment").click(function() {
 		    console.log("click on btn_update_fumen_comment");
 		    const parentNode = $(this).parent();
             const comment = parentNode.children("textarea").val();
+            const is_ok = parentNode.find(".is_ok").val();
             const comment_id = parentNode.find(".comment_id").html();
             const fumen_id = parentNode.find(".fumen_id").html();
             const difficulty = parentNode.find(".difficulty").html();
-            const url = "/fumen/update_fumen_comment?"+"fumen_id="+fumen_id+"&comment_id="+comment_id+"&difficulty="+difficulty+"&comment="+comment;
+            const url = "/fumen/update_fumen_comment?"+"fumen_id="+fumen_id+"&comment_id="+comment_id+"&difficulty="+difficulty+"&comment="+comment+"&is_ok="+is_ok;
             $.get(url, function ( data ) {
                 if (!data.result) {
                     alert("修改评论失败!")
@@ -419,7 +452,7 @@
             });
         });
 
-        $("#delete_fumen_comment").click(function() {
+        $(".delete_fumen_comment").click(function() {
 		    console.log("click on btn_delete_fumen_comment");
 		    const parentNode = $(this).parent();
             const comment_id = parentNode.find(".comment_id").html();
@@ -429,6 +462,20 @@
             $.get(url, function ( data ) {
                 if (!data.result) {
                     alert("删除评论失败!")
+                } else {
+                    location.reload();
+                }
+            });
+        });
+
+        $(".view_fumen_comment").click(function() {
+		    console.log("click on btn_view_fumen_comment");
+		    const parentNode = $(this).parent();
+            const comment_id = parentNode.find(".comment_id").html();
+            const url = "/inner/view_fumen_comment?"+"&comment_id="+comment_id;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert("确认评论失败!")
                 } else {
                     location.reload();
                 }

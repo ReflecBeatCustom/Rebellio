@@ -94,6 +94,9 @@ class Playersongcomments(models.Model):
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
+    isok = models.IntegerField(db_column='IsOK')  # Field name made lowercase.
+    isviewedbyauthor = models.IntegerField(db_column='IsViewedByAuthor')  # Field name made lowercase.
+    authorviewtime = models.DateTimeField(db_column='AuthorViewTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = True

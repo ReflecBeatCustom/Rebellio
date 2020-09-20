@@ -1,9 +1,39 @@
 import math
 from .. import models
 from . import utils
+from .types import inner_types
 from django.db.models import Q
+from datetime import datetime
 
 need_vote_level = 10
+
+
+def view_fumen_comment(view_fumen_comment_params, session_info):
+    comment_id = view_fumen_comment_params.comment_id
+    comments = models.Playersongcomments.objects.filter(comment_id=comment_id)
+
+    if len(comments) == 0:
+        return False
+    comment = comments[0]
+
+    fumens = models.Songs.objects.filter(songid=comment.songid)
+    if len(fumens) == 0:
+        return False
+    fumen = fumens[0]
+
+    if fumen.creator != session_info.user_name:
+        return False
+
+    models.Playersongcomments.objects.filter(comment_id=comment_id).update(isviewedbyauthor=1, authorviewtime=datetime.now())
+    return True
+
+
+
+def parse_view_fumen_comment_params(request):
+    comment_id = int(request.GET.get('fumen_id', 0))
+
+    view_fumen_comment_params = inner_types.ViewFumenCommentParams(comment_id)
+    return view_fumen_comment_params
 
 def set_return_result(result, sub_page):
     """

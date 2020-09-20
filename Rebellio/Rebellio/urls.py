@@ -58,6 +58,7 @@ urlpatterns = [
     path('inner/delete_subdiff_vote_fumen/', views.delete_subdiff_vote_fumen),
     path('inner/super_manager/', views.super_manager),
     path('inner/change_user_access_level', views.change_user_access_level),
+    path('inner/view_fumen_comment', views.view_fumen_comment),
     url(r'^captcha', include('captcha.urls')),
     #path('fumen/get', views.get_fumen),
 ]

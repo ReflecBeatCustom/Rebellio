@@ -38,18 +38,20 @@ class GetFumenResponse(object):
         self.fumen_comments = fumen_comments
 
 class CreateFumenCommentParams(object):
-    def __init__(self, fumen_id, difficulty, comment):
+    def __init__(self, fumen_id, difficulty, comment, is_ok):
         self.fumen_id = fumen_id
         self.difficulty = difficulty
         self.comment = comment
+        self.is_ok = is_ok
 
 
 class UpdateFumenCommentParams(object):
-    def __init__(self, fumen_id, comment_id, difficulty, comment):
+    def __init__(self, fumen_id, comment_id, difficulty, comment, is_ok):
         self.fumen_id = fumen_id
         self.comment_id = comment_id
         self.difficulty = difficulty
         self.comment = comment
+        self.is_ok = is_ok
 
 
 class DeleteFumenCommentParams(object):
