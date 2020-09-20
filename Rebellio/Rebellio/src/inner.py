@@ -12,7 +12,7 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
     comment_id = view_fumen_comment_params.comment_id
     if comment_id == 0:
         return False
-    comments = models.Playersongcomments.objects.filter(comment_id=comment_id)
+    comments = models.Playersongcomments.objects.filter(id=comment_id)
 
     if len(comments) == 0:
         return False
@@ -26,7 +26,7 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
     if fumen.creator != session_info.user_name:
         return False
 
-    models.Playersongcomments.objects.filter(comment_id=comment_id).update(isviewedbyauthor=1, authorviewtime=datetime.now())
+    models.Playersongcomments.objects.filter(id=comment_id).update(isviewedbyauthor=1, authorviewtime=datetime.utcnow())
     return True
 
 
