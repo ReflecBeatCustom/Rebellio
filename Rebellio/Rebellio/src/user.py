@@ -61,7 +61,7 @@ def get_player_high_records(player_name, can_view_fumen_ids):
     for fumen_id in can_view_fumen_ids:
         # 拿取用户第一的成绩
         records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE SongID = {0} ORDER BY Score DESC LIMIT 1".format(fumen_id))
-        records_with_fumen = get_records_with_fumen(records)
+        records_with_fumen = get_records_with_fumen(utils.get_formated_records(records))
         if len(records_with_fumen) == 0:
             continue
         if records_with_fumen[0].accountname != player_name:
