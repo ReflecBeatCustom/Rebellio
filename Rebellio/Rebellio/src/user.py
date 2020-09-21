@@ -1,3 +1,4 @@
+from django.db import connection
 import math
 from .. import models
 from .types import user_types
@@ -20,6 +21,7 @@ def set_fumens_format(fumens):
     for i in range(len(fumens)):
         # 设置日期格式
         fumens[i].createtime = fumens[i].createtime.strftime('%Y年%m月%d日')
+
 
 def get_user_high_scores(user_name, view_user_name, access_level):
     sql = "SELECT * FROM (SELECT r.* FROM Playrecords AS r JOIN Songs AS s ON s.SongID = r.SongID LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE r.AccountName = '{0}' AND (s.AccessLevel <= {1} OR u.AccountName = '{2}')) AS a GROUP BY SongID".format(user_name, access_level, view_user_name)
@@ -68,6 +70,20 @@ def get_user_high_scores(user_name, view_user_name, access_level):
     high_score_records = sorted(high_score_records, key=lambda x: x.ranking)
 
     return high_score_records
+
+def get_user_detail(get_user_detail_params, session_info):
+    users = models.Accounts.objects.filter(Q(accountname=get_user_detail_params.user_name))
+    if len(users) == 0:
+        return None
+    user = users[0]
+
+    # 得到登陆用户可以查看的谱面ID列表
+    cur = connection.cursor()
+    cur.execute("SELECT DISTINCT SongID FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}')) AS result".format(session_info.access_level, session_info.user_name))
+    rows = cur.fetchall()
+    can_view_fumen_ids = set([int(row[0]) for row in rows])
+
+
 
 def get_user_detail(user_name, view_user_name, access_level):
     """
