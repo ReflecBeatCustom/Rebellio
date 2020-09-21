@@ -17,7 +17,8 @@ def get_user_detail(get_user_detail_params, session_info):
 
     # 得到登陆用户可以查看的谱面ID列表
     cur = connection.cursor()
-    cur.execute("SELECT DISTINCT SongID FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}')) AS result".format(session_info.user_access_level, session_info.user_name))
+    #cur.execute("SELECT DISTINCT SongID FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}')) AS result".format(session_info.user_access_level, session_info.user_name))
+    cur.execute("SELECT DISTINCT SongID FROM (SELECT s.* FROM Songs AS s LEFT JOIN Unlockrecords AS u on s.SongID = u.SongID WHERE (s.AccessLevel <= {0} OR u.AccountName = '{1}')) AS result".format(0, session_info.user_name))
     rows = cur.fetchall()
     can_view_fumen_ids = set([int(row[0]) for row in rows])
 
