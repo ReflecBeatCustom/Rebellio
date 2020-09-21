@@ -93,7 +93,7 @@ def get_difficulty_splitted_fumens(fumens, difficultys=None):
     return difficulty_splitted_fumens
 
 
-def get_formated_fumens(fumens, session_info):
+def get_formated_fumens(fumens, session_info=None):
     """
     标准化谱面的格式
 
@@ -150,18 +150,20 @@ def get_formated_fumens(fumens, session_info):
 
         # 得到用户谱面上的最高分
         fumen_id = fumen.songid
-        records = models.Playrecords.objects.raw(
-            "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
-                fumen_id, session_info.user_name, fumen.difficulty))
-        if len(records) == 0:
-            formated_fumens.append(fumen)
-            continue
+        if session_info:
+            # 如果没有传session_info,则不添加record信息
+            records = models.Playrecords.objects.raw(
+                "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
+                    fumen_id, session_info.user_name, fumen.difficulty))
+            if len(records) == 0:
+                formated_fumens.append(fumen)
+                continue
 
-        best_record = records[0]
-        rate = best_record.ar if best_record.ar != 0.0 else best_record.sr
-        best_record.rank = get_rank_from_rate(rate)
-        best_record.rate = get_percentage_from_rate(rate)
-        fumen.best_record = best_record
+            best_record = records[0]
+            rate = best_record.ar if best_record.ar != 0.0 else best_record.sr
+            best_record.rank = get_rank_from_rate(rate)
+            best_record.rate = get_percentage_from_rate(rate)
+            fumen.best_record = best_record
 
         formated_fumens.append(fumen)
 

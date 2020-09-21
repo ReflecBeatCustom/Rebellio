@@ -30,6 +30,7 @@ class Accounts(models.Model):
     signature = models.TextField(db_column='signature', blank=True, null=True)
     avatar = models.IntegerField(db_column='avatar')
     skillpoint = models.IntegerField(db_column='SkillPoint')  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=32, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = True

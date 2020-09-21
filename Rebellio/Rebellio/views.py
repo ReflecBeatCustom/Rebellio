@@ -367,16 +367,11 @@ def user_search(request):
 @decorators.is_login_decorator
 def get_user_detail(request):
 
-    user_name = request.GET.get('user_name', '')
-    view_user_name = request.session.get('user_name', '')
-    access_level = int(request.session.get('access_level', 0))
-    if user_name == '' or view_user_name == '':
-        return redirect('/user/search_user')
+    session_info = utils.get_session_info(request)
+    get_user_detail_params = user.parse_get_user_detail_params(request)
 
-    result = user.get_user_detail(user_name, view_user_name, access_level)
-    if result == None:
-        return redirect('/user/search_user')
-    return render(request, 'user/user_info.html', result)
+    result = user.get_user_detail(get_user_detail_params, session_info)
+    return render(request, 'user/user_detail.html', {'result': result, 'name': 'user_detail'})
 
 
 @require_http_methods(['GET'])

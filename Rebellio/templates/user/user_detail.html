@@ -12,22 +12,22 @@
                 <div class="card-body">
                     <div class="fumen-details-content">
                         <div class="row">
-                            <div class="col-md-2" style="float:left;">
-                                <img src="https://chilundui.com/data/rbdx/image/song/{{ user.avatar }}.png" style="max-width:200px;height:200px;border-radius:50%;">
+                            <div class="col-md-2 justify-content-start">
+                                <img src="https://chilundui.com/data/rbdx/image/song/{{ result.user.avatar }}.png" style="max-width:200px;height:200px;border-radius:50%;">
                             </div>
-                            <div class="col-md-10" style="float:left;">
-                                {% if user.accesslevel == 0 %}
-                                    <p style="color:#b37100	;font-size:28px;"><strong>{{ user.accountname }}</strong></p>
-                                {% elif user.accesslevel < 3 %}
-                                    <p style="font-size:28px;"><span style="color:#8585ad"><strong>[Contributor]</strong></span>&nbsp&nbsp<span style="color:#e69100"><strong>{{ user.accountname }}</strong></span></p>
+                            <div class="col-md-10 justify-content-start">
+                                {% if result.user.accesslevel == 0 %}
+                                    <p style="font-size:28px;"><span style="color:#8585ad"><strong>[{{ result.user.title }}]</strong></span>&nbsp&nbsp<span style="color:#b37100"><strong>{{ result.user.accountname }}</strong></span></p>
+                                {% elif result.user.accesslevel < 3 %}
+                                    <p style="font-size:28px;"><span style="color:#8585ad"><strong>[{{ result.user.title }}]</strong></span>&nbsp&nbsp<span style="color:#e69100"><strong>{{ result.user.accountname }}</strong></span></p>
                                 {% else %}
-                                    <p style="font-size:28px;"><span style="color:#52527a"><strong>[Legend]</strong></span>&nbsp&nbsp<span style="color:#ffa70f"><strong>{{ user.accountname }}</strong></span></p>
+                                    <p style="font-size:28px;"><span style="color:#52527a"><strong>[{{ result.user.title }}]</strong></span>&nbsp&nbsp<span style="color:#ffa70f"><strong>{{ result.user.accountname }}</strong></span></p>
                                 {% endif %}
                                 <div>
-                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Skill Point[Under beta test]:</strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ user.skillpoint }}</strong></span></p>
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Skill Point[Under beta test]:</strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ result.user.skillpoint }}</strong></span></p>
                                 </div>
-                                {% if user.signature  %}
-                                    <small style="color:grey;font-size:16px;text-indent:2ch">{{ user.signature }}</small>
+                                {% if result.user.signature  %}
+                                    <small style="color:grey;font-size:16px;text-indent:2ch">{{ result.user.signature }}</small>
                                 {% else %}
                                     <small style="color:grey;font-size:16px;text-indent:2ch">这个玩家很懒，什么都没留下</small>
                                 {% endif %}
@@ -39,7 +39,7 @@
             <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                 <div class="card-header" style="background-color:#d0c8c8;"><strong>高分榜 / High scores</strong></div>
                 <div class="card-body">
-                    {% for record in user_high_score_records %}
+                    {% for record in result.high_records %}
                         <div class="card mb-3" style="max-width:100rem;background-color:bisque;;border-color:bisque;border-width:0.5ch;">
                             <div class="row" style="padding:10px">
                                 <div class="container col-md-1 align-self-center">
