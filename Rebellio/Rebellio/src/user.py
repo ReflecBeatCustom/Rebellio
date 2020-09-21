@@ -1,9 +1,17 @@
 import math
 from .. import models
+from .types import user_types
 from django.db.models import Q
 
 # 默认展示的成绩，评论数量
 default_show_count = 10
+
+
+def parse_get_user_detail_params(request):
+    user_name = request.GET.get('user_name', '')
+    get_user_detail_params = user_types.GetUserDetailParams(user_name)
+    return get_user_detail_params
+
 
 def set_fumens_format(fumens):
     """

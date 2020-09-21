@@ -359,8 +359,8 @@ def view_fumen_comment(request):
 
 @require_http_methods(['GET'])
 @decorators.is_login_decorator
-def search_user(request):
-    return render(request, 'user/user_search.html', {'search_user': 'active'})
+def user_search(request):
+    return render(request, 'user/user_search.html', {'name': 'user_search'})
 
 
 @require_http_methods(['GET'])

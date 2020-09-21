@@ -41,7 +41,7 @@ urlpatterns = [
     path('pack/update_pack_comment/', views.update_pack_comment),
     path('pack/delete_pack_comment/', views.delete_pack_comment),
     # 玩家
-    path('user/search_user/', views.search_user),
+    path('user/user_search/', views.user_search),
     path('user/user_detail/', views.get_user_detail),
     path('user/get_available_avatar/', views.get_available_avatar),
     path('user/set_avatar/', views.set_avatar),

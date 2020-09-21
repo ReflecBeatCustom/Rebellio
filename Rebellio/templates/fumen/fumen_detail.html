@@ -381,11 +381,15 @@
                                     {% endif %}
                                     <button class="btn btn-outline-success update_fumen_comment" type="button" style="font-size:14px;">修改</button>
                                     <button class="btn btn-outline-success delete_fumen_comment" type="button" style="font-size:14px;">删除</button>
-                                        {% if request.session.user_name == result.fumen.creator and comment.isok == 0 and comment.isviewedbyauthor == 0 %}
-                                        <button class="btn btn-outline-success view_fumen_comment" type="button" style="font-size:14px;">确认</button>
-                                        {% endif %}
+                                    {% if request.session.user_name == result.fumen.creator and comment.isok == 0 and comment.isviewedbyauthor == 0 %}
+                                    <button class="btn btn-outline-success view_fumen_comment" type="button" style="font-size:14px;">确认</button>
+                                    {% endif %}
                                     {% else %}
                                     <p class="card-text">{{ comment.comment }}</p>
+                                    {% if request.session.user_name == result.fumen.creator and comment.isok == 0 and comment.isviewedbyauthor == 0 %}
+                                    <p class="comment_id" style="font-size:14px;display:none">{{ comment.id }}</p>
+                                    <button class="btn btn-outline-success view_fumen_comment" type="button" style="font-size:14px;">确认</button>
+                                    {% endif %}
                                     {% endif %}
                                 </div>
                             </div>

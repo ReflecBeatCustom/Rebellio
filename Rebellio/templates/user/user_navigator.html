@@ -1,18 +1,33 @@
 <div class="p-2 bd-highlight col-sm-1">
     <ul class="nav flex-column nav-pills">
+        {% if name == 'user_search' %}
         <li class="nav-item">
-            <a class="nav-link {{ search_user }}" href="/user/search_user">玩家搜索</a>
+            <a class="nav-link active" href="/user/user_search">玩家搜索</a>
         </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="/user/user_search">玩家搜索</a>
+        </li>
+        {% endif %}
         {% if request.session.is_login %}
+            {% if name == 'user_detail' %}
             <li class="nav-item">
-                <a class="nav-link {{ my_info }}" href="/user/user_detail?user_name={{ request.session.user_name }}">我的</a>
+                <a class="nav-link active" href="/user/user_detail?user_name={{ request.session.user_name }}">我的</a>
             </li>
+            {% else %}
             <li class="nav-item">
-                <a class="nav-link {{ user_info_set }}" href="/user/user_info_set">个人信息设置</a>
+                <a class="nav-link" href="/user/user_detail?user_name={{ request.session.user_name }}">我的</a>
             </li>
+            {% endif %}
+            {% if name == 'user_detail' %}
             <li class="nav-item">
-                <a class="nav-link {{ get_available_avatar }}" href="/user/get_available_avatar">更换头像</a>
+                <a class="nav-link active" href="/user/user_info_set">个人信息设置</a>
             </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="/user/user_info_set">个人信息设置</a>
+            </li>
+            {% endif %}
         {% endif %}
     </ul>
 </div>
