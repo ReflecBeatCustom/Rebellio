@@ -84,7 +84,7 @@ def get_fumen(get_fumen_params, session_info):
 
     # 得到谱面的所有玩家游玩记录
     fumen_records = get_fumen_records(get_fumen_params.fumen_id, get_fumen_params.difficulty,
-                                      get_fumen_params.is_show_all_fumen_records, fumen.diffsp == 0)
+                                      get_fumen_params.is_show_all_fumen_records, fumen.diffsp != 0)
     if len(fumen_records) == 0:
         fumen_best_record = None
     else:
