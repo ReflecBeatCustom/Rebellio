@@ -174,7 +174,7 @@ def get_fumen_records(fumen_id, difficulty, is_show_all_fumen_records, is_specia
     得到所有玩家的游玩记录
     """
     if is_special:
-        sql = "SELECT * FROM (SELECT MAX(Score) AS Score, SongID, Difficulty, LogTime, MAX(JR) AS JR, Note, MAX(SR) AS SR, id, MAX(AR) AS AR FROM Playrecords WHERE SongID = {0} AND Difficulty IN (0,3) GROUP BY AccountName) AS a ORDER BY Score DESC, LogTime".format(
+        sql = "SELECT * FROM (SELECT MAX(Score) AS Score, SongID, 3 AS Difficulty, LogTime, MAX(JR) AS JR, Note, MAX(SR) AS SR, id, MAX(AR) AS AR FROM Playrecords WHERE SongID = {0} AND Difficulty IN (0,3) GROUP BY AccountName) AS a ORDER BY Score DESC, LogTime".format(
             fumen_id)
     else:
         sql = "SELECT * FROM (SELECT MAX(Score) AS Score, SongID, Difficulty, LogTime, MAX(JR) AS JR, Note, MAX(SR) AS SR, id, MAX(AR) AS AR FROM Playrecords WHERE SongID = {0} AND Difficulty = {1} GROUP BY AccountName) AS a ORDER BY Score DESC, LogTime".format(
