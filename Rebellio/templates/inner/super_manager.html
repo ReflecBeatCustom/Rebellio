@@ -62,6 +62,18 @@
                 <span>&nbsp&nbsp</span>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">修改权限</button>
             </form>
+            <div class="border-top my-3 col-md-11"></div>
+            <h5><strong>删除分数</strong></h5>
+            <p class="card-text my-3"><small class="text-muted">删除有问题的分数记录</small></p>
+            <form class="form-inline my-12 my-lg-0" action="/inner/delete_absurd_record" method="get">
+                <input class="form-control mr-sm-10 col-sm-2" type="number" name="fumen_id" placeholder="输入谱面编号">
+                <span>&nbsp&nbsp</span>
+                <input class="form-control mr-sm-10 col-sm-2" type="text" name="user_name" placeholder="输入用户账号">
+                <span>&nbsp&nbsp</span>
+                <input class="form-control mr-sm-10 col-sm-2" type="number" name="score" placeholder="输入分数">
+                <span>&nbsp&nbsp</span>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">删除</button>
+            </form>
         </div>
     </div>
 {% endblock %}

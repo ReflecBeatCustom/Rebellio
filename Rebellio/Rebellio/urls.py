@@ -49,6 +49,7 @@ urlpatterns = [
     path('user/set_user_info/', views.set_user_info),
     # 内部
     path('inner/home/', views.inner_home),
+    path('inner/delete_absurd_record/', views.delete_absurd_record),
     path('inner/subdiff_votes/', views.get_subdiff_votes),
     path('inner/vote_on_subdiff/', views.vote_on_subdiff),
     path('inner/advice_fumens/', views.get_advice_fumens),

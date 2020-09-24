@@ -8,6 +8,27 @@ import datetime
 need_vote_level = 10
 
 
+def delete_absurd_record(delete_absurd_record, session_info):
+    """
+    删除有问题的记录
+    """
+    fumen_id = delete_absurd_record.fumen_id
+    user_name = delete_absurd_record.user_name
+    score = delete_absurd_record.score
+
+    if session_info.user_access_level < 3:
+        return False
+
+    # 得到分数有问题的记录
+    record = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name) & Q(score=score))
+    if record.jr != -1:
+        # 说明不是上传记录
+        return False
+
+    record.delete()
+    return True
+
+
 def view_fumen_comment(view_fumen_comment_params, session_info):
     comment_id = view_fumen_comment_params.comment_id
     if comment_id == 0:
@@ -29,6 +50,14 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
     models.Playersongcomments.objects.filter(id=comment_id).update(isviewedbyauthor=1, authorviewtime=datetime.datetime.utcnow()+datetime.timedelta(hours=8))
     return True
 
+
+def parse_delete_absurd_record_params(request):
+    fumen_id = int(request.GET.get('fumen_id', 0))
+    user_name = request.GET.get('user_name', 0)
+    score = int(request.GET.get('score', 0))
+
+    delete_absurd_record_params = inner_types.DeleteAbsurdRecordParams(fumen_id, user_name, score)
+    return delete_absurd_record_params
 
 
 def parse_view_fumen_comment_params(request):
