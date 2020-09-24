@@ -221,8 +221,8 @@ def delete_absurd_record(request):
     session_info = utils.get_session_info(request)
     delete_absurd_record_params = inner.parse_delete_absurd_record_params(request)
 
-    result = inner.delete_absurd_record(delete_absurd_record_params, session_info)
-    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
+    _ = inner.delete_absurd_record(delete_absurd_record_params, session_info)
+    return redirect('/inner/super_manager')
 
 
 @require_http_methods(['GET'])
