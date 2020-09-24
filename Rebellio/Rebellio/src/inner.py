@@ -20,7 +20,11 @@ def delete_absurd_record(delete_absurd_record, session_info):
         return False
 
     # 得到分数有问题的记录
-    record = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name) & Q(score=score))
+    records = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name) & Q(score=score))
+    if len(records) == 0:
+        return False
+    record = records[0]
+
     if record.jr != -1:
         # 说明不是上传记录
         return False
