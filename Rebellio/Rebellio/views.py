@@ -235,7 +235,7 @@ def get_plan_packs(request):
     get_plan_packs_params = inner.parse_get_plan_packs_params(request)
 
     get_plan_packs_response = inner.get_plan_packs(get_plan_packs_params, pagination_info, session_info)
-    return render(request, 'pack/packs.html', {'result': get_plan_packs_response, 'name': 'plan_packs'})
+    return render(request, 'inner/plan_packs.html', {'result': get_plan_packs_response, 'name': 'plan_packs'})
 
 @require_http_methods(['GET'])
 def inner_home(request):
