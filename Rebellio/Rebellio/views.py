@@ -216,6 +216,7 @@ def delete_pack_comment(request):
 """
 
 @require_http_methods(['GET'])
+@decorators.is_super_admin_decorator
 def delete_absurd_record(request):
 
     session_info = utils.get_session_info(request)
@@ -224,6 +225,17 @@ def delete_absurd_record(request):
     _ = inner.delete_absurd_record(delete_absurd_record_params, session_info)
     return redirect('/inner/super_manager')
 
+
+@require_http_methods(['GET'])
+@decorators.is_admin_decorator
+def get_plan_packs(request):
+
+    session_info = utils.get_session_info(request)
+    pagination_info = utils.get_pagination_info(request)
+    get_plan_packs_params = inner.parse_get_plan_packs_params(request)
+
+    get_plan_packs_response = inner.get_plan_packs(get_plan_packs_params, pagination_info, session_info)
+    return render(request, 'pack/packs.html', {'result': get_plan_packs_response, 'name': 'plan_packs'})
 
 @require_http_methods(['GET'])
 def inner_home(request):

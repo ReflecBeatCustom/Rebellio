@@ -2,6 +2,7 @@ import math
 from .. import models
 from . import utils
 from .types import inner_types
+from .types import pack_types
 from django.db.models import Q
 import datetime
 
@@ -15,9 +16,6 @@ def delete_absurd_record(delete_absurd_record, session_info):
     fumen_id = delete_absurd_record.fumen_id
     user_name = delete_absurd_record.user_name
     score = delete_absurd_record.score
-
-    if session_info.user_access_level < 3:
-        return False
 
     # 得到分数有问题的记录
     records = models.Playrecords.objects.filter(Q(songid=fumen_id) & Q(accountname=user_name) & Q(score=score))
@@ -55,6 +53,21 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
     return True
 
 
+def get_plan_packs(get_plan_packs_params, pagination_info, session_info):
+    sql = "SELECT * FROM Packs WHERE Category=1"
+    if get_plan_packs_params.keyword != '':
+        sql += " AND Title LIKE '%%{0}%%'".format(get_plan_packs_params.keyword)
+    sql += " ORDER BY CreateTime DESC"
+
+    unpagination_packs = models.Packs.objects.raw(sql)
+    unformated_packs, pagination_info = utils.get_pagination_result(unpagination_packs, pagination_info)
+    plan_packs = utils.get_formated_packs(unformated_packs, session_info, [2,3])
+
+    get_plan_packs_response = pack_types.GetPlanPacksResponse(get_plan_packs_params, plan_packs, pagination_info)
+
+    return get_plan_packs_response
+
+
 def parse_delete_absurd_record_params(request):
     fumen_id = int(request.GET.get('fumen_id', 0))
     user_name = request.GET.get('user_name', 0)
@@ -62,6 +75,12 @@ def parse_delete_absurd_record_params(request):
 
     delete_absurd_record_params = inner_types.DeleteAbsurdRecordParams(fumen_id, user_name, score)
     return delete_absurd_record_params
+
+
+def parse_get_plan_packs_params(request):
+    keyword = request.GET.get('keyword', '')
+    get_plan_packs_params = pack_types.GetPlanPacksParams(keyword)
+    return get_plan_packs_params
 
 
 def parse_view_fumen_comment_params(request):

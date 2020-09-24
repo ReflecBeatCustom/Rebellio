@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        {% include 'pack/pack_navigator.html' %}
+        <div class="p-2 bd-highlight col-sm-11">
+            <div class="d-flex flex-row bd-highlight mb-3" id="packs-navigator">
+            </div>
+            <div class="p-2 bd-highlight col-sm-12" id="table-wrapper">
+                {% for pack in result.plan_packs %}
+                    {% include 'pack/pack_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

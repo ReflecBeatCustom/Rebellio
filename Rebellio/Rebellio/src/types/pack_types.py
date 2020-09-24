@@ -4,6 +4,11 @@ class GetPacksParams(object):
         self.category = category
 
 
+class GetPlanPacksParams(object):
+    def __init__(self, keyword):
+        self.keyword = keyword
+
+
 class GetPackParams(object):
     def __init__(self, pack_id, category, is_show_all_pack_comments):
         self.pack_id = pack_id
@@ -34,6 +39,13 @@ class GetPacksResponse(object):
     def __init__(self, get_packs_params, packs, pagination_info):
         self.get_packs_params = get_packs_params
         self.packs = packs
+        self.pagination_info = pagination_info
+
+
+class GetPlanPacksResponse(object):
+    def __init__(self, get_plan_packs_params, plan_packs, pagination_info):
+        self.get_plan_packs_params = get_plan_packs_params
+        self.plan_packs = plan_packs
         self.pagination_info = pagination_info
 
 
