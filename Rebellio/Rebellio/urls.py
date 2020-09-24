@@ -50,6 +50,7 @@ urlpatterns = [
     # 内部
     path('inner/home/', views.inner_home),
     path('inner/delete_absurd_record/', views.delete_absurd_record),
+    path('inner/plan_packs/', views.get_plan_packs),
     path('inner/subdiff_votes/', views.get_subdiff_votes),
     path('inner/vote_on_subdiff/', views.vote_on_subdiff),
     path('inner/advice_fumens/', views.get_advice_fumens),
@@ -60,6 +61,7 @@ urlpatterns = [
     path('inner/super_manager/', views.super_manager),
     path('inner/change_user_access_level', views.change_user_access_level),
     path('inner/view_fumen_comment', views.view_fumen_comment),
+    # 验证码
     url(r'^captcha', include('captcha.urls')),
     #path('fumen/get', views.get_fumen),
 ]
