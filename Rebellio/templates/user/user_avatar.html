@@ -9,7 +9,7 @@
             <div class="card-body">
                 <div class="avatar-content">
                     <div class="d-flex row flex-wrap">
-                        {% for avatar_id in avatar_ids %}
+                        {% for avatar_id in result.avatar_ids %}
                         <div class="col-md-1" style="float:left;">
                             <a href="/user/set_avatar?avatar_id={{ avatar_id }}"><img src="https://chilundui.com/data/rbdx/image/song/{{ avatar_id }}.png" style="max-width:150px;height:150px;"></a>
                         </div>

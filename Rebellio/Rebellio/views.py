@@ -237,6 +237,13 @@ def get_plan_packs(request):
     get_plan_packs_response = inner.get_plan_packs(get_plan_packs_params, pagination_info, session_info)
     return render(request, 'inner/plan_packs.html', {'result': get_plan_packs_response, 'name': 'plan_packs'})
 
+
+@require_http_methods(['GET'])
+@decorators.is_super_admin_decorator
+def create_plan_pack(request):
+    pass
+
+
 @require_http_methods(['GET'])
 def inner_home(request):
     if not request.session.get('is_login', None):
@@ -402,7 +409,7 @@ def get_available_avatar(request):
     user_name = request.session.get('user_name', '')
 
     result = user.get_available_avatar(user_name)
-    return render(request, 'user/user_avatar.html', result)
+    return render(request, 'user/user_avatar.html', {'result': result, 'name': 'get_available_avatar'})
 
 
 @require_http_methods(['GET'])

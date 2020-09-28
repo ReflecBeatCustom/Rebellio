@@ -77,7 +77,7 @@ def get_player_high_records(player_name, can_view_fumen_ids):
 def get_available_avatar(user_name):
     fumens = models.Songs.objects.raw("SELECT DISTINCT * FROM (SELECT s.* FROM Playrecords AS r LEFT JOIN Songs AS s on s.SongID = r.SongID WHERE r.AccountName = '{0}' AND (r.AR >= 0.98 or r.SR >= 0.98)) AS result".format(user_name))
     fumen_ids = [fumen.songid for fumen in fumens]
-    return {'avatar_ids': fumen_ids, 'get_available_avatar': 'active'}
+    return {'avatar_ids': fumen_ids}
 
 
 def set_avatar(user_name, avatar_id):

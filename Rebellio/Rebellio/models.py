@@ -61,13 +61,14 @@ class Gameusers(models.Model):
         db_table = 'Gameusers'
 
 class Packs(models.Model):
-    category = models.PositiveIntegerField(db_column='Category', primary_key=True)  # Field name made lowercase.
+    category = models.PositiveIntegerField(db_column='Category')  # Field name made lowercase.
     packid = models.IntegerField(db_column='PackID')  # Field name made lowercase.
     title = models.TextField(db_column='Title', blank=True, null=True)  # Field name made lowercase.
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
     haspromotion = models.IntegerField(db_column='HasPromotion', blank=True, null=True)  # Field name made lowercase.
     previewsongid = models.PositiveIntegerField(db_column='PreviewSongID', blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    id = models.IntegerField(db_column='id', primary_key=True)
 
     class Meta:
         managed = True

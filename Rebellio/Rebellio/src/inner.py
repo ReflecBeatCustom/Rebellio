@@ -68,6 +68,17 @@ def get_plan_packs(get_plan_packs_params, pagination_info, session_info):
     return get_plan_packs_response
 
 
+def create_plan_pack(create_plan_pack_params):
+    """
+    创建一个计划包
+    """
+    pack = models.Packs(category=1, packid=create_plan_pack_params.pack_id, title=create_plan_pack_params.title,
+                        comment=create_plan_pack_params.comment, haspromotion=create_plan_pack_params.has_promotion,
+                        previewsongid=create_plan_pack_params.preview_song_id)
+    pack.save()
+    return True
+
+
 def parse_delete_absurd_record_params(request):
     fumen_id = int(request.GET.get('fumen_id', 0))
     user_name = request.GET.get('user_name', 0)
