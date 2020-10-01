@@ -243,6 +243,42 @@ def get_formated_comments(comments):
     return formated_comments
 
 
+def get_formated_class_records(class_records):
+    """
+    标准化段位记录
+    """
+    formated_class_records = []
+    for class_record in class_records:
+        if class_record.class_field == 1:
+            class_record.class_field = "初段"
+        elif class_record.class_field == 2:
+            class_record.class_field = "二段"
+        elif class_record.class_field == 3:
+            class_record.class_field = "三段"
+        elif class_record.class_field == 4:
+            class_record.class_field = "四段"
+        elif class_record.class_field == 5:
+            class_record.class_field = "五段"
+        elif class_record.class_field == 6:
+            class_record.class_field = "六段"
+        elif class_record.class_field == 7:
+            class_record.class_field = "七段"
+        elif class_record.class_field == 8:
+            class_record.class_field = "八段"
+        elif class_record.class_field == 9:
+            class_record.class_field = "九段"
+        elif class_record.class_field == 10:
+            class_record.class_field = "十段"
+        elif class_record.class_field == 11:
+            class_record.class_field = "中伝"
+        elif class_record.class_field == 12:
+            class_record.class_field = "皆伝"
+        else:
+            class_record.class_field = "???"
+        formated_class_records.append(class_record)
+    return formated_class_records
+
+
 def get_rank_from_rate(rate):
     """
     从小数的rate中得到此次记录的ranking

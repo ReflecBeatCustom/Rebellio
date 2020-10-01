@@ -30,7 +30,10 @@ def get_user_detail(get_user_detail_params, session_info):
     # 得到查看用户的高分记录
     player_high_score_records_with_fumen = get_player_high_records(get_user_detail_params.user_name, can_view_fumen_ids)
 
-    get_user_detail_response = user_types.GetUserDetailResponse(user, player_recent_records_with_fumen, player_high_score_records_with_fumen)
+    # 得到用户的段位
+    best_class_record = get_player_best_class_record(get_user_detail_params.user_name)
+
+    get_user_detail_response = user_types.GetUserDetailResponse(user, best_class_record, player_recent_records_with_fumen, player_high_score_records_with_fumen)
     return get_user_detail_response
 
 
@@ -78,6 +81,15 @@ def get_available_avatar(user_name):
     fumens = models.Songs.objects.raw("SELECT DISTINCT * FROM (SELECT s.* FROM Playrecords AS r LEFT JOIN Songs AS s on s.SongID = r.SongID WHERE r.AccountName = '{0}' AND (r.AR >= 0.98 or r.SR >= 0.98)) AS result".format(user_name))
     fumen_ids = [fumen.songid for fumen in fumens]
     return {'avatar_ids': fumen_ids}
+
+
+def get_player_best_class_record(user_name):
+    unformated_class_fields = models.ClassCheckRecords.objects.raw("SELECT * FROM class_check_records WHERE AccountName = {0} ORDER BY Class DESC, ClearLevel DESC LIMIT 1".format(user_name))
+    class_fields = utils.get_formated_class_records(unformated_class_fields)
+    if len(class_fields) == 0:
+        return None
+
+    return class_fields[0]
 
 
 def set_avatar(user_name, avatar_id):

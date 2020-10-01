@@ -24,6 +24,14 @@
                                     <p style="font-size:28px;"><span style="color:#52527a"><strong>[{{ result.user.title }}]</strong></span>&nbsp&nbsp<span style="color:#ffa70f"><strong>{{ result.user.accountname }}</strong></span></p>
                                 {% endif %}
                                 <div>
+                                    {% if not result.best_class_record.clearlevel %}
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>段位:</strong></span>&nbsp&nbsp<span style="color:green"><strong>无</strong></span></p>
+                                    {% endif %}
+                                    {% if result.best_class_record.clearlevel == 1 %}
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:gold"><strong>{{ result.best_class_record.class_field }}</strong></span></p>
+                                    {% else %}
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:green"><strong>{{ result.best_class_record.class_field }}</strong></span></p>
+                                    {% endif %}
                                     <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Skill Point[Under beta test]:</strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ result.user.skillpoint }}</strong></span></p>
                                 </div>
                                 {% if result.user.signature  %}

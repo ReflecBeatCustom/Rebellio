@@ -177,3 +177,15 @@ class Unlockrecords(models.Model):
         db_table = 'Unlockrecords'
         unique_together = (('accountname', 'songid'),)
 
+
+class ClassCheckRecords(models.Model):
+    accountname = models.CharField(db_column='AccountName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    class_field = models.IntegerField(db_column='Class', blank=True, null=True)  # Field name made lowercase. Field renamed because it was a Python reserved word.
+    clearlevel = models.IntegerField(db_column='ClearLevel', blank=True, null=True)  # Field name made lowercase.
+    logtime = models.DateTimeField(db_column='LogTime', blank=True, null=True)  # Field name made lowercase.
+    achievementrate = models.FloatField(db_column='AchievementRate', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'class_check_records'
+
