@@ -84,7 +84,7 @@ def get_available_avatar(user_name):
 
 
 def get_player_best_class_record(user_name):
-    unformated_class_fields = models.ClassCheckRecords.objects.raw("SELECT * FROM class_check_records WHERE AccountName = '{0}' ORDER BY Class DESC, ClearLevel DESC LIMIT 1".format(user_name))
+    unformated_class_fields = models.ClassCheckRecords.objects.raw("SELECT * FROM class_check_records WHERE AccountName = '{0}' AND ClearLevel != 0 ORDER BY Class DESC, ClearLevel DESC LIMIT 1".format(user_name))
     class_fields = utils.get_formated_class_records(unformated_class_fields)
     if len(class_fields) == 0:
         return None
