@@ -275,6 +275,8 @@ def get_formated_class_records(class_records):
             class_record.class_field = "皆伝"
         else:
             class_record.class_field = "???"
+
+        class_record.clearlevel = int(class_record.clearlevel)
         formated_class_records.append(class_record)
     return formated_class_records
 
