@@ -25,9 +25,8 @@
                                 {% endif %}
                                 <div>
                                     {% if not result.best_class_record.clearlevel %}
-                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>段位:</strong></span>&nbsp&nbsp<span style="color:green"><strong>无</strong></span></p>
-                                    {% endif %}
-                                    {% if result.best_class_record.clearlevel == 1 %}
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:green"><strong>无</strong></span></p>
+                                    {% elif result.best_class_record.clearlevel == 1 %}
                                     <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:gold"><strong>{{ result.best_class_record.class_field }}</strong></span></p>
                                     {% else %}
                                     <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:green"><strong>{{ result.best_class_record.class_field }}</strong></span></p>
