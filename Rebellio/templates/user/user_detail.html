@@ -25,7 +25,7 @@
                                 {% endif %}
                                 <div>
                                     {% if not result.best_class_record.clearlevel %}
-                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:green"><strong>无</strong></span></p>
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:green"><strong>无 / None</strong></span></p>
                                     {% elif result.best_class_record.clearlevel == 1 %}
                                     <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:gold"><strong>{{ result.best_class_record.class_field }}</strong></span></p>
                                     {% else %}
