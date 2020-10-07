@@ -16,7 +16,7 @@ def get_session_info(request):
 
 def get_pagination_info(request):
     start_page = int(request.GET.get('start_page', 1))
-    page_size = int(request.GET.get('page_size', 10))
+    page_size = int(request.GET.get('page_size', 20))
     pagination_info = http.PaginationInfo(start_page, page_size)
     return pagination_info
 
