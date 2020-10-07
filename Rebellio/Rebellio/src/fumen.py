@@ -6,7 +6,7 @@ from .types import fumen_types
 from .. import models
 
 # 默认展示的成绩，评论数量
-default_show_count = 10
+default_show_count = 20
 
 
 def get_fumens(get_fumens_params, pagination_info, session_info):

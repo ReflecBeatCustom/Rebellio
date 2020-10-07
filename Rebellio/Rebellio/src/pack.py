@@ -6,7 +6,7 @@ from .types import pack_types
 from django.db.models import Q
 
 
-default_show_count = 10
+default_show_count = 20
 
 
 def get_packs(session_info, pagination_info, get_packs_params):

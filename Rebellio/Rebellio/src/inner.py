@@ -6,7 +6,7 @@ from .types import pack_types
 from django.db.models import Q
 import datetime
 
-need_vote_level = 10
+need_vote_level = 20
 
 
 def delete_absurd_record(delete_absurd_record, session_info):
