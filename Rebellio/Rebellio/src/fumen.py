@@ -2,11 +2,9 @@ from django.db import connection
 from django.db.models import Q
 import datetime
 from . import utils
+from .config import config
 from .types import fumen_types
 from .. import models
-
-# 默认展示的成绩，评论数量
-default_show_count = 20
 
 
 def get_fumens(get_fumens_params, pagination_info, session_info):
@@ -133,8 +131,8 @@ def get_fumen_player_records(fumen_id, difficulty, user_name, is_show_all_fumen_
         return []
 
     start_index = 0
-    end_index = default_show_count if not is_show_all_fumen_player_records and len(
-        unpagination_records) >= default_show_count else len(unpagination_records)
+    end_index = config.default_fumen_player_record_count if not is_show_all_fumen_player_records and len(
+        unpagination_records) >= config.default_fumen_player_record_count else len(unpagination_records)
     unformated_records = unpagination_records[start_index:end_index]
 
     records = utils.get_formated_records(unformated_records)
@@ -184,8 +182,8 @@ def get_fumen_records(fumen_id, difficulty, is_show_all_fumen_records, is_specia
         return []
 
     start_index = 0
-    end_index = default_show_count if not is_show_all_fumen_records and len(
-        unpagination_records) >= default_show_count else len(unpagination_records)
+    end_index = config.default_fumen_top_record_count if not is_show_all_fumen_records and len(
+        unpagination_records) >= config.default_fumen_top_record_count else len(unpagination_records)
     unformated_records = unpagination_records[start_index:end_index]
 
     records = utils.get_formated_records(unformated_records, True)
@@ -201,8 +199,8 @@ def get_fumen_comments(fumen_id, is_show_all_comments):
         return []
 
     start_index = 0
-    end_index = default_show_count if is_show_all_comments and len(
-        unpagination_comments) >= default_show_count else len(unpagination_comments)
+    end_index = config.default_fumen_comment_count if is_show_all_comments and len(
+        unpagination_comments) >= config.default_fumen_comment_count else len(unpagination_comments)
     unformated_comments = unpagination_comments[start_index:end_index]
 
     comments = utils.get_formated_comments(unformated_comments)

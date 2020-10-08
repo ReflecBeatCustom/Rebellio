@@ -1,12 +1,11 @@
 import math
 from .. import models
 from . import utils
+from .config import config
 from .types import inner_types
 from .types import pack_types
 from django.db.models import Q
 import datetime
-
-need_vote_level = 10
 
 
 def delete_absurd_record(delete_absurd_record, session_info):
@@ -114,7 +113,7 @@ def get_need_vote_subdiff_fumen_diffs(user_access_level):
     if user_access_level < 1:
         return []
 
-    fumens = models.Songs.objects.filter((Q(diffb__gte=need_vote_level) | Q(diffm__gte=need_vote_level) | Q(diffh__gte=need_vote_level) | Q(diffsp__gte=need_vote_level)) & Q(isvotingsubdiff=1))
+    fumens = models.Songs.objects.filter((Q(diffb__gte=config.need_vote_level) | Q(diffm__gte=config.need_vote_level) | Q(diffh__gte=config.need_vote_level) | Q(diffsp__gte=config.need_vote_level)) & Q(isvotingsubdiff=1))
     result = []
     for fumen in fumens:
         fumen_id = fumen.songid
@@ -195,7 +194,7 @@ def add_subdiff_vote_fumen(user_access_level, fumen_id):
     if user_access_level < 3 or fumen_id == 0:
         return None
 
-    models.Songs.objects.filter((Q(diffb__gte=need_vote_level) | Q(diffm__gte=need_vote_level) | Q(diffh__gte=need_vote_level) | Q(diffsp__gte=need_vote_level)) & Q(songid=fumen_id)).update(isvotingsubdiff=1)
+    models.Songs.objects.filter((Q(diffb__gte=config.need_vote_level) | Q(diffm__gte=config.need_vote_level) | Q(diffh__gte=config.need_vote_level) | Q(diffsp__gte=config.need_vote_level)) & Q(songid=fumen_id)).update(isvotingsubdiff=1)
     return True
 
 def delete_subdiff_vote_fumen(user_access_level, fumen_id):

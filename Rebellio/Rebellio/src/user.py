@@ -2,11 +2,9 @@ from django.db import connection
 import math
 from .. import models
 from . import utils
+from .config import config
 from .types import user_types
 from django.db.models import Q
-
-# 默认展示的成绩，评论数量
-default_show_count = 10
 
 
 def get_user_detail(get_user_detail_params, session_info):
@@ -23,7 +21,7 @@ def get_user_detail(get_user_detail_params, session_info):
     can_view_fumen_ids = set([int(row[0]) for row in rows])
 
     # 得到查看用户的最近游玩记录
-    unformated_recent_records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE AccountName = '{0}' ORDER BY LogTime DESC LIMIT {1}".format(get_user_detail_params.user_name, default_show_count))
+    unformated_recent_records = models.Playrecords.objects.raw("SELECT * FROM Playrecords WHERE AccountName = '{0}' ORDER BY LogTime DESC LIMIT {1}".format(get_user_detail_params.user_name, config.default_recent_record_count))
     player_recent_records = [record for record in utils.get_formated_records(unformated_recent_records) if record.songid in can_view_fumen_ids]
     player_recent_records_with_fumen = get_records_with_fumen(player_recent_records)
 

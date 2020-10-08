@@ -2,6 +2,7 @@
 import copy
 import math
 from django.db.models import Q
+from .config import config
 from .types import http
 from .. import models
 
@@ -15,8 +16,8 @@ def get_session_info(request):
 
 
 def get_pagination_info(request):
-    start_page = int(request.GET.get('start_page', 1))
-    page_size = int(request.GET.get('page_size', 20))
+    start_page = int(request.GET.get('start_page', config.default_start_page))
+    page_size = int(request.GET.get('page_size', config.default_page_size))
     pagination_info = http.PaginationInfo(start_page, page_size)
     return pagination_info
 
