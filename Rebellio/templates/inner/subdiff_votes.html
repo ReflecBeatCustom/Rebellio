@@ -9,9 +9,25 @@
             {% for item in result %}
                 <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                     {% if item.is_voted_by_user %}
-                        <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                        {% if item.difficulty == 0 %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                        {% elif item.difficulty == 1 %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
+                        {% elif item.difficulty == 2 %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
+                        {% else %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
+                        {% endif %}
                     {% else %}
-                        <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
+                        {% if item.difficulty == 0 %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                        {% elif item.difficulty == 1 %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
+                        {% elif item.difficulty == 2 %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
+                        {% else %}
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
+                        {% endif %}
                     {% endif %}
                     <div class="card-body">
                         <div class="fumen-details-content">
@@ -40,23 +56,12 @@
                         <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                             <div class="card-header"><strong>投票</strong></div>
                             <div class="card-body">
-                                <form class="form-inline my-12 my-lg-0" action="/inner/vote_on_subdiff" method="get">
-                                    <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" placeholder="输入等级(0为?)">
-                                    <div>&nbsp&nbsp</div>
-                                    <input class="form-control mr-sm-10 col-sm-1" type="number" name="fumen_id" value={{ item.fumen_id }}  readonly>
-                                    <div>&nbsp&nbsp</div>
-                                    <input class="form-control mr-sm-10 col-sm-1" type="number" name="difficulty" value={{ item.difficulty }}  readonly>
-                                    <div>&nbsp&nbsp</div>
-                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">提交</button>
-                                </form>
+                                <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" id="subdiff" placeholder="输入等级(0为?)">
+                                <p class="fumen_id" style="font-size:14px;display:none">{{ item.fumen_id }}</p>
+                                <p class="difficulty" style="font-size:14px;display:none">{{ item.difficulty }}</p>
+                                <button class="btn btn-outline-success vote_on_subdiff" type="button">提交</button>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" id="subdiff" placeholder="输入等级(0为?)">
-                        <p class="fumen_id" style="font-size:14px;display:none">{{ item.fumen_id }}</p>
-                        <p class="difficulty" style="font-size:14px;display:none">{{ item.difficulty }}</p>
-                        <button class="btn btn-outline-success vote_on_subdiff" type="button">提交</button>
                     </div>
                 </div>
             {% endfor %}
