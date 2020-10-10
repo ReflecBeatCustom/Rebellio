@@ -90,10 +90,10 @@
                                 <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_player_best_record.ranking }}</span></p>
                             </div>
                             <div class="container col-md-1 align-self-center">
-                                <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_player_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_player_best_record.player.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
                             </div>
                             <div class="container col-md-2 align-self-center">
-                                <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ result.fumen_player_best_record.accountname }}">{{ result.fumen_player_best_record.accountname }}</a></span></p>
+                                <p class="card-text" align="center"><span style="color:black;font-size:16px">[ {{ result.fumen_player_best_record.player.title }} ] <a href="/user/user_detail?user_name={{ result.fumen_player_best_record.player.accountname }}">{{ result.fumen_player_best_record.player.accountname }}</a></span></p>
                             </div>
                             <div class="container col-md-2 align-self-center">
                                 {% if result.fumen_player_best_record.rank == "EXC" %}
@@ -147,10 +147,10 @@
                                     <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ result.fumen_best_record.ranking }}</span></p>
                                 </div>
                                 <div class="container col-md-1 align-self-center">
-                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_best_record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ result.fumen_best_record.player.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
                                 </div>
                                 <div class="container col-md-2 align-self-center">
-                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ result.fumen_best_record.accountname }}">{{ result.fumen_best_record.accountname }}</a></span></p>
+                                    <p class="card-text" align="center"><span style="color:black;font-size:16px">[ {{ result.fumen_best_record.player.title }} ] <a href="/user/user_detail?user_name={{ result.fumen_best_record.player.accountname }}">{{ result.fumen_best_record.player.accountname }}</a></span></p>
                                 </div>
                                 <div class="container col-md-2 align-self-center">
                                     {% if result.fumen_best_record.rank == "EXC" %}
@@ -202,10 +202,10 @@
                                     <p class="card-text" style="margin-left:30px"><span style="color:black;font-size:24px">{{ record.ranking }}</span></p>
                                 </div>
                                 <div class="container col-md-1 align-self-center">
-                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ record.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
+                                    <img src="https://chilundui.com/data/rbdx/image/song/{{ record.player.avatar }}.png" style="max-width:75px;height:75px;border-radius:50%;">
                                 </div>
                                 <div class="container col-md-2 align-self-center">
-                                    <p class="card-text" align="center"><span style="color:black;font-size:16px"><a href="/user/user_detail?user_name={{ record.accountname }}">{{ record.accountname }}</a></span></p>
+                                    <p class="card-text" align="center"><span style="color:black;font-size:16px">[ {{ record.player.title }} ] <a href="/user/user_detail?user_name={{ record.player.accountname }}">{{ record.player.accountname }}</a></span></p>
                                 </div>
                                 <div class="container col-md-2 align-self-center">
                                     {% if record.rank == "EXC" %}

@@ -222,12 +222,12 @@ def get_formated_records(records, is_ranking=False):
             record.ranking = ranking
             ranking += 1
 
-        # 设置用户avatar信息
+        # 设置用户信息
         accounts = models.Accounts.objects.filter(Q(accountname=record.accountname))
         if len(accounts) == 0:
-            record.avatar = 0
+            record.player = None
         else:
-            record.avatar = accounts[0].avatar
+            record.player = accounts[0]
 
         formated_records.append(record)
 
