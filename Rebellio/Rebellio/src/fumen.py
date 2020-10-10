@@ -43,8 +43,17 @@ def get_fumens(get_fumens_params, pagination_info, session_info):
 
     sql += ') AS result ORDER BY result.CreateTime DESC'
 
+    # 得到需要的难度
+    if get_fumens_params.difficulty == -1:
+        difficultys = [0, 1, 2, 3]
+    elif get_fumens_params.difficulty == 2:
+        # 特殊情况,这里返回hard和special难度
+        difficultys = [2, 3]
+    else:
+        difficultys = [get_fumens_params.difficulty]
+
     raw_fumens = models.Songs.objects.raw(sql)
-    difficulty_splitted_fumens = [fumen for fumen in utils.get_difficulty_splitted_fumens(raw_fumens) if fumen.diff == get_fumens_params.fumen_level or get_fumens_params.fumen_level == 0] # 筛选出指定难度的谱面
+    difficulty_splitted_fumens = [fumen for fumen in utils.get_difficulty_splitted_fumens(raw_fumens, difficultys) if fumen.diff == get_fumens_params.fumen_level or get_fumens_params.fumen_level == 0] # 筛选出指定难度的谱面
     pagination_fumens, pagination_info = utils.get_pagination_result(difficulty_splitted_fumens, pagination_info)
     fumens = utils.get_formated_fumens(pagination_fumens, session_info)
 
@@ -100,10 +109,11 @@ def get_fumen(get_fumen_params, session_info):
 def parse_get_fumens_params(request, is_get_unlocked=False, is_get_self_create=False):
     keyword = request.GET.get('keyword', '')
     fumen_creator = request.GET.get('fumen_creator', '')
+    difficulty = int(request.GET.get('difficulty', 2))
     category = int(request.GET.get('category', 0))
     fumen_level = int(request.GET.get('fumen_level', 0))
-    get_fumens_params = fumen_types.GetFumensParams(keyword, fumen_creator, category, fumen_level, is_get_unlocked,
-                                                    is_get_self_create)
+    get_fumens_params = fumen_types.GetFumensParams(keyword, fumen_creator, category, fumen_level, difficulty,
+                                                    is_get_unlocked, is_get_self_create)
     if is_get_self_create:
         get_fumens_params.fumen_uploader = request.session.get('user_name', '')
     return get_fumens_params

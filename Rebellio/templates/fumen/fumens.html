@@ -27,6 +27,28 @@
                     {% else %}
                         <input class="form-control mr-sm-2" name="fumen_creator" type="search" placeholder="输入做谱人" aria-label="Search" value={{ result.get_fumens_params.fumen_creator }}>
                     {% endif %}
+                    <select class="form-control mr-sm-1" name="difficulty">
+                        {% if result.get_fumens_params.difficulty == -1 %}
+                            <option value=-1 selected>全难度</option>
+                        {% else %}
+                            <option value=-1>全难度</option>
+                        {% endif %}
+                        {% if result.get_fumens_params.difficulty == 0 %}
+                            <option value=0 selected>BASIC</option>
+                        {% else %}
+                            <option value=0>BASIC</option>
+                        {% endif %}
+                        {% if result.get_fumens_params.difficulty == 1 %}
+                            <option value=1 selected>MEDIUM</option>
+                        {% else %}
+                            <option value=1>MEDIUM</option>
+                        {% endif %}
+                        {% if result.get_fumens_params.difficulty == 2 %}
+                            <option value=2 selected>HARD+SPECIAL</option>
+                        {% else %}
+                            <option value=2>HARD+SPECIAL</option>
+                        {% endif %}
+                    </select>
                     <select class="form-control mr-sm-1" name="fumen_level">
                         {% if result.get_fumens_params.fumen_level == 0 %}
                             <option value=0 selected>等级</option>

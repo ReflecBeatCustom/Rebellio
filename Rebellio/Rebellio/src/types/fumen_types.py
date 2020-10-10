@@ -1,9 +1,10 @@
 class GetFumensParams(object):
-    def __init__(self, keyword, fumen_creator, category, fumen_level, is_get_unlocked, is_get_self_create):
+    def __init__(self, keyword, fumen_creator, category, fumen_level, difficulty, is_get_unlocked, is_get_self_create):
         self.keyword = keyword
         self.fumen_creator = fumen_creator
         self.category = category
         self.fumen_level = fumen_level
+        self.difficulty = difficulty
         self.is_get_unlocked = is_get_unlocked
         self.is_get_self_create = is_get_self_create
 
