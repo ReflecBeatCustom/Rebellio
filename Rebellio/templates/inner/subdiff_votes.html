@@ -6,19 +6,12 @@
     <div class="d-flex flex-row bd-highlight mb-3">
         {% include 'inner/inner_navigator.html' %}
         <div class="p-2 bd-highlight col-sm-11">
-            {% for item in subdiff_votes %}
+            {% for item in result %}
                 <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
-                    {% if item.difficulty == 0 %}
-                        <strong class="card-header" style="background-color: #19A403;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC<strong>
-                    {% endif %}
-                    {% if item.difficulty == 1 %}
-                        <strong class="card-header" style="background-color: #FF8A01;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
-                    {% endif %}
-                    {% if item.difficulty == 2 %}
-                        <strong class="card-header" style="background-color: #F30A0A;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
-                    {% endif %}
-                    {% if item.difficulty == 3 %}
-                        <strong class="card-header" style="background-color: #00D2E9;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
+                    {% if item.is_voted_by_user %}
+                        <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                    {% else %}
+                        <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
                     {% endif %}
                     <div class="card-body">
                         <div class="fumen-details-content">
@@ -33,7 +26,7 @@
                                 <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;">无投票记录</p>
                             {% endif %}
                             {% for subdiff_vote in item.subdiff_votes %}
-                                <h4 class="card-title my-3" style="font-size: 20px; color: #5f2525; display: inline;">{{ subdiff_vote.accountname }}:&nbsp&nbsp</h4>
+                                <h4 class="card-title my-3" style="font-size: 20px; color: #5f2525; display: inline;"><a href="/user/user_detail?user_name={{ subdiff_vote.accountname }}">{{ subdiff_vote.accountname }}:&nbsp&nbsp</a></h4>
                                 {% if subdiff_vote.subdiff != 0 %}
                                     <p class="card-text" style="font-size: 20px; color: #6e2b2b; display: inline;"><a href="#">{{ subdiff_vote.subdiff }}</a></p>
                                 {% else %}
@@ -59,8 +52,34 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" id="subdiff" placeholder="输入等级(0为?)">
+                        <p class="fumen_id" style="font-size:14px;display:none">{{ item.fumen_id }}</p>
+                        <p class="difficulty" style="font-size:14px;display:none">{{ item.difficulty }}</p>
+                        <button class="btn btn-outline-success vote_on_subdiff" type="button">提交</button>
+                    </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(".vote_on_subdiff").click(function() {
+		    console.log("click on btn_vote_on_subdiff");
+		    const parentNode = $(this).parent();
+            const subdiff = parentNode.children("input").val();
+            const fumen_id = parentNode.find(".fumen_id").html();
+            const difficulty = parentNode.find(".difficulty").html();
+            const url = "/inner/vote_on_subdiff?"+"fumen_id="+fumen_id+"&difficulty="+difficulty+"&subdiff="+subdiff;
+            $.get(url, function ( data ) {
+                if (!data.result) {
+                    alert(data.err_msg)
+                } else {
+                    location.reload();
+                }
+            });
+        });
+    </script>
 {% endblock %}

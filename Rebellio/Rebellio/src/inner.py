@@ -106,13 +106,10 @@ def set_return_result(result, sub_page):
     result[sub_page] = 'active'
     result['sub_page'] = sub_page
 
-def get_need_vote_subdiff_fumen_diffs(user_access_level):
+def get_need_vote_subdiff_fumen_diffs():
     """
     返回当前需要投票subdiff的谱面id和难度id列表
     """
-    if user_access_level < 1:
-        return []
-
     fumens = models.Songs.objects.filter((Q(diffb__gte=config.need_vote_level) | Q(diffm__gte=config.need_vote_level) | Q(diffh__gte=config.need_vote_level) | Q(diffsp__gte=config.need_vote_level)) & Q(isvotingsubdiff=1))
     result = []
     for fumen in fumens:
@@ -128,22 +125,34 @@ def get_need_vote_subdiff_fumen_diffs(user_access_level):
             result.append({'title': title, 'fumen_id': fumen_id, 'difficulty': 3, 'level': fumen.diffsp})
     return result
 
-def vote_on_subdiff(fumen_id, difficulty, user_name, user_access_level, subdiff):
-    if fumen_id == 0 or difficulty == 0 or user_access_level < 1 or subdiff < 0:
-        return None
-    subdiff_votes = models.Accountsubdiffvoterecord.objects.filter(Q(songid=fumen_id) & Q(difficulty=difficulty) & Q(accountname=user_name))
+def vote_on_subdiff(vote_on_subdiff_params, session_info):
+    if vote_on_subdiff_params.fumen_id == 0 or vote_on_subdiff_params.difficulty == 0:
+        return False, "invalid fumen_id or difficulty"
+
+    subdiff_votes = models.Accountsubdiffvoterecord.objects.filter(Q(songid=vote_on_subdiff_params.fumen_id) &
+                                                                   Q(difficulty=vote_on_subdiff_params.difficulty) &
+                                                                   Q(accountname=session_info.user_name))
     if len(subdiff_votes) == 0:
-        subdiff_vote = models.Accountsubdiffvoterecord(accountname=user_name, songid=fumen_id, difficulty=difficulty, subdiff=subdiff)
+        subdiff_vote = models.Accountsubdiffvoterecord(accountname=session_info.user_name,
+                                                       songid=vote_on_subdiff_params.fumen_id,
+                                                       difficulty=vote_on_subdiff_params.difficulty,
+                                                       subdiff=vote_on_subdiff_params.subdiff)
         subdiff_vote.save()
     else:
-        subdiff_votes[0].subdiff = subdiff
+        subdiff_votes[0].subdiff = vote_on_subdiff_params.subdiff
         subdiff_votes[0].save()
-    return True
+    return True, ""
 
-def get_subdiff_vote(user_name, user_access_level):
-    if user_access_level < 1:
-        return None
-    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs(user_access_level)
+
+def parse_vote_on_subdiff_params(request):
+    fumen_id = int(request.GET.get('fumen_id', 0))
+    subdiff = int(request.GET.get('subdiff', 0))
+    difficulty = int(request.GET.get('difficulty', 0))
+    return inner_types.VoteOnSubdiffParams(fumen_id, difficulty, subdiff)
+
+
+def get_subdiff_votes(session_info):
+    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs()
     result = []
     for fumen_diff in need_vote_subdiff_fumen_diffs:
         title = fumen_diff['title']
@@ -155,8 +164,10 @@ def get_subdiff_vote(user_name, user_access_level):
         total_level = 0
         vote_count = 0
         zero_vote_count = 0
-        avg_level = 0
+        is_voted_by_user = False
         for subdiff_vote in subdiff_votes:
+            if subdiff_vote.accountname == session_info.user_name:
+                is_voted_by_user = True
             if subdiff_vote.subdiff == 0:
                 zero_vote_count += 1
                 continue
@@ -167,7 +178,8 @@ def get_subdiff_vote(user_name, user_access_level):
         else:
             avg_level = str(float(total_level / vote_count))
 
-        result.append({'title': title, 'difficulty': difficulty, 'level': level, 'fumen_id': fumen_id, 'avg_level': avg_level, 'subdiff_votes': subdiff_votes})
+        get_subdiff_votes_response = inner_types.GetSubdiffVotesResponse(fumen_id, title, difficulty, level, avg_level, subdiff_votes, is_voted_by_user)
+        result.append(get_subdiff_votes_response)
     return result
 
 def get_advice_fumens(session_info):

@@ -408,10 +408,10 @@
                             <p class="difficulty" style="font-size:14px;display:none">{{ result.fumen.difficulty }}</p>
                             <p class="fumen_id" style="font-size:14px;display:none">{{ result.fumen.songid }}</p>
                             {% if result.fumen.category == 1 and request.session.user_access_level >= 1 %}
-                            <select class="col-md-2 is_ok" style="display:inline">
-                                <option value=1 selected>ok</option>
-                                <option value=0>not ok</option>
-                            </select>
+                                <select class="col-md-2 is_ok" style="display:inline">
+                                    <option value=1 selected>ok</option>
+                                    <option value=0>not ok</option>
+                                </select>
                             {% endif %}
                             <button class="btn btn-outline-success create_fumen_comment" type="button">提交</button>
                         </div>

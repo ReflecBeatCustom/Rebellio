@@ -249,37 +249,29 @@ def inner_home(request):
     if not request.session.get('is_login', None):
         return redirect('/login')
 
-    result = {'data': '这是内部主页'}
+    result = {'data': '这是内部主页', 'name': 'inner_home'}
     return render(request, 'inner/inner_home.html', result)
 
 
 @require_http_methods(['GET'])
+@decorators.is_admin_decorator
 def vote_on_subdiff(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
-    fumen_id = int(request.GET.get('fumen_id', 0))
-    subdiff = int(request.GET.get('subdiff', 0))
-    difficulty = int(request.GET.get('difficulty', 0))
-    user_access_level = request.session.get('user_access_level', 0)
-    user_name = request.session.get('user_name', '')
+    session_info = utils.get_session_info(request)
+    vote_on_subdiff_params = inner.parse_vote_on_subdiff_params(request)
 
-    result = inner.vote_on_subdiff(fumen_id, difficulty, user_name, user_access_level, subdiff)
-    return redirect('/inner/subdiff_votes')
+    result, err_msg = inner.vote_on_subdiff(vote_on_subdiff_params, session_info)
+    return HttpResponse(json.dumps({'result': result, 'err_msg': err_msg}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
+@decorators.is_admin_decorator
 def get_subdiff_votes(request):
-    if not request.session.get('is_login', None):
-        return redirect('/login')
 
-    user_access_level = request.session.get('user_access_level', 0)
-    user_name = request.session.get('user_name', '')
+    session_info = utils.get_session_info(request)
 
-    subdiff_votes = inner.get_subdiff_vote(user_name, user_access_level)
-    result = {'subdiff_votes': subdiff_votes}
-    inner.set_return_result(result, 'subdiff_vote')
-    return render(request, 'inner/subdiff_votes.html', result)
+    subdiff_votes = inner.get_subdiff_votes(session_info)
+    return render(request, 'inner/subdiff_votes.html', {'result': subdiff_votes, 'name': 'subdiff_vote'})
 
 
 @require_http_methods(['GET'])
@@ -290,7 +282,7 @@ def get_advice_fumens(request):
     session_info = utils.get_session_info(request)
 
     fumens = inner.get_advice_fumens(session_info)
-    result = {'data': fumens, 'name': 'fumens'}
+    result = {'data': fumens, 'name': 'advice_fumens'}
     return render(request, 'inner/advice_fumens.html', result)
 
 
@@ -303,11 +295,11 @@ def super_manager(request):
     if user_access_level < 3:
         return redirect('/home')
 
-    need_vote_subdiff_fumen_diffs = inner.get_need_vote_subdiff_fumen_diffs(user_access_level)
+    need_vote_subdiff_fumen_diffs = inner.get_need_vote_subdiff_fumen_diffs()
     level1_admins, level2_admins, level3_admins = inner.get_admins(user_access_level)
     return render(request, 'inner/super_manager.html',
                   {'need_vote_subdiff_fumen_diffs': need_vote_subdiff_fumen_diffs, 'level1_admins': level1_admins,
-                   'level2_admins': level2_admins, 'level3_admins': level3_admins})
+                   'level2_admins': level2_admins, 'level3_admins': level3_admins, 'name': 'super_manager'})
 
 
 @require_http_methods(['GET'])
@@ -369,7 +361,6 @@ def change_user_access_level(request):
 
 
 @require_http_methods(['GET'])
-@decorators.is_login_decorator
 @decorators.is_admin_decorator
 def view_fumen_comment(request):
 
