@@ -210,7 +210,7 @@ def get_fumen_comments(fumen_id, is_show_all_comments):
 
 def create_fumen_comment(create_fumen_comment_params, session_info):
     if create_fumen_comment_params.comment == '':
-        return False
+        return False, "empty comment"
 
     # 验证用户是否可以查看这个谱面
     cur = connection.cursor()
@@ -219,42 +219,42 @@ def create_fumen_comment(create_fumen_comment_params, session_info):
             session_info.user_access_level, session_info.user_name, create_fumen_comment_params.fumen_id))
     rows = cur.fetchall()
     if len(rows) == 0:
-        return False
+        return False, "fumen not exists or not allowed"
 
     comment = models.Playersongcomments(accountname=session_info.user_name, songid=create_fumen_comment_params.fumen_id, comment=create_fumen_comment_params.comment, isok=create_fumen_comment_params.is_ok, isviewedbyauthor=0)
     comment.save()
-    return True
+    return True, ""
 
 
 def update_fumen_comment(update_fumen_comment_params, session_info):
     if update_fumen_comment_params.comment == '':
-        return False
+        return False, "empty comment"
 
     # 验证用户是否可以修改这个评论
     cur = connection.cursor()
     cur.execute("SELECT AccountName FROM PlayerSongComments WHERE id = {0}".format(update_fumen_comment_params.comment_id))
     rows = cur.fetchall()
     if len(rows) == 0:
-        return False
+        return False, "comment not exist"
     if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
-        return False
+        return False, "update comment not allowed"
 
     models.Playersongcomments.objects.filter(id=update_fumen_comment_params.comment_id).update(comment=update_fumen_comment_params.comment, isok=update_fumen_comment_params.is_ok, isviewedbyauthor=0, createtime=datetime.datetime.utcnow()+datetime.timedelta(hours=8))
-    return True
+    return True, ""
 
 
 def delete_fumen_comment(delete_fumen_comment_params, session_info):
     if delete_fumen_comment_params.comment_id == 0:
-        return False
+        return False, "invalid comment id"
 
     # 验证用户是否可以删除这个评论
     cur = connection.cursor()
     cur.execute("SELECT AccountName FROM PlayerSongComments WHERE id = {0}".format(delete_fumen_comment_params.comment_id))
     rows = cur.fetchall()
     if len(rows) == 0:
-        return False
+        return False, "comment not exist"
     if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
-        return False
+        return False, "delete comment not allowed"
 
     models.Playersongcomments.objects.filter(id=delete_fumen_comment_params.comment_id).delete()
     return True

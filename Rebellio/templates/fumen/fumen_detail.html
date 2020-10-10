@@ -437,7 +437,7 @@
             const url = "/fumen/create_fumen_comment?"+"fumen_id="+fumen_id+"&difficulty="+difficulty+"&comment="+comment+"&is_ok="+is_ok;
             $.get(url, function ( data ) {
                 if (!data.result) {
-                    alert("新增评论失败!")
+                    alert(data.err_msg)
                 } else {
                     location.reload();
                 }
@@ -458,7 +458,7 @@
             const url = "/fumen/update_fumen_comment?"+"fumen_id="+fumen_id+"&comment_id="+comment_id+"&difficulty="+difficulty+"&comment="+comment+"&is_ok="+is_ok;
             $.get(url, function ( data ) {
                 if (!data.result) {
-                    alert("修改评论失败!")
+                    alert(data.err_msg)
                 } else {
                     location.reload();
                 }
@@ -474,7 +474,7 @@
             const url = "/fumen/delete_fumen_comment?"+"fumen_id="+fumen_id+"&comment_id="+comment_id+"&difficulty="+difficulty;
             $.get(url, function ( data ) {
                 if (!data.result) {
-                    alert("删除评论失败!")
+                    alert(data.err_msg)
                 } else {
                     location.reload();
                 }

@@ -124,8 +124,8 @@ def create_fumen_comment(request):
     session_info = utils.get_session_info(request)
     create_fumen_comment_params = fumen.parse_create_fumen_comment_params(request)
 
-    result = fumen.create_fumen_comment(create_fumen_comment_params, session_info)
-    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
+    result, err_msg = fumen.create_fumen_comment(create_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result, 'err_msg': err_msg}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
@@ -135,8 +135,8 @@ def update_fumen_comment(request):
     session_info = utils.get_session_info(request)
     update_fumen_comment_params = fumen.parse_update_fumen_comment_params(request)
 
-    result = fumen.update_fumen_comment(update_fumen_comment_params, session_info)
-    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
+    result, err_msg = fumen.update_fumen_comment(update_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result, 'err_msg': err_msg}), content_type="application/json")
 
 
 @require_http_methods(['GET'])
@@ -146,8 +146,8 @@ def delete_fumen_comment(request):
     session_info = utils.get_session_info(request)
     delete_fumen_comment_params = fumen.parse_delete_fumen_comment_params(request)
 
-    result = fumen.delete_fumen_comment(delete_fumen_comment_params, session_info)
-    return HttpResponse(json.dumps({'result': result}), content_type="application/json")
+    result, err_msg = fumen.delete_fumen_comment(delete_fumen_comment_params, session_info)
+    return HttpResponse(json.dumps({'result': result, 'err_msg': err_msg}), content_type="application/json")
 
 
 """
