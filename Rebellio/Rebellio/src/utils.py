@@ -57,6 +57,7 @@ def get_difficulty_splitted_fumens(fumens, difficultys=None):
                 fumen_special = copy.deepcopy(fumen)
                 fumen_special.difficulty = 3
                 fumen_special.diff = fumen_special.diffsp
+                fumen_special.subdiff = fumen_special.subdiffsp
                 fumen_special.chartauthor = fumen_special.chartauthor
                 difficulty_splitted_fumens.append(fumen_special)
             continue
@@ -66,16 +67,19 @@ def get_difficulty_splitted_fumens(fumens, difficultys=None):
         fumen_basic = copy.deepcopy(fumen)
         fumen_basic.difficulty = 0
         fumen_basic.diff = fumen_basic.diffb
+        fumen_basic.subdiff = fumen_basic.subdiffb
         fumen_basic.chartauthor = fumen_basic.chartauthorb if fumen_basic.chartauthorb != '' else fumen_basic.chartauthor
 
         fumen_medium = copy.deepcopy(fumen)
         fumen_medium.difficulty = 1
         fumen_medium.diff = fumen_medium.diffm
+        fumen_medium.subdiff = fumen_medium.subdiffm
         fumen_medium.chartauthor = fumen_medium.chartauthorm if fumen_medium.chartauthorm != '' else fumen_medium.chartauthor
 
         fumen_hard = copy.deepcopy(fumen)
         fumen_hard.difficulty = 2
         fumen_hard.diff = fumen_hard.diffh
+        fumen_hard.subdiff = fumen_hard.subdiffh
         fumen_hard.chartauthor = fumen_hard.chartauthor
 
         # 如果传递了difficulty参数，则返回指定难度
