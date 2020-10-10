@@ -158,7 +158,7 @@ def get_formated_fumens(fumens, session_info=None):
         if session_info:
             # 如果没有传session_info,则不添加record信息
             records = models.Playrecords.objects.raw(
-                "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score LIMIT 1".format(
+                "SELECT * FROM Playrecords WHERE SongID = {0} AND AccountName = '{1}' AND Difficulty = {2} ORDER BY Score DESC LIMIT 1".format(
                     fumen_id, session_info.user_name, fumen.difficulty))
             if len(records) == 0:
                 formated_fumens.append(fumen)
