@@ -181,6 +181,9 @@ def get_formated_packs(packs, session_info, difficultys=None):
     """
     formated_packs = []
     for pack in packs:
+        # 设置日期格式
+        pack.createtime = pack.createtime.strftime('%Y-%m-%d %H:%M')
+
         pack_id = pack.packid
         category = pack.category
         unformated_fumens = models.Songs.objects.filter(Q(packid=pack_id) & Q(category=category))

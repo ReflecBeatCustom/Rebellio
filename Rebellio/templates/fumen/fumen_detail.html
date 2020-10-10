@@ -36,7 +36,9 @@
                                 <p class="card-text"><strong>作曲家 / Artist:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?keyword={{ result.fumen.artist }}'>{{ result.fumen.artist }}</a></p>
                                 <p class="card-text"><strong>做谱人 / Chart author:&nbsp&nbsp&nbsp&nbsp</strong><a href='/fumen/fumens?fumen_creator={{ result.fumen.chartauthor }}'>{{ result.fumen.chartauthor }}</a></p>
                                 <p class="card-text"><strong>难度 / Difficulty:&nbsp&nbsp&nbsp&nbsp</strong><a href="/fumen/fumens?level={{ result.fumen.diff }}">{{ result.fumen.diff }}</a></p>
-                                <p class="card-text"><strong>AR98%难度档位 / AR 98% Difficulty Rank:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.subdiff }}</p>
+                                {% if result.fumen.subdiff != 0 %}
+                                    <p class="card-text"><strong>AR98%难度档位 / AR 98% Difficulty Rank:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.subdiff }}</p>
+                                {% endif %}
                                 {% if request.session.user_access_level >= 1 %}
                                     <p class="card-text"><strong>上传者 / Uploader:&nbsp&nbsp&nbsp&nbsp</strong>{{ result.fumen.creator }}</p>
                                 {% endif %}
@@ -133,7 +135,7 @@
                     </div>
                     <div class="border-top my-3"></div>
                     {% endif %}
-                    <h5 class="card-title" style="font-size:16px;">排行榜 / Ranks</h5>
+                    <h5 class="card-title" style="font-size:16px;">排行榜 / Ranking</h5>
                     {% if result.fumen_best_record %}
                         {% if request.session.user_name == result.fumen_best_record.accountname %}
                         <div class="card mb-3" style="max-width:100rem;background-color:#bfbf73;border-color:#bfbf73;">
