@@ -10,23 +10,23 @@
                 <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                     {% if item.is_voted_by_user %}
                         {% if item.difficulty == 0 %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
                         {% elif item.difficulty == 1 %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
                         {% elif item.difficulty == 2 %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
                         {% else %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
+                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
                         {% endif %}
                     {% else %}
                         {% if item.difficulty == 0 %}
-                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
                         {% elif item.difficulty == 1 %}
-                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
+                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
                         {% elif item.difficulty == 2 %}
-                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
+                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
                         {% else %}
-                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
+                            <strong class="card-header" style="background-color: #ffff80;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
                         {% endif %}
                     {% endif %}
                     <div class="card-body">
@@ -56,10 +56,10 @@
                         <div class="card text-black border-info mb-3" style="max-width: 100rem;">
                             <div class="card-header"><strong>投票</strong></div>
                             <div class="card-body">
-                                <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" id="subdiff" placeholder="输入等级(0为?)">
                                 <p class="fumen_id" style="font-size:14px;display:none">{{ item.fumen_id }}</p>
                                 <p class="difficulty" style="font-size:14px;display:none">{{ item.difficulty }}</p>
-                                <button class="btn btn-outline-success vote_on_subdiff" type="button">提交</button>
+                                <input class="form-control mr-sm-10 col-sm-2" type="number" oninput="if(value<0)value=0" name="subdiff" id="subdiff" placeholder="输入等级(0为?)" style="display: inline">
+                                <button class="btn btn-outline-success vote_on_subdiff" type="button" style="display: inline">提交</button>
                             </div>
                         </div>
                     </div>
