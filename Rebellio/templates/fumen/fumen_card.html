@@ -73,3 +73,28 @@
         </div>
     </div>
 </div>
+
+{% block script %}
+    <script type="text/javascript">
+        function lazyload() {
+            var images = document.getElementsByTagName('img');
+            var len    = images.length;
+            var n      = 0;
+            return function() {
+                var seeHeight = document.documentElement.clientHeight;
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                for(var i = n; i < len; i++) {
+                    if(images[i].offsetTop < seeHeight + scrollTop) {
+                        if(images[i].getAttribute('src') === 'images/loading.gif') {
+                            images[i].src = images[i].getAttribute('data-src');
+                        }
+                        n = n + 1;
+                    }
+                }
+            }
+        }
+        const loadImages = lazyload();
+        loadImages();
+        window.addEventListener('scroll', loadImages, false);
+    </script>
+{% endblock %}
