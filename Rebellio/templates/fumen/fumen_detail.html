@@ -354,13 +354,13 @@
                         {% for comment in result.fumen_comments %}
                             <div class="card text-black border-secondary mb-3" style="max-width: 100rem; margin-top: auto;">
                                 {% if result.fumen.category == 1 and comment.isok == 1 %}
-                                <div class="card-header" style="font-size:14px;background-color:#00ff00;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                                    <div class="card-header" style="font-size:14px;background-color:#90F090;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 {% elif result.fumen.category == 1 and comment.isok == 0 and comment.isviewedbyauthor == 1 %}
-                                <div class="card-header" style="font-size:14px;background-color:#ffff80;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}&nbsp&nbsp<strong>做谱人确认时间: </strong>{{ comment.authorviewtime }}</div>
+                                    <div class="card-header" style="font-size:14px;background-color:#ffff80;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}&nbsp&nbsp<strong>做谱人确认时间: </strong>{{ comment.authorviewtime }}</div>
                                 {% elif result.fumen.category == 1 %}
-                                <div class="card-header" style="font-size:14px;background-color:#ff3333;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
+                                    <div class="card-header" style="font-size:14px;background-color:#FF8080;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.createtime }}</div>
                                 {% else %}
-                                <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
+                                    <div class="card-header" style="font-size:14px;"><strong>评论人: </strong><a href="/user/user_detail?user_name={{ comment.accountname }}">{{ comment.accountname }}</a>&nbsp&nbsp<strong>评论时间: </strong>{{ comment.updatetime }}</div>
                                 {% endif %}
                                 <div class="card-body">
                                     {% if request.session.user_name == comment.accountname or request.session.user_access_level >= 3 %}

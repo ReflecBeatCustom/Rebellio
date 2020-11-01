@@ -10,13 +10,13 @@
                 <div class="card text-black border-secondary mb-3" style="max-width: 100rem;">
                     {% if item.is_voted_by_user %}
                         {% if item.difficulty == 0 %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
+                            <strong class="card-header" style="background-color: #90F090;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - BASIC</strong>
                         {% elif item.difficulty == 1 %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
+                            <strong class="card-header" style="background-color: #90F090;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - MEDIUM</strong>
                         {% elif item.difficulty == 2 %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
+                            <strong class="card-header" style="background-color: #90F090;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - HARD</strong>
                         {% else %}
-                            <strong class="card-header" style="background-color: #00ff00;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
+                            <strong class="card-header" style="background-color: #90F090;"><a href="/fumen/fumen_detail?fumen_id={{ item.fumen_id }}&difficulty={{ item.difficulty }}" style="color:black; text-decoration: none">{{ item.title }}</a> - SPECIAL</strong>
                         {% endif %}
                     {% else %}
                         {% if item.difficulty == 0 %}
