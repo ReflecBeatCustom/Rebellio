@@ -22,10 +22,6 @@ def delete_absurd_record(delete_absurd_record, session_info):
         return False
     record = records[0]
 
-    if record.jr != -1:
-        # 说明不是上传记录
-        return False
-
     record.delete()
     return True
 
