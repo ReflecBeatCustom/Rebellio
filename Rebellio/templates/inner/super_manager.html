@@ -77,23 +77,23 @@
             <div class="border-top my-3 col-md-11"></div>
             <h5><strong>更新Fumen Point</strong></h5>
             <p class="card-text my-3"><small class="text-muted">添加/减少某个写谱人的Fumen Point</small></p>
-            <div style="display: inline">
-                <input class="form-control mr-sm-10 col-sm-2 user_name" type="text" placeholder="输入写谱人账号">
+            <div>
+                <input class="form-control mr-sm-10 col-sm-2 user_name" type="text" placeholder="输入写谱人账号" style="display: inline">
                 <span>&nbsp&nbsp</span>
-                <input class="form-control mr-sm-10 col-sm-2 update_point" type="number" placeholder="输入添加/减少的fumen point">
+                <input class="form-control mr-sm-10 col-sm-2 update_point" type="number" placeholder="输入添加/减少的fumen point" style="display: inline">
                 <span>&nbsp&nbsp</span>
-                <button class="btn btn-outline-success modify_fumen_point" type="button" style="font-size:14px;">修改</button>
+                <button class="btn btn-outline-success modify_fumen_point" type="button" style="font-size:14px; display: inline">修改</button>
             </div>
             <div class="border-top my-3 col-md-11"></div>
             <h5><strong>修改配置</strong></h5>
             <p class="card-text my-3"><small class="text-muted">修改配置</small></p>
             <div>
-                <select class="col-md-2 name" style="display:inline">
+                <select class="col-md-2 name" style="display: inline">
                     <option value="subdiff_vote_point" selected>等级投票点数</option>
                     <option value="advice_fumen_point">审谱点数</option>
                 </select>
-                <input class="form-control mr-sm-10 col-sm-2 value" type="number" placeholder="输入值">
-                <button class="btn btn-outline-success set_constant" type="button" style="font-size:14px;">修改</button>
+                <input class="form-control mr-sm-10 col-sm-2 value" type="number" placeholder="输入值" style="display: inline">
+                <button class="btn btn-outline-success set_constant" type="button" style="font-size:14px; display: inline">修改</button>
             </div>
         </div>
     </div>
@@ -105,8 +105,8 @@
         $(".modify_fumen_point").click(function() {
 		    console.log("click on btn_modify_fumen_point");
 		    const parentNode = $(this).parent();
-            const user_name = parentNode.find(".user_name").html();
-            const update_point = parentNode.find(".update_point").html();
+            const user_name = parentNode.find(".user_name").val();
+            const update_point = parentNode.find(".update_point").val();
             const url = "/inner/modify_fumen_point?"+"user_name="+user_name+"&update_point="+update_point;
             $.get(url, function ( data ) {
                 if (!data.result) {
@@ -120,8 +120,8 @@
         $(".set_constant").click(function() {
 		    console.log("click on btn_set_constant");
 		    const parentNode = $(this).parent();
-            const name = parentNode.find(".name").html();
-            const value = parentNode.find(".value").html();
+            const name = parentNode.find(".name").val();
+            const value = parentNode.find(".value").val();
             const url = "/inner/set_constant?"+"name="+name+"&value="+value;
             $.get(url, function ( data ) {
                 if (!data.result) {
