@@ -227,6 +227,35 @@ def delete_absurd_record(request):
 
 
 @require_http_methods(['GET'])
+@decorators.is_super_admin_decorator
+def modify_fumen_point(request):
+
+    session_info = utils.get_session_info(request)
+    update_point = int(request.GET.get('update_point', '0'))
+    user_name = request.GET.get('user_name', '')
+
+    try:
+        inner.modify_user_fumen_point(session_info, user_name, update_point)
+        return HttpResponse(json.dumps({'result': True,'err_msg': ''}), content_type="application/json")
+    except Exception as e:
+        return HttpResponse(json.dumps({'result': False,'err_msg': str(e)}), content_type="application/json")
+
+
+@require_http_methods(['GET'])
+@decorators.is_super_admin_decorator
+def set_constant(request):
+
+    session_info = utils.get_session_info(request)
+    name = request.GET.get('name', '')
+    value = request.GET.get('value', '')
+
+    try:
+        inner.set_constant(session_info, name, value)
+        return HttpResponse(json.dumps({'result': True, 'err_msg': ''}), content_type="application/json")
+    except Exception as e:
+        return HttpResponse(json.dumps({'result': False, 'err_msg': str(e)}), content_type="application/json")
+
+@require_http_methods(['GET'])
 @decorators.is_admin_decorator
 def get_plan_packs(request):
 
@@ -275,7 +304,6 @@ def get_subdiff_votes(request):
 
 
 @require_http_methods(['GET'])
-@decorators.is_login_decorator
 @decorators.is_admin_decorator
 def get_advice_fumens(request):
 

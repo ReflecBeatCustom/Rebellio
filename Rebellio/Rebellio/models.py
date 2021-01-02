@@ -31,6 +31,7 @@ class Accounts(models.Model):
     avatar = models.IntegerField(db_column='avatar')
     skillpoint = models.IntegerField(db_column='SkillPoint')  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=32, blank=True, null=True)  # Field name made lowercase.
+    fumen_point = models.IntegerField(db_column='fumen_point', blank=False, null=False)  # Field name made lowercase.
 
     class Meta:
         managed = True
@@ -69,6 +70,8 @@ class Packs(models.Model):
     previewsongid = models.PositiveIntegerField(db_column='PreviewSongID', blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
     id = models.IntegerField(db_column='id', primary_key=True)
+    is_published = models.IntegerField(db_column="is_publised", blank=False, null=False)
+    priority = models.IntegerField(db_column="priority", blank=False, null=False)
 
     class Meta:
         managed = True

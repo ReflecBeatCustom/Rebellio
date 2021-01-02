@@ -61,6 +61,8 @@ urlpatterns = [
     path('inner/super_manager/', views.super_manager),
     path('inner/change_user_access_level', views.change_user_access_level),
     path('inner/view_fumen_comment', views.view_fumen_comment),
+    path('inner/modify_fumen_point', views.modify_fumen_point),
+    path('inner/set_constant', views.set_constant),
     # 验证码
     url(r'^captcha', include('captcha.urls')),
     #path('fumen/get', views.get_fumen),

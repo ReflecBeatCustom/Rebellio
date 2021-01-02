@@ -31,7 +31,10 @@
                                     {% else %}
                                     <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Class:</strong></span>&nbsp&nbsp<span style="color:green"><strong>{{ result.best_class_record.class_field }}</strong></span></p>
                                     {% endif %}
-                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Skill Point[Under beta test]:</strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ result.user.skillpoint }}</strong></span></p>
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Skill Point:</strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ result.user.skillpoint }}</strong></span></p>
+                                    {% if result.user.accesslevel >= 1 %}
+                                    <p style="font-size:16px;"><span style="color:darkmagenta"><strong>Fumen Point:</strong></span>&nbsp&nbsp<span style="color:lightcoral"><strong>{{ result.user.fumen_point }}</strong></span></p>
+                                    {% endif %}
                                 </div>
                                 {% if result.user.signature  %}
                                     <small style="color:grey;font-size:16px;text-indent:2ch">{{ result.user.signature }}</small>

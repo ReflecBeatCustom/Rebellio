@@ -1,7 +1,9 @@
 import math
 from .. import models
 from . import utils
-from .config import config
+from . import constant
+from . import fumen_point
+from . import config
 from .types import inner_types
 from .types import pack_types
 from django.db.models import Q
@@ -49,10 +51,10 @@ def view_fumen_comment(view_fumen_comment_params, session_info):
 
 
 def get_plan_packs(get_plan_packs_params, pagination_info, session_info):
-    sql = "SELECT * FROM Packs WHERE Category=1"
+    sql = "SELECT * FROM plan_pack WHERE category = 3 AND is_published = 0"
     if get_plan_packs_params.keyword != '':
         sql += " AND Title LIKE '%%{0}%%'".format(get_plan_packs_params.keyword)
-    sql += " ORDER BY CreateTime DESC"
+    sql += " ORDER BY priority DESC, CreateTime DESC"
 
     unpagination_packs = models.Packs.objects.raw(sql)
     unformated_packs, pagination_info = utils.get_pagination_result(unpagination_packs, pagination_info)
@@ -134,6 +136,8 @@ def vote_on_subdiff(vote_on_subdiff_params, session_info):
                                                        difficulty=vote_on_subdiff_params.difficulty,
                                                        subdiff=vote_on_subdiff_params.subdiff)
         subdiff_vote.save()
+        subdiff_vote_point = constant.get_constant(config.subdiff_vote_point_var_name)
+        fumen_point.add_fumen_point(session_info.user_name, subdiff_vote_point)
     else:
         subdiff_votes[0].subdiff = vote_on_subdiff_params.subdiff
         subdiff_votes[0].save()
@@ -229,7 +233,7 @@ def update_subdiffs(user_access_level):
     if user_access_level < 3:
         return None
 
-    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs(user_access_level)
+    need_vote_subdiff_fumen_diffs = get_need_vote_subdiff_fumen_diffs()
     for fumen_diff in need_vote_subdiff_fumen_diffs:
         fumen_id = fumen_diff['fumen_id']
         difficulty = fumen_diff['difficulty']
@@ -283,4 +287,25 @@ def change_user_access_level(user_name, user_access_level, changed_user_name, ac
         return False
     
     models.Accounts.objects.filter(Q(accountname=changed_user_name)).update(accesslevel=access_level)
+    return True
+
+
+def modify_user_fumen_point(session_info, user_name, update_fumen_point):
+    if session_info.user_access_level < 3:
+        raise Exception("disallowed user")
+
+    fumen_point.add_fumen_point(user_name, update_fumen_point)
+    return True
+
+
+def set_constant(session_info, name, value):
+    if session_info.user_access_level < 3:
+        raise Exception("disallowed user")
+
+    if name == config.advice_fumen_point_var_name:
+        fumen_point.advice_fumen_point = int(value)
+    if name == config.subdiff_vote_point_var_name:
+        fumen_point.subdiff_vote_point = int(value)
+    models.Constants.objects.filter(namevar=name).update(value=value)
+
     return True

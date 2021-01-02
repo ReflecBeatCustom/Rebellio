@@ -2,6 +2,8 @@ from django.db import connection
 from django.db.models import Q
 import datetime
 from . import utils
+from . import fumen_point
+from . import constant
 from .config import config
 from .types import fumen_types
 from .. import models
@@ -231,6 +233,10 @@ def create_fumen_comment(create_fumen_comment_params, session_info):
     if len(rows) == 0:
         return False, "fumen not exists or not allowed"
 
+    if models.Songs.objects.filter(songid=create_fumen_comment_params.fumen_id).get().category == 1:
+        advice_fumen_point = int(constant.get_constant(config.advice_fumen_point_var_name))
+        fumen_point.add_fumen_point(session_info.user_name, advice_fumen_point)
+
     comment = models.Playersongcomments(accountname=session_info.user_name, songid=create_fumen_comment_params.fumen_id, comment=create_fumen_comment_params.comment, isok=create_fumen_comment_params.is_ok, isviewedbyauthor=0)
     comment.save()
     return True, ""
@@ -266,7 +272,13 @@ def delete_fumen_comment(delete_fumen_comment_params, session_info):
     if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
         return False, "delete comment not allowed"
 
-    models.Playersongcomments.objects.filter(id=delete_fumen_comment_params.comment_id).delete()
+    comment = models.Playersongcomments.objects.filter(id=delete_fumen_comment_params.comment_id).get()
+
+    if models.Songs.objects.filter(songid=delete_fumen_comment_params.fumen_id).get().category == 1 and session_info.user_name == comment.accountname:
+        advice_fumen_point = int(constant.get_constant(config.advice_fumen_point_var_name))
+        fumen_point.add_fumen_point(session_info.user_name, -1 * advice_fumen_point)
+
+    comment.delete()
     return True
 
 

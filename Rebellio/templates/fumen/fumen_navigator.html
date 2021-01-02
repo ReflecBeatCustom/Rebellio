@@ -30,11 +30,20 @@
         {% endif %}
         {% if name == 'upload_fumen' %}
         <li class="nav-item">
-            <a class="nav-link active disabled" href="/#">上传谱面</a>
+            <a class="nav-link active disabled" href="https://chilundui.com/manage/upload/rb">上传.rb文件</a>
         </li>
         {% else %}
         <li class="nav-item">
-            <a class="nav-link disabled" href="/#">上传谱面</a>
+            <a class="nav-link disabled" href="https://chilundui.com/manage/upload/rb">上传.rb文件</a>
+        </li>
+        {% endif %}
+        {% if name == 'add_fumen' %}
+        <li class="nav-item">
+            <a class="nav-link active disabled" href="https://www.chilundui.com/manage/song">添加谱面</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link disabled" href="https://www.chilundui.com/manage/song">添加谱面</a>
         </li>
         {% endif %}
     {% endif %}
