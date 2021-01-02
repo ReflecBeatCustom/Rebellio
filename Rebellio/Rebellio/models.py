@@ -40,6 +40,7 @@ class Accounts(models.Model):
 class Constants(models.Model):
     namevar = models.CharField(max_length=50, blank=True, null=True)
     value = models.TextField(blank=True, null=True)
+    id = models.IntegerField(db_column='id', primary_key=True)
 
     class Meta:
         managed = True
