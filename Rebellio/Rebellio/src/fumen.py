@@ -233,7 +233,7 @@ def create_fumen_comment(create_fumen_comment_params, session_info):
     if len(rows) == 0:
         return False, "fumen not exists or not allowed"
 
-    if models.Songs.objects.filter(songid=create_fumen_comment_params.fumen_id).get().category == 1 and len(models.Playersongcomments.objects.filter(Q(songid=create_fumen_comment_params.fumen_id) & Q(accountname=session_info.user_name))) <= 0:
+    if models.Songs.objects.filter(songid=create_fumen_comment_params.fumen_id).get().category == 1 and len(models.Playersongcomments.objects.filter(Q(songid=create_fumen_comment_params.fumen_id) & Q(accountname=session_info.user_name))) == 0:
         advice_fumen_point = int(constant.get_constant(config.advice_fumen_point_var_name))
         fumen_point.add_fumen_point(session_info.user_name, advice_fumen_point)
 
@@ -269,14 +269,15 @@ def delete_fumen_comment(delete_fumen_comment_params, session_info):
     rows = cur.fetchall()
     if len(rows) == 0:
         return False, "comment not exist"
-    if rows[0][0] != session_info.user_name and session_info.user_access_level < 1:
+    fumen_comment_user = rows[0][0]
+    if fumen_comment_user != session_info.user_name and session_info.user_access_level < 1:
         return False, "delete comment not allowed"
 
     comment = models.Playersongcomments.objects.filter(id=delete_fumen_comment_params.comment_id).get()
 
-    if models.Songs.objects.filter(songid=delete_fumen_comment_params.fumen_id).get().category == 1:
+    if models.Songs.objects.filter(songid=delete_fumen_comment_params.fumen_id).get().category == 1 and len(models.Playersongcomments.objects.filter(Q(songid=delete_fumen_comment_params.fumen_id) & Q(accountname=fumen_comment_user))) == 1:
         advice_fumen_point = int(constant.get_constant(config.advice_fumen_point_var_name))
-        fumen_point.add_fumen_point(session_info.user_name, -1 * advice_fumen_point)
+        fumen_point.add_fumen_point(fumen_comment_user, -1 * advice_fumen_point)
 
     comment.delete()
     return True
