@@ -73,6 +73,7 @@ class Packs(models.Model):
     id = models.IntegerField(db_column='id', primary_key=True)
     is_published = models.IntegerField(db_column="is_publised", blank=False, null=False)
     priority = models.IntegerField(db_column="priority", blank=False, null=False)
+    is_visible = models.IntegerField(db_column="is_visible", blank=True, null=True)
 
     class Meta:
         managed = True

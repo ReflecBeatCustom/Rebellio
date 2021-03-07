@@ -10,7 +10,7 @@ default_show_count = 20
 
 
 def get_packs(session_info, pagination_info, get_packs_params):
-    sql = "SELECT * FROM Packs WHERE 1=1"
+    sql = "SELECT * FROM Packs WHERE IFNULL(is_visible, 0, 1) = 1"
     if get_packs_params.keyword != '':
         sql += " AND Title LIKE '%%{0}%%'".format(get_packs_params.keyword)
     if session_info.user_access_level < 1 and get_packs_params.category > 0:
@@ -36,9 +36,9 @@ def get_pack(session_info, get_pack_params):
         return None
 
     if session_info.user_access_level == 0:
-        unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category__lte=0))
+        unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category__lte=0) & Q(is_visible=1))
     else:
-        unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category=get_pack_params.category))
+        unformated_packs = models.Packs.objects.filter(Q(packid=get_pack_params.pack_id) & Q(category=get_pack_params.category) & Q(is_visible=1))
 
     # 得到曲包结果
     packs = utils.get_formated_packs(unformated_packs, session_info)
