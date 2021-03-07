@@ -10,7 +10,7 @@ default_show_count = 20
 
 
 def get_packs(session_info, pagination_info, get_packs_params):
-    sql = "SELECT * FROM Packs WHERE IFNULL(is_visible, 0, 1) = 1"
+    sql = "SELECT * FROM Packs WHERE is_visible = 1"
     if get_packs_params.keyword != '':
         sql += " AND Title LIKE '%%{0}%%'".format(get_packs_params.keyword)
     if session_info.user_access_level < 1 and get_packs_params.category > 0:
